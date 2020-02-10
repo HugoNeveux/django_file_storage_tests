@@ -1,7 +1,8 @@
-from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    path('', views.upload_file, name='upload'),
+    url(r'^files/(?P<path>.*)$', views.files, name='files'),
+    url(r'download/(?P<path>.*)$', views.download, name='download')
 ]

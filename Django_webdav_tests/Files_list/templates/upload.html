@@ -8,10 +8,6 @@
     </head>
     <body>
         <h1>Ajouter un fichier</h1>
-        {% if save %}
-            <p>Ce fichier a bien été enregistré !</p>
-        {% endif %}
-
         <p>
             <form method="post" enctype="multipart/form-data" action=".">
                 {% csrf_token %}
@@ -23,9 +19,13 @@
             <h2>Liste des fichiers</h2>
             <p>
                 <ul>
-                {% for file in content_files %}
-                    <li>{{ file }}</li>
-                {% endfor %}
+                    {% for element in directory_files %}
+                        <li><a href="{% url 'download' path=element.url %}">{{ element.file }}</a></li>
+                    {% endfor %}
+                    {% for element in directory_directories %}
+                        <li><a href="{% url 'files' path=element.url %}"> {{ element.directory }}</a></li>
+                    {% endfor %}
+
                 </ul>
             </p>
         </div>
