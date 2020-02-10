@@ -1,8 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
     <head>
         <meta charset="utf-8">
         <title>Upload file</title>
+        <script src="{% static "upload.js" %}"></script>
     </head>
     <body>
         <h1>Ajouter un fichier</h1>
@@ -17,5 +19,15 @@
                 <input type="submit" />
             </form>
         </p>
+        <div id="upload_zone" ondrop="fileUploaded(event);">
+            <h2>Liste des fichiers</h2>
+            <p>
+                <ul>
+                {% for file in content_files %}
+                    <li>{{ file }}</li>
+                {% endfor %}
+                </ul>
+            </p>
+        </div>
     </body>
 </html>
