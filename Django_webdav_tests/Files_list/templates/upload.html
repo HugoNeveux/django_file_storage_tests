@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Upload file</title>
+    </head>
+    <body>
+        <h1>Ajouter un fichier</h1>
+        {% if save %}
+            <p>Ce fichier a bien été enregistré !</p>
+        {% endif %}
+
+        <p>
+            <form method="post" enctype="multipart/form-data" action=".">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" />
+            </form>
+        </p>
+    </body>
+</html>
