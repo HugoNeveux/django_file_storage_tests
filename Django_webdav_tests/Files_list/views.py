@@ -10,6 +10,8 @@ def upload_file(request):
         my_storage.save(request.FILES['file'].name,
             form.cleaned_data['file'])
         save = True
+        for file in my_storage.listdir(my_storage.base_url)[1]:
+            print(my_storage.url(my_storage.url(file)))
     return render(request, 'upload.html', {
         'form': form,
         'save': save,
