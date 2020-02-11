@@ -1,0 +1,19 @@
+.dropzone_dragndrop {
+    display: none;
+}
+
+.dropzone.has-advanced-upload {
+    background-color: white;
+    outline: 2px dashed black;
+    outline-offset: -10px;
+    transition: background-color 0.5s;
+    padding: 15px;
+}
+
+.dropzone.has-advanced-upload .dopzone__dragndrop {
+    display: inline;
+}
+
+.dropzone.is-dragover {
+    background-color: grey;
+}
