@@ -6,7 +6,7 @@ from django.conf import settings
 from django.http import HttpResponse, Http404, FileResponse
 
 def files(request, path=""):
-    files_storage = FileSystemStorage()
+    files_storage = FileSystemStorage(base_url = settings.MEDIA_ROOT)
     directory_files = []
     directory_directories = []
     # Upload
