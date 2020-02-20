@@ -16,7 +16,16 @@ if (dragNDropSupport) {
     })
     .on('drop', function(e) {
         console.log("File sent !");
-        e.dataTransfer.files;
+        const files = document.querySelector('[type=file]').files;
+        const formData = new FormData();
+
+        for (let i = 0; i < files.length; i++) {
+            let file = files[i];
+            formData.append('files[]', file)
+        }
+
+        
+
     })
     .on('dragend dragleave drop', function(e) {
         $form.removeClass('is-dragover');
