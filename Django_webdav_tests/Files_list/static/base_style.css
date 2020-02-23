@@ -1,0 +1,27 @@
+/* Top navigation bar */
+
+body {
+    margin: 0;
+}
+
+#topnav {
+    display: flex;
+    background-color: #315fe4;    /* NOTE: Color needs to be changed */
+    color: white;
+    width: 100%;
+}
+
+#topnav ul {
+    padding: 0;
+}
+
+#topnav li {
+    list-style-type: none;
+}
+
+#topnav a {
+    color: white;
+    text-decoration: none;
+}
+
+/* TODO: Add CSS to align elements with #topnav__left and #topnav__right */

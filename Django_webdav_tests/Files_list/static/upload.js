@@ -16,18 +16,41 @@ if (dragNDropSupport) {
     })
     .on('drop', function(e) {
         console.log("File sent !");
-        const files = document.querySelector('[type=file]').files;
-        const formData = new FormData();
-
-        for (let i = 0; i < files.length; i++) {
-            let file = files[i];
-            formData.append('files[]', file)
-        }
-
-        
-
+        droppedFiles = e.originalEvent.dataTransfer.files;
+        $form.trigger('submit');
     })
     .on('dragend dragleave drop', function(e) {
         $form.removeClass('is-dragover');
+    })
+    .on('change', function(e) {
+        $form.trigger('sumbit');
+    });
+
+    let ajaxData = new FormData($form.get(0));
+
+    if (droppedFiles) {
+        $.each(droppedFiled, function(i, file) {
+            ajaxData.append($input.attr('name'), file);
+        });
+    }
+
+    $.ajax({
+        url: $form.attr('action'),
+        type: $form.attr('method'),
+        data: ajaxData,
+        dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        complete: function() {
+            $form.removeClass('is-uploading');
+        },
+        success: function(data) {
+            $form.addClass(data.success == true ? 'is-success' : 'is-error');
+            if (!data.success) $errorMsg.text(data.error);
+        },
+        error: function() {
+            alert("Upload error");
+        }
     });
 }

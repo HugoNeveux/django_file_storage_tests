@@ -6,5 +6,6 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     url(r'^files/(?P<path>.*)$', views.files, name='files'),
     url(r'download/(?P<path>.*)$', views.download, name='download'),
-    url(r'^$', auth_views.LoginView.as_view())
+    url(r'^$', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
+    url(r'^logout/$', views.logout_login, name='logout')
 ]
