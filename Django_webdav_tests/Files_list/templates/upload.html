@@ -29,6 +29,7 @@
             <button class="dropzone__button" type="submit">Upload</button>
             <p>
                 <ul>
+                    <li><a href="{% url 'files' path='../' %}">...</a></li>
                     {% for element in directory_files %}
                         <li><a href="{% url 'download' path=element.url %}">{{ element.file }}</a></li>
                     {% endfor %}

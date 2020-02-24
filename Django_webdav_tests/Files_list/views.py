@@ -22,19 +22,13 @@ def files(request, path=""):
     if form.is_valid():
         files_storage.save(request.FILES['file'].name,
             form.cleaned_data['file'])
-    print(request.FILES)
-    try:
-        print(request.FILES['files[]'])
-    except MultiValueDictKeyError:
-        print("AUCUN FICHIER ENVOYE")
 
     # Showing directory content
     files_and_folders = files_storage.listdir(current_directory)
-    print(files_and_folders)
     for element in files_and_folders[1]:
-        directory_files.append({"file": element, "url": element + "/"})
+        directory_files.append({"file": element, "url": path + element + "/"})
     for element in files_and_folders[0]:
-        directory_directories.append({"directory": element, "url": element + "/"})
+        directory_directories.append({"directory": element, "url": path + element + "/"})
     return render(request, 'upload.html', {
         'form': form,
         'directory_files': directory_files,
@@ -61,7 +55,6 @@ def download(request, path):
     file_path = os.path.join(settings.MEDIA_ROOT, path).replace("%20", " ")
     if file_path.endswith("/"):
         file_path = file_path[0:-1]
-        print(file_path)
     if os.path.exists(file_path):
         try:
             return FileResponse(open(file_path, 'rb') , os.path.basename(file_path), as_attachment=True)
@@ -70,5 +63,4 @@ def download(request, path):
     raise Http404
 
 def logout_login(request):
-    print(request.META)
     return auth_views.logout_then_login(request, login_url=reverse("login"))
