@@ -31,3 +31,11 @@ ul.errorlist,
     padding: 10px;
     padding-bottom: 50px;
 }
+
+/* File list style */
+
+.file, .folder {
+    border-top: 1px #e3e3e3 solid;
+    border-bottom: 1px #e3e3e3 solid;
+    padding: 15px 0px 15px 0px;
+}

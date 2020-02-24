@@ -31,10 +31,10 @@
                 <ul>
                     <li><a href="{% url 'files' path='../' %}">...</a></li>
                     {% for element in directory_files %}
-                        <li><a href="{% url 'download' path=element.url %}">{{ element.file }}</a></li>
+                        <li class="file"><a href="{% url 'download' path=element.url %}">{{ element.file }}</a></li>
                     {% endfor %}
                     {% for element in directory_directories %}
-                        <li><a href="{% url 'files' path=element.url %}"> {{ element.directory }}</a></li>
+                        <li class="folder"><a href="{% url 'files' path=element.url %}"> {{ element.directory }}</a></li>
                     {% endfor %}
                 </ul>
             </p>

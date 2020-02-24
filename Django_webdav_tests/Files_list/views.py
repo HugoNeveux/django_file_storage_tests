@@ -22,6 +22,7 @@ def files(request, path=""):
     if form.is_valid():
         files_storage.save(request.FILES['file'].name,
             form.cleaned_data['file'])
+    print(request.FILES)
 
     # Showing directory content
     files_and_folders = files_storage.listdir(current_directory)
