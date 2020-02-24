@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% block html_head %}
-    <link rel="stylesheet" href="{% static "upload_style.css" %}" type="text/css" />
+    <link rel="stylesheet" href="{% static "style/upload_style.css" %}" type="text/css" />
     <script src="http://code.jquery.com/jquery-latest.min.js" type='text/javascript'></script>
-    <script src="{% static "upload.js" %}" async></script>
+    <script src="{% static "js/upload.js" %}" async></script>
 {% endblock html_head %}
 
 {% block content %}
@@ -16,26 +16,7 @@
             </form>
         </p>
 -->
-<header>
-    <h1>Nom du site</h1>
-    <h3>Déconnexion</h3>
-</header>
-<hr class="Line">
 <div id="Corps">
-    <nav>
-        <ul class="List-nav">
-            <li>Dossier</li>
-            <li><hr></li>
-            <li>Favoris</li>
-            <li><hr></li>
-            <li>Récents</li>
-            <li><hr></li>
-            <li>Espace de Stockage</li>
-            <li><hr></li>
-            <li>Paramètres</li>
-            <li><hr></li>
-        </ul>
-    </nav>
     <form class="dropzone" method="post" action="" enctype="multipart/form-data">
         {% csrf_token %}
         <div id="dropzone__input">
@@ -46,7 +27,6 @@
             <div class="dropzone__error">Error !</div>
             {{ form.as_p }}
             <button class="dropzone__button" type="submit">Upload</button>
-            <h2>Liste des fichiers</h2>
             <p>
                 <ul>
                     {% for element in directory_files %}

@@ -1,0 +1,33 @@
+/* Upload-specific CSS */
+
+.dropzone__uploading,
+.dropzone__success,
+.dropzone__error,
+.dropzone__file,
+ul.errorlist,
+#dropzone__input p,
+.dropzone_dragndrop {
+    display: none;
+}
+
+.dropzone.has-advanced-upload {
+    transition: background-color 500ms ease-in-out;
+    transition: border 300ms ease-in;
+    color: Black;
+    width: 100%;
+}
+
+.dropzone.has-advanced-upload .dopzone__dragndrop {
+    display: inline;
+}
+
+.dropzone.is-dragover {
+    background-color: gray;
+    border: 1px solid black;
+}
+
+.list-files
+{
+    padding: 10px;
+    padding-bottom: 50px;
+}

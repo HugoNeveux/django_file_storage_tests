@@ -1,6 +1,6 @@
 import os
 from django.shortcuts import render, redirect
-from .forms import UploadFileForm
+from .forms import UploadFileForm, CustomLoginForm
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.http import HttpResponse, Http404, FileResponse

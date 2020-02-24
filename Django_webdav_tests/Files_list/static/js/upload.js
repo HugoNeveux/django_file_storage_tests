@@ -50,7 +50,7 @@ if (dragNDropSupport) {
             if (!data.success) $errorMsg.text(data.error);
         },
         error: function() {
-            alert("Upload error");
+            // alert("Upload error");
         }
     });
 }
