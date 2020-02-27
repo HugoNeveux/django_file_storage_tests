@@ -18,8 +18,7 @@ if (dragNDropSupport) {
         droppedFiles = e.originalEvent.dataTransfer.files;
         console.log(droppedFiles[0]);
         ajax_file_upload(droppedFiles[0]);
-        // document.getElementById('file').value = e.originalEvent.dataTransfer.files;
-        // $form.submit();
+        // location.reload();
     })
     .on('dragend dragleave drop', function(e) {
         $form.removeClass('is-dragover');
@@ -49,6 +48,7 @@ if (dragNDropSupport) {
                 data: form_data,
                 success: function(response) {
                     $('#file').val('');
+                    location.reload();
                 }
             });
         }
