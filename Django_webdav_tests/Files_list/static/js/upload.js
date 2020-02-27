@@ -15,42 +15,58 @@ if (dragNDropSupport) {
         $form.addClass('is-dragover');
     })
     .on('drop', function(e) {
-        console.log("File sent !");
         droppedFiles = e.originalEvent.dataTransfer.files;
-        $form.trigger('submit');
+        console.log(droppedFiles[0]);
+        ajax_file_upload(droppedFiles[0]);
+        // document.getElementById('file').value = e.originalEvent.dataTransfer.files;
+        // $form.submit();
     })
     .on('dragend dragleave drop', function(e) {
         $form.removeClass('is-dragover');
     })
     .on('change', function(e) {
-        $form.trigger('sumbit');
     });
 
-    let ajaxData = new FormData($form.get(0));
 
-    if (droppedFiles) {
-        $.each(droppedFiled, function(i, file) {
-            ajaxData.append($input.attr('name'), file);
-        });
+    // if (droppedFiles) {
+    //     $.each(droppedFiled, function(i, file) {
+    //         ajaxData.append($form.attr('file'), file);
+    //         console.log("Ok");
+    //         $form.trigger('submit');
+    //     });
+    // }
+
+    function ajax_file_upload(file_obj) {
+        if (file_obj != undefined) {
+            let form_data = new FormData();
+            form_data.append('file', file_obj);
+            $.ajax({
+                type: 'POST',
+                url: '',
+                headers: {'X-CSRFToken': csrf_token},
+                contentType: false,
+                processData: false,
+                data: form_data,
+                success: function(response) {
+                    $('#file').val('');
+                }
+            });
+        }
     }
 
-    $.ajax({
-        url: $form.attr('action'),
-        type: $form.attr('method'),
-        data: ajaxData,
-        dataType: 'json',
-        cache: false,
-        contentType: false,
-        processData: false,
-        complete: function() {
-            $form.removeClass('is-uploading');
-        },
-        success: function(data) {
-            $form.addClass(data.success == true ? 'is-success' : 'is-error');
-            if (!data.success) $errorMsg.text(data.error);
-        },
-        error: function() {
-            // alert("Upload error");
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
         }
-    });
+        return cookieValue;
+    }
 }

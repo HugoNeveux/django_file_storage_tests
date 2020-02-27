@@ -13,10 +13,11 @@ from django.urls import reverse
 @login_required
 def files(request, path=""):
     root = settings.MEDIA_ROOT
-    current_directory = root + f"/{request.user.username}/" + path
+    current_directory = root + f"/{request.user.username}/files/" + path
     directory_files = []
     directory_directories = []
-    files_storage = FileSystemStorage(base_url=current_directory)
+    files_storage = FileSystemStorage(location=current_directory, base_url=current_directory)
+    print(current_directory)
     # Upload
     form = UploadFileForm(request.POST or None, request.FILES)
     if form.is_valid():
@@ -53,7 +54,7 @@ def files(request, path=""):
 @login_required()
 def download(request, path):
     """Allows to download file"""
-    file_path = os.path.join(settings.MEDIA_ROOT, request.user.username, path).replace("%20", " ")
+    file_path = os.path.join(settings.MEDIA_ROOT, request.user.username, "files", path).replace("%20", " ")
     if file_path.endswith("/"):
         file_path = file_path[0:-1]
     if os.path.exists(file_path):
