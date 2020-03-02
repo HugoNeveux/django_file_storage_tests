@@ -26,15 +26,6 @@ if (dragNDropSupport) {
     .on('change', function(e) {
     });
 
-
-    // if (droppedFiles) {
-    //     $.each(droppedFiled, function(i, file) {
-    //         ajaxData.append($form.attr('file'), file);
-    //         console.log("Ok");
-    //         $form.trigger('submit');
-    //     });
-    // }
-
     function ajax_file_upload(file_obj) {
         if (file_obj != undefined) {
             let form_data = new FormData();

@@ -10,11 +10,8 @@ ul.errorlist,
     display: none;
 }
 
-.dropzone.has-advanced-upload {
-    transition: background-color 500ms ease-in-out;
-    transition: border 300ms ease-in;
-    color: Black;
-    width: 100%;
+.dropzone {
+    transition: all 0.5s;
 }
 
 .dropzone.has-advanced-upload .dopzone__dragndrop {
@@ -22,8 +19,7 @@ ul.errorlist,
 }
 
 .dropzone.is-dragover {
-    background-color: gray;
-    border: 1px solid black;
+    background-color: rgba(35, 119, 209, 0.42);
 }
 
 .list-files
@@ -38,4 +34,8 @@ ul.errorlist,
     border-top: 1px #e3e3e3 solid;
     border-bottom: 1px #e3e3e3 solid;
     padding: 15px 0px 15px 0px;
+}
+
+section form.has-advanced-upload {
+    height: 90%;
 }

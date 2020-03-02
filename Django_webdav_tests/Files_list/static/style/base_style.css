@@ -78,3 +78,7 @@ li
 {
     padding-bottom: 25px;
 }
+
+#actions_menu {
+    display: none;
+}
