@@ -21,6 +21,7 @@ Tests for webdav with Django framework for Python
   - [ ] Folder creation
   - [ ] Moving files
   - [ ] File deletion
+- [ ] Add files / folders icons
 
 ###
 
