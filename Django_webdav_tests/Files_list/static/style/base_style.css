@@ -44,14 +44,12 @@ header {
     flex-direction: column;
     justify-content: space-between;
     border-right: 1px #c7c7c7 solid;
+    position: sticky;
 }
 
 #sidenav li {
-    padding-top: 10px;
-}
-
-#sidenav hr {
-    size: 1px;
+    padding-top: 25px;
+    border-bottom: 1px #ededed solid;
 }
 
 .dropzone__button {
@@ -71,12 +69,14 @@ header {
     width: 85%;
 }
 
+#sidenav ul{
 
-ul
-{
+}
+
+ul{
     list-style: none;
-    text-align: center;
     padding: 0;
+    text-align: center;
     font-size: 1.2em;
 }
 
