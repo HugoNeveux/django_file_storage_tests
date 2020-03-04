@@ -16,6 +16,7 @@ Tests for webdav with Django framework for Python
   - [ ] Using boostrap
 - [ ] User profile managment
   - [ ] Username / password changes
+  - [x] Username and password reset
 - [ ] File sharing
 - [ ] Files and folders managment
   - [ ] Folder creation

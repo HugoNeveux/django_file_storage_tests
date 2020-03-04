@@ -12,12 +12,17 @@ from django.urls import reverse
 
 @login_required
 def files(request, path=""):
+    """Main view
+    * File reception (javascript upload)
+    * File list (showing uploaded files / folder navigation)"""
+    # Variables and file storage initialisation
     root = settings.MEDIA_ROOT
     current_directory = root + f"/{request.user.username}/files/" + path
     directory_files = []
     directory_directories = []
     files_storage = FileSystemStorage(location=current_directory, base_url=current_directory)
     print(current_directory)
+
     # Upload
     form = UploadFileForm(request.POST or None, request.FILES)
     if form.is_valid():
@@ -27,33 +32,20 @@ def files(request, path=""):
 
     # Showing directory content
     files_and_folders = files_storage.listdir(current_directory)
-    for element in files_and_folders[1]:
+    for element in files_and_folders[1]:    # Listing files
         directory_files.append({"file": element, "url": path + element + "/"})
-    for element in files_and_folders[0]:
+    for element in files_and_folders[0]:    # Listing folders
         directory_directories.append({"directory": element, "url": path + element + "/"})
+    # Showing web page & rendering template
     return render(request, 'upload.html', {
         'form': form,
         'directory_files': directory_files,
         'directory_directories': directory_directories,
     })
 
-
-# def files(request, path=""):
-#     root = settings.MEDIA_ROOT
-#     files_storage = FileSystemStorage(base_url = root)
-#
-#     # File upload
-#     uploaded_files = request.FILES
-#     print(uploaded_files)
-#     return render(request, 'upload.html', {
-#         'directory_files': None,
-#         'directory_directories': None,
-#     })
-
-
 @login_required()
 def download(request, path):
-    """Allows to download file"""
+    """Download file when clicking on it"""
     file_path = os.path.join(settings.MEDIA_ROOT, request.user.username, "files", path).replace("%20", " ")
     if file_path.endswith("/"):
         file_path = file_path[0:-1]
