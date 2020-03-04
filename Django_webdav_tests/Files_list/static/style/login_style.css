@@ -41,7 +41,10 @@ li {
 
 .errorlist {
     border: solid 2px #da0000;
-    background-color: #ff4f4f;
+    color: #D8000C;
+    background-color: #FFD2D2;
+    font-size: 1.1em;
+
 }
 
 input[type=text], input[type=password] {
@@ -68,8 +71,8 @@ label {
 input[type=submit] {
     border: none;
     border-radius: 25px;
-    width: 75%;
-    height: 50px;
+    width: 80%;
+    height: 55px;
     color: white;
     background-color: #007BFF;
     transition-property: background-color;
