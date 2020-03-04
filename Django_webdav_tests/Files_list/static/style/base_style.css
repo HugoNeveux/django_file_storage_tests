@@ -39,13 +39,19 @@ header {
 }
 
 #sidenav {
-    /* background-color: #4DA3FF; */
     height: 100%;
-    /* color: white; */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     border-right: 1px #c7c7c7 solid;
+}
+
+#sidenav li {
+    padding-top: 10px;
+}
+
+#sidenav hr {
+    size: 1px;
 }
 
 .dropzone__button {
