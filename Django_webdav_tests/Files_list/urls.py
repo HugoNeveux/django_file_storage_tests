@@ -11,5 +11,7 @@ urlpatterns = [
         redirect_authenticated_user=True,
         authentication_form=CustomLoginForm
         ), name='login'),
-    url(r'^logout/$', views.logout_login, name='logout')
+    url(r'^logout/$', views.logout_login, name='logout'),
+    url(r'^password_reset/$', auth_views.PasswordResetView.as_view(),
+        name='password_reset')
 ]
