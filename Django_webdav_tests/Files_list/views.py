@@ -1,6 +1,7 @@
 import os
 from django.shortcuts import render, redirect
 from .forms import UploadFileForm, CustomLoginForm
+from .models import UserFile
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.http import HttpResponse, Http404, FileResponse
@@ -8,6 +9,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from urllib.parse import unquote
 
 
 @login_required
@@ -21,13 +23,14 @@ def files(request, path=""):
     directory_files = []
     directory_directories = []
     files_storage = FileSystemStorage(location=current_directory, base_url=current_directory)
-    print(current_directory)
+    storage = UserFile()
 
     # Upload
     form = UploadFileForm(request.POST or None, request.FILES)
     if form.is_valid():
-        files_storage.save(request.FILES['file'].name,
-            form.cleaned_data['file'])
+        storage.file = request.FILES['file']
+        storage.storage_dir = path
+        storage.save(current_directory)
     print(request.FILES)
 
     # Showing directory content
@@ -46,7 +49,8 @@ def files(request, path=""):
 @login_required()
 def download(request, path):
     """Download file when clicking on it"""
-    file_path = os.path.join(settings.MEDIA_ROOT, request.user.username, "files", path).replace("%20", " ")
+    file_path = os.path.join(settings.MEDIA_ROOT, request.user.username, "files", path)
+    file_path = unquote(file_path)
     if file_path.endswith("/"):
         file_path = file_path[0:-1]
     if os.path.exists(file_path):
@@ -57,4 +61,14 @@ def download(request, path):
     raise Http404
 
 def logout_login(request):
+    """Logout user, then show login page"""
     return auth_views.logout_then_login(request, login_url=reverse("login"))
+
+@login_required
+def folder_creation(request, path):
+    """Folder creation"""
+    folder_path = os.path.join(settings.MEDIA_ROOT, request.user.username, "files", path)
+    folder_path = unquote(folder_path)
+    if not os.path.exists(path):
+        os.makedirs(path)
+    return redirect(f"/files/{path}")
