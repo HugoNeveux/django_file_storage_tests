@@ -22,10 +22,10 @@
                 <ul>
                     <li><a href="{% url 'files' path='../' %}">...</a></li>
                     {% for element in directory_files %}
-                        <li class="file draggable"><a href="{% url 'download' path=element.url %}">{{ element.file }}</a></li>
+                        <li class="file draggable"><a href="{% url 'download' path=element.file %}">{{ element.name }}</a></li>
                     {% endfor %}
                     {% for element in directory_directories %}
-                        <li class="folder draggable"><a href="{% url 'files' path=element.url %}"> {{ element.directory }}</a></li>
+                        <li class="folder draggable"><a href="{% url 'files' path=element.url %}"> {{ element.name }}</a></li>
                     {% endfor %}
                 </ul>
             </p>
