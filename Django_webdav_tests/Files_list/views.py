@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.urls import reverse
 from urllib.parse import unquote
+from django.shortcuts import get_object_or_404
 
 
 @login_required
@@ -19,10 +20,15 @@ def files(request, path=""):
     * File reception (javascript upload)
     * File list (showing uploaded files / folder navigation)"""
     # Variables and file storage initialisation
-    ROOT = settings.MEDIA_ROOT
-    current_dir = f"{request.user.username}/files/" + path
-    directory_files = []
-    print(current_dir)
+    current_dir = os.path.join(f"{request.user.username}", "files", path)
+    absolute_path = os.path.join(settings.MEDIA_ROOT, current_dir)
+    files = []
+    directories = []
+    print(absolute_path)
+    fs = FileSystemStorage(absolute_path)
+
+    logged_user = User.objects.get(username=request.user.username, id=request.user.id)
+    # dir_obj = get_object_or_404(UserDirectory, directory=path, owner=logged_user.id)
 
     # Upload
     form = UploadFileForm(request.POST or None, request.FILES)
@@ -30,23 +36,29 @@ def files(request, path=""):
         file = UserFile(file = request.FILES['file'],
                         name = request.FILES['file'].name,
                         owner = request.user,
-                        directory=UserDirectory.objects.filter(directory=current_dir)[0])
-        file.save(ROOT + "/" + current_dir)
-        print(ROOT + "/" + current_dir)
+                        directory=UserDirectory.objects.filter(directory=path)[0])
+        file.save(os.path.join(settings.MEDIA_ROOT, current_dir))
 
     # Showing directory content
-    files = UserFile.objects.filter(directory=UserDirectory.objects.filter(directory=current_dir)[0])
-    directories_names = [ name for name in os.listdir(f"{ROOT}/{current_dir}") if os.path.isdir(os.path.join(f"{ROOT}/{current_dir}", name)) ]
-    print(directories_names)
-    directories = []
+
+    directories_names = fs.listdir(".")[0]
+    files_names = fs.listdir(".")[1]
+    for name in files_names:
+        files = UserFile.objects.filter(file=os.path.join(path, name),
+                                        owner=request.user.id)
     for name in directories_names:
-        directories += UserDirectory.objects.filter(directory=os.path.join(current_dir, name))
+        directories += UserDirectory.objects.filter(directory=f"{path}{name}/",
+                                                    owner=request.user.id)
+
+
+    print(files, directories)
+
     for element in files:    # Listing files
-        directory_files.append(element)
+        files.append(element)
     # Showing web page & rendering template
     return render(request, 'upload.html', {
         'form': form,
-        'directory_files': directory_files,
+        'directory_files': files,
         'directory_directories': directories,
     })
 
@@ -73,9 +85,8 @@ def logout_login(request):
 def folder_creation(request, path):
     """Folder creation"""
     folder_path = os.path.join(request.user.username, "files", path)
-    absolute_path = os.path.join(settings.MEDIA_ROOT, folder_path)
     if not UserDirectory.objects.filter(directory=folder_path).count():
         dir = UserDirectory(directory=folder_path, owner=request.user, name=path.split("/")[-1])
-        os.mkdir(absolute_path)
-        dir.save(absolute_path)
+        os.mkdir(folder_path)
+        dir.save(folder_path)
     return redirect(f"/files/{path}")

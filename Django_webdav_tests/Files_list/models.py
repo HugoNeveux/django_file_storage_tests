@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.conf import settings
 import os
 
 
@@ -12,7 +13,7 @@ class UserDirectory(models.Model):
     def save(self, upload_to):
         for field in self._meta.fields:
             if field.name == "directory":
-                field.upload_to = upload_to
+                field.upload_to = os.path.join(settings.MEDIA_ROOT, upload_to)
         super(UserDirectory, self).save()
 
 
@@ -32,5 +33,5 @@ class UserFile(models.Model):
     def save(self, upload_to):
         for field in self._meta.fields:
             if field.name == "file":
-                field.upload_to = upload_to
+                field.upload_to = os.path.join(settings.MEDIA_ROOT, upload_to)
         super(UserFile, self).save()
