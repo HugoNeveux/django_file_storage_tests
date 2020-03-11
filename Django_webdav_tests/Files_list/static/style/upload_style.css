@@ -22,20 +22,46 @@ ul.errorlist,
     background-color: rgba(35, 119, 209, 0.42);
 }
 
-.list-files
-{
-    padding: 10px;
-    padding-bottom: 50px;
-}
-
 /* File list style */
 
 .file, .folder {
     border-top: 1px #e3e3e3 solid;
     border-bottom: 1px #e3e3e3 solid;
     padding: 15px 0px 15px 0px;
+    padding-left: 15px;
+    text-align: left;
+}
+
+.file, .folder {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+
+.file, .folder a{
+    transition: background-color 300ms ease-in-out;
+    text-decoration: none;
+    color: black;
+    display: flex;
+    flex-direction: row;
+}
+
+.file, .folder a:hover{
+    text-decoration: none;
+    background-color: hsv(216, 39%, 93%);
 }
 
 section form.has-advanced-upload {
     height: 90%;
+}
+
+#icone-fin {
+    text-align: right;
+    padding-left: 0%;
+    padding-right: 2%;
+    font-size: 1.1em;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+    font-size: 1.2em;
 }

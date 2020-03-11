@@ -10,11 +10,14 @@ body {
 }
 
 header {
-    height: 60px;
+    height: 80px;
     margin: 0px;
     color: white;
     display: flex;
     justify-content: space-between;
+    position: sticky;
+    top: 0px;
+    background-color: #007BFF;
 }
 
 #topnav {
@@ -23,38 +26,62 @@ header {
     color: white;
     width: 100%;
     justify-content: space-between;
-}
-
-#topnav ul {
-    padding: 5px;
-}
-
-#topnav li {
-    list-style-type: none;
+    padding: 15px;
 }
 
 #topnav a {
-    color: white;
+    text-align: center;
+    font-size: 1.3em;
     text-decoration: none;
+    padding-right: 15px;
+    color: white;
+    padding-top: 10px;
+}
+
+#topnav span {
+    padding: 10px;
+}
+
+#side_icone {
+    padding-left: 5%;
+    font-size: 1.1em;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
 }
 
 #sidenav {
-    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     border-right: 1px #c7c7c7 solid;
     position: sticky;
+    top: 60px;
+    width: 100%
 }
 
 #sidenav li {
     padding-top: 25px;
+    padding-bottom: 25px;
     border-bottom: 1px #ededed solid;
+    color: gray;
+    transition: color 200ms;
 }
 
-.dropzone__button {
-    display: none;
+#sidenav li:hover {
+    color: black;
 }
+
+#sidenav ul{
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    font-size: 1.2em;
+    padding-right: 20px;
+    padding-left: 20px;
+    background-color: white;
+    height: 100%;
+}
+
 
 #sidenav__pagecontent {
     display: flex;
@@ -69,22 +96,35 @@ header {
     width: 85%;
 }
 
-#sidenav ul{
-
+#line_icon {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
-ul{
-    list-style: none;
-    padding: 0;
-    text-align: center;
-    font-size: 1.2em;
+.dropzone__button {
+    display: none;
 }
 
-li
-{
-    padding-bottom: 25px;
+#icone {
+    padding-right: 20px;
+    font-size: 1.4em;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+}
+
+#icone_folder {
+    padding-right: 20px;
+    font-size: 2em;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
 }
 
 #actions_menu {
     display: none;
+}
+
+ul {
+    list-style: none;
+    text-align: center;
 }
