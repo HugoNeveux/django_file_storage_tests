@@ -21,13 +21,12 @@ document.getElementById("sidenav__pagecontent").style.height = `${window.size - 
 }
         </script>
     </head>
+
     <body>
         <header>
             <nav id="topnav">
                 <h1>Nom Du Site Ou Logo</h1>
-                <ul id="topnav__right">
-                    <li><a href="{% url 'logout' %}" class="logout">Déconnexion</a></li>
-                </ul>
+                <a href="{% url 'logout' %}" class="logout">Déconnexion<span class="fa fa-power-off"></span></a>
             </nav>
         </header>
 
@@ -35,16 +34,16 @@ document.getElementById("sidenav__pagecontent").style.height = `${window.size - 
             <aside>
                 <nav id="sidenav">
                     <ul id="sidenav_content">
-                        <li>Favoris<span class="fa fa-star" id="icone"></li>
-                        <li>Récents</li>
-                        <li>Espace de Stockage</li>
-                        <li>Paramètres<span class="fa fa-cog" id="icone"></span></li>
+                        <li id="line_icon">Favoris<span class="fa fa-star" id="side_icone"></li>
+                        <li id="line_icon">Récents<span class="fa fa-history" id="side_icone"></li>
+                        <li id="line_icon">Paramètres<span class="fa fa-cogs" id="side_icone"></span></li>
                         <li>
                             Actions...
                             <ul id="actions_menu">
                                 <li>Nouveau dossier...</li>
                             </ul>
                         </li>
+                        <li style="text-align: center;">Espace de Stockage</li>
                     </ul>
                 </nav>
             </aside>

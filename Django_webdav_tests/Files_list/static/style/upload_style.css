@@ -39,16 +39,17 @@ ul.errorlist,
     flex-direction: row;
 }
 
-.file a{
-    transition: transform 300ms ease-in-out;
+.file, .folder a{
+    transition: background-color 300ms ease-in-out;
     text-decoration: none;
     color: black;
     display: flex;
     flex-direction: row;
 }
 
-.file a:hover{
-    text-decoration: underline;
+.file, .folder a:hover{
+    text-decoration: none;
+    background-color: hsv(216, 39%, 93%);
 }
 
 section form.has-advanced-upload {
@@ -59,4 +60,8 @@ section form.has-advanced-upload {
     text-align: right;
     padding-left: 0%;
     padding-right: 2%;
+    font-size: 1.1em;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+    font-size: 1.2em;
 }
