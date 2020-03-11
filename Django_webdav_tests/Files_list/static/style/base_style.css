@@ -17,12 +17,12 @@ header {
     justify-content: space-between;
     position: sticky;
     top: 0px;
+    padding: 0px;
 }
 
 #icone {
-    padding-left: 1%;
-    padding-right: 1%;
-    font-size: 1.1em;
+    padding: 4%
+
 }
 
 #topnav {
@@ -33,10 +33,6 @@ header {
     justify-content: space-between;
 }
 
-#topnav ul {
-    padding: 5px;
-}
-
 #topnav li {
     list-style-type: none;
 }
@@ -44,6 +40,7 @@ header {
 #topnav a {
     color: white;
     text-decoration: none;
+    margin: 1%;
 }
 
 #sidenav {
