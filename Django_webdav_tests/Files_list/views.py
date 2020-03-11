@@ -2,14 +2,15 @@ import os
 from django.shortcuts import render, redirect
 from .forms import UploadFileForm, CustomLoginForm
 from .models import UserFile
-from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.http import HttpResponse, Http404, FileResponse
 from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.urls import reverse
 from urllib.parse import unquote
+from django.shortcuts import get_object_or_404
 
 
 @login_required
@@ -18,32 +19,35 @@ def files(request, path=""):
     * File reception (javascript upload)
     * File list (showing uploaded files / folder navigation)"""
     # Variables and file storage initialisation
-    root = settings.MEDIA_ROOT
-    current_directory = root + f"/{request.user.username}/files/" + path
-    directory_files = []
-    directory_directories = []
-    files_storage = FileSystemStorage(location=current_directory, base_url=current_directory)
-    storage = UserFile()
+    current_dir = os.path.join(f"{request.user.username}", "files", path)
+    absolute_path = os.path.join(settings.MEDIA_ROOT, current_dir)
+    files = []
+    directories = []
+    print(absolute_path)
 
-    # Upload
+    logged_user = User.objects.get(username=request.user.username, id=request.user.id)
+
     form = UploadFileForm(request.POST or None, request.FILES)
     if form.is_valid():
-        storage.file = request.FILES['file']
-        storage.storage_dir = path
-        storage.save(current_directory)
-    print(request.FILES)
+        file = UserFile(file = request.FILES['file'],
+        name = request.FILES['file'].name,
+        owner = request.user,
+        directory=absolute_path)
+        file.save(os.path.join(settings.MEDIA_ROOT, current_dir))
 
     # Showing directory content
-    files_and_folders = files_storage.listdir(current_directory)
-    for element in files_and_folders[1]:    # Listing files
-        directory_files.append({"file": element, "url": path + element + "/"})
-    for element in files_and_folders[0]:    # Listing folders
-        directory_directories.append({"directory": element, "url": path + element + "/"})
+    files = UserFile.objects.filter(directory=absolute_path, owner=request.user.id)
+    directories_names = [ dir for dir in os.listdir(absolute_path) if os.path.isdir(os.path.join(absolute_path, dir))]
+    print(directories_names)
+    for name in directories_names:
+        directories.append({'name': name, 'url': os.path.join(path, name)})
+
+
     # Showing web page & rendering template
     return render(request, 'upload.html', {
         'form': form,
-        'directory_files': directory_files,
-        'directory_directories': directory_directories,
+        'directory_files': files,
+        'directory_directories': directories,
     })
 
 @login_required()
@@ -67,8 +71,8 @@ def logout_login(request):
 @login_required
 def folder_creation(request, path):
     """Folder creation"""
-    folder_path = os.path.join(settings.MEDIA_ROOT, request.user.username, "files", path)
-    folder_path = unquote(folder_path)
-    if not os.path.exists(path):
-        os.makedirs(path)
+    name = request.GET.get('dirname')
+    folder_path = os.path.join(settings.MEDIA_ROOT, request.user.username, "files", path, name)
+    if not os.path.isdir(folder_path):
+        os.mkdir(folder_path)
     return redirect(f"/files/{path}")
