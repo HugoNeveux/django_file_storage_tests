@@ -13,8 +13,8 @@
     <div class="Breadcrump">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="#"><span class="fa fa-home"></a></li>
-              {% for parent in breadcrumb %}
+              <li class="breadcrumb-item"><a href="{% url 'files' path='' %}"><span class="fa fa-home"></a></li>
+              {% for parent in breadcrumb.path %}
                 <li class="breadcrumb-item"><a href="#">{{ parent.name }}</a></li>
               {% endfor %}
               <li class="breadcrumb-item active" aria-current="page">{{ breadcrumb.active }}</li>
