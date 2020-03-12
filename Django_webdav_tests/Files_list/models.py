@@ -22,8 +22,8 @@ fs = FileSystemStorage()
 
 class UserFile(models.Model):
     name = models.CharField(max_length=255, default="Untitled file")
-    directory = models.CharField(max_length=255)
-    file = models.FileField(max_length=5000, storage=fs)    # RELATIVE path to file
+    directory = models.CharField(max_length=2000)
+    file = models.FileField(max_length=2000, storage=fs)    # RELATIVE path to file
     favorite = models.BooleanField(default=False)
     comment = models.TextField(max_length=255, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

@@ -32,7 +32,7 @@
             <p>
                 <ul>
                     {% for element in directory_files %}
-                        <li class="file draggable"><a class="name__icon" href="{% url 'download' path=element.url %}"><span class="fa fa-file" id="icone"></span>{{ element.name }}</a>
+                        <li class="file draggable"><a class="name__icon" href="{% url 'download' path=element.file %}"><span class="fa fa-file" id="icone"></span>{{ element.name }}</a>
                             <div class="dropdown">
                                 <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {# <span class="fa fa-ellipsis-v" id="dropdown_icon"></span> #}
