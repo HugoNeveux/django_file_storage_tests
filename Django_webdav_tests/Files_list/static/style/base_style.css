@@ -10,7 +10,7 @@ body {
 }
 
 header {
-    height: 80px;
+    height: 75px;
     margin: 0px;
     color: white;
     display: flex;
@@ -55,8 +55,8 @@ header {
     justify-content: space-between;
     border-right: 1px #c7c7c7 solid;
     position: sticky;
-    top: 60px;
-    width: 100%
+    top: 75px;
+    width:100%
 }
 
 #sidenav li {
