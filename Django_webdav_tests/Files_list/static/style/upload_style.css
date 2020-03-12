@@ -39,7 +39,7 @@ ul.errorlist,
     flex-direction: row;
 }
 
-.file, .folder a{
+.file a{
     transition: background-color 300ms ease-in-out;
     text-decoration: none;
     color: black;
@@ -47,7 +47,7 @@ ul.errorlist,
     flex-direction: row;
 }
 
-.file, .folder a:hover{
+.file a:hover{
     text-decoration: none;
     background-color: hsv(216, 39%, 93%);
 }
@@ -64,4 +64,10 @@ section form.has-advanced-upload {
     padding-top: 0.5%;
     padding-bottom: 0.5%;
     font-size: 1.2em;
+}
+
+.breadcrumb > li + li:before {
+    color: #ccc;
+    content: "/ ";
+    padding: 0 5px;
 }

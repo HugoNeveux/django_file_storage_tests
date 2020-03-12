@@ -42,12 +42,16 @@ def files(request, path=""):
     for name in directories_names:
         directories.append({'name': name, 'url': os.path.join(path, name)})
 
+    breadcrumb = {}
+    breadcrumb[path] = path.split("/")[:-1]
+    breadcrumb["active"] = path.split("/")[-1]
 
     # Showing web page & rendering template
     return render(request, 'upload.html', {
         'form': form,
         'directory_files': files,
         'directory_directories': directories,
+        'breadcrumb': breadcrumb,
     })
 
 @login_required()
