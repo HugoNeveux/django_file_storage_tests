@@ -56,7 +56,8 @@ header {
     border-right: 1px #c7c7c7 solid;
     position: sticky;
     top: 75px;
-    width:100%
+    width:100%;
+    height: 98%;
 }
 
 #sidenav li {
