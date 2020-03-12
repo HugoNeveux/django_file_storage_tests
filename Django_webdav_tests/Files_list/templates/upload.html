@@ -15,7 +15,7 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'files' path='' %}"><span class="fa fa-home"></a></li>
               {% for parent in breadcrumb.path %}
-                <li class="breadcrumb-item"><a href="#">{{ parent.name }}</a></li>
+                <li class="breadcrumb-item"><a href="#">{{ parent }}</a></li>
               {% endfor %}
               <li class="breadcrumb-item active" aria-current="page">{{ breadcrumb.active }}</li>
             </ol>
@@ -32,10 +32,21 @@
             <p>
                 <ul>
                     {% for element in directory_files %}
-                        <li class="file draggable"><a href="{% url 'download' path=element.url %}"><span class="fa fa-file" id="icone"></span>{{ element.name }}</a><span class="fa fa-ellipsis-v" id="icone-fin"></span></li>
+                        <li class="file draggable"><a class="name__icon" href="{% url 'download' path=element.url %}"><span class="fa fa-file" id="icone"></span>{{ element.name }}</a>
+                            <div class="dropdown">
+                                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {# <span class="fa fa-ellipsis-v" id="dropdown_icon"></span> #}
+                                    Actions
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="#">Nouveau dossier</a>
+                                    <a class="dropdown-item" href="#">Supprimer</a>
+                                </div>
+                            </div>
+                        </li>
                     {% endfor %}
                     {% for element in directory_directories %}
-                        <li class="folder draggable"><a href="{% url 'files' path=element.url %}"><span class="fa fa-folder" id="icone_folder" ></span>{{ element.name }}</a><span class="fa fa-ellipsis-v" id="icone-fin"></span></li>
+                        <li class="folder draggable"><a href="{% url 'files' path=element.url %}"><span class="fa fa-folder" id="icone_folder" ></span>{{ element.name }}</a><span class="fa fa-ellipsis-v" id="dropdown_icon"></li>
                     {% endfor %}
                 </ul>
             </p>

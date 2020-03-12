@@ -39,24 +39,28 @@ ul.errorlist,
     flex-direction: row;
 }
 
-.file a{
+a.name__icon {
     transition: background-color 300ms ease-in-out;
     text-decoration: none;
     color: black;
     display: flex;
     flex-direction: row;
+    margin: 5px;
 }
 
 .file a:hover{
     text-decoration: none;
-    background-color: hsv(216, 39%, 93%);
+    /* background-color: #91b6ed; */
 }
 
 section form.has-advanced-upload {
     height: 90%;
 }
 
-#icone-fin {
+
+/* Dropdowns menus */
+
+#dropdown_icon {
     text-align: right;
     padding-left: 0%;
     padding-right: 2%;
@@ -66,8 +70,7 @@ section form.has-advanced-upload {
     font-size: 1.2em;
 }
 
-.breadcrumb > li + li:before {
-    color: #ccc;
-    content: "/ ";
-    padding: 0 5px;
+.btn-primary {
+    color: white;
+    margin-right: 5px;
 }
