@@ -1,12 +1,12 @@
 /* Top navigation bar */
 
 html {
-    height: 100%;
+    height: 100vh;
 }
 
 body {
     margin: 0;
-    height: 100%;
+    height: 100vh;
 }
 
 header {
@@ -56,7 +56,7 @@ header {
     position: sticky;
     top: 75px;
     width:100%;
-    height: 92%;
+    height: 100%;
     border-right: 1px #c7c7c7 solid;
 }
 
@@ -86,21 +86,31 @@ header {
     background-color: #fff;
     height: 100%;
     margin-bottom: 0px;
+    position: sticky;
 }
 
 #sidenav__pagecontent {
     display: flex;
-    height: 100%;
+    height: calc(100vh - 75px);
 }
 
 #sidenav__pagecontent aside {
     width: 15%;
     background-color: #007BFF;
     height: inherit;
+    position: fixed;
+    top: 75px;
+    left: 0;
+    height: inherit;
 }
 
 #sidenav__pagecontent section {
     width: 85%;
+    height: calc(100vh - 75px);
+    position: sticky;
+    left: calc(15%);
+    bottom: 0px;
+    overflow-y: scroll;
 }
 
 #line_icon {

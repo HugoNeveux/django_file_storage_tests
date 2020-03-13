@@ -54,7 +54,7 @@ a.name__icon {
 }
 
 section form.has-advanced-upload {
-    height: 90%;
+    height: calc(100vh - 75px);
 }
 
 
