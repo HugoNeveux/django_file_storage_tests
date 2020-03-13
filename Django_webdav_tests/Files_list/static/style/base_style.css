@@ -35,7 +35,7 @@ header {
     text-decoration: none;
     padding-right: 15px;
     color: white;
-    padding-top: 10px;
+    padding-top: 8px;
 }
 
 #topnav span {
@@ -82,9 +82,10 @@ header {
 }
 
 #sidenav_content {
-    margin-left: 15px;
+    margin-left: 10px;
     background-color: #fff;
-    height: 80%;
+    height: 100%;
+    margin-bottom: 0px;
 }
 
 #sidenav__pagecontent {

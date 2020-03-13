@@ -43,8 +43,8 @@ def files(request, path=""):
         directories.append({'name': name, 'url': os.path.join(path, name)})
 
     breadcrumb = {}
-    breadcrumb["path"] = path.split("/")[:-1]
-    breadcrumb["active"] = path.split("/")[-1]
+    breadcrumb["path"] = path.split("\\")[:-1]
+    breadcrumb["active"] = path.split("\\")[-1]
     print(breadcrumb)
     # Showing web page & rendering template
     return render(request, 'upload.html', {
