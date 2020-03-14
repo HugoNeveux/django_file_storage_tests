@@ -1,3 +1,6 @@
+// Correcting boostrap conflicts issues
+$.noConflict();
+
 // Checks if file exists
 function fileExists(files, filename) {
     for (i in files) {
@@ -33,7 +36,7 @@ if (dragNDropSupport) {
             ajax_file_upload(droppedFiles[0]);
             console.log("File sent");
         } else {
-            alert("Le fichier existe déjà !");
+            $("#uploadModal").modal('show');
         }
     })
     .on('dragend dragleave drop', function(e) {
