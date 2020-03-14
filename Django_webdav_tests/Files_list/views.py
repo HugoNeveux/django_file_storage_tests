@@ -11,6 +11,8 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from urllib.parse import unquote
 from django.shortcuts import get_object_or_404
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 @login_required
@@ -29,11 +31,16 @@ def files(request, path=""):
 
     form = UploadFileForm(request.POST or None, request.FILES)
     if form.is_valid():
-        file = UserFile(file = request.FILES['file'],
-        name = request.FILES['file'].name,
-        owner = request.user,
-        directory=absolute_path)
-        file.save(os.path.join(settings.MEDIA_ROOT, current_dir))
+        existing_file = UserFile.objects.filter(directory=absolute_path, owner=request.user.id, name=request.FILES['file'].name)
+        if existing_file.count():
+            existing_file[0].file = request.FILES["file"]
+            existing_file[0].save(current_dir)
+        else:
+            file = UserFile(file = request.FILES["file"],
+            name = request.FILES["file"].name,
+            owner = request.user,
+            directory=absolute_path)
+            file.save(os.path.join(settings.MEDIA_ROOT, current_dir))
 
     # Showing directory content
     files = UserFile.objects.filter(directory=absolute_path, owner=request.user.id)
@@ -43,8 +50,9 @@ def files(request, path=""):
         directories.append({'name': name, 'url': os.path.join(path, name)})
 
     breadcrumb = {}
-    breadcrumb["path"] = path.split("\\")[:-1]
-    breadcrumb["active"] = path.split("\\")[-1]
+    full_path = path.replace("/", "\\").split("\\")
+    breadcrumb["path"] = full_path[:-1]
+    breadcrumb["active"] = full_path[-1]
     print(breadcrumb)
     # Showing web page & rendering template
     return render(request, 'upload.html', {
