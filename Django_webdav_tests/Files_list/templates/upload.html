@@ -3,10 +3,21 @@
 {% block html_head %}
     <link rel="stylesheet" href="{% static "style/upload_style.css" %}" type="text/css" />
     <script src="http://code.jquery.com/jquery-latest.min.js" type='text/javascript'></script>
-    <script src="{% static "js/upload.js" %}" async></script>
     <script type="text/javascript">
-        let csrf_token = '{{ csrf_token }}'
+        // Variables initialization with django
+        function unescapeHTML(unsafe) {
+            return unsafe
+                .replace(/&amp;/g, "&")
+                .replace(/&lt;/g, "<")
+                .replace(/&gt;/g, ">")
+                .replace(/&quot;/g, "\"")
+                .replace(/&#039;/g, "'");
+        }
+        let csrf_token = '{{ csrf_token }}';
+        let files = '{{ files_json }}';
+        files = JSON.parse(unescapeHTML(files));
     </script>
+    <script src="{% static "js/upload.js" %}" async></script>
 {% endblock html_head %}
 
 {% block content %}

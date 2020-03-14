@@ -1,8 +1,21 @@
+// Checks if file exists
+function fileExists(files, filename) {
+    for (i in files) {
+        if (files[i].fields.name == filename) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+// Checks for drag and drop browser support
 let dragNDropSupport = function() {
     let div = document.createElement('div');
     return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
 }();
 
+// Sends file with AJAX
 let $form = $('.dropzone');
 if (dragNDropSupport) {
     $form.addClass('has-advanced-upload');
@@ -16,9 +29,12 @@ if (dragNDropSupport) {
     })
     .on('drop', function(e) {
         droppedFiles = e.originalEvent.dataTransfer.files;
-        console.log(droppedFiles[0]);
-        ajax_file_upload(droppedFiles[0]);
-        // location.reload();
+        if (!(fileExists(files, droppedFiles[0].name))) {
+            ajax_file_upload(droppedFiles[0]);
+            console.log("File sent");
+        } else {
+            alert("Le fichier existe déjà !");
+        }
     })
     .on('dragend dragleave drop', function(e) {
         $form.removeClass('is-dragover');

@@ -13,6 +13,7 @@ from urllib.parse import unquote
 from django.shortcuts import get_object_or_404
 import json
 from django.core.serializers.json import DjangoJSONEncoder
+from django.core import serializers
 
 
 @login_required
@@ -29,6 +30,7 @@ def files(request, path=""):
 
     logged_user = User.objects.get(username=request.user.username, id=request.user.id)
 
+    # Upload
     form = UploadFileForm(request.POST or None, request.FILES)
     if form.is_valid():
         existing_file = UserFile.objects.filter(directory=absolute_path, owner=request.user.id, name=request.FILES['file'].name)
@@ -44,6 +46,10 @@ def files(request, path=""):
 
     # Showing directory content
     files = UserFile.objects.filter(directory=absolute_path, owner=request.user.id)
+    # files_to_json = UserFile.objects.filter(directory=absolute_path, owner=request.user.id).values_list('name')
+    # files_json = json.dumps(list(files), cls=DjangoJSONEncoder)
+    tmp_json = serializers.serialize("json", files)
+    files_json = json.dumps(json.loads(tmp_json))
     directories_names = [ dir for dir in os.listdir(absolute_path) if os.path.isdir(os.path.join(absolute_path, dir))]
     print(directories_names)
     for name in directories_names:
@@ -60,6 +66,7 @@ def files(request, path=""):
         'directory_files': files,
         'directory_directories': directories,
         'breadcrumb': breadcrumb,
+        'files_json': files_json,
     })
 
 @login_required()
