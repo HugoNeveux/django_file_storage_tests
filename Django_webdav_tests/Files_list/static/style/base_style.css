@@ -42,7 +42,7 @@ header {
     padding: 10px;
 }
 
-#side_icone {
+.side_icon {
     padding-left: 5%;
     font-size: 1.1em;
     padding-top: 0.5%;
@@ -60,7 +60,7 @@ header {
     border-right: 1px #c7c7c7 solid;
 }
 
-#sidenav #line_icon {
+#sidenav .line_icon {
     padding-top: 25px;
     padding-bottom: 25px;
     border-bottom: 1px #ededed solid;
@@ -68,7 +68,7 @@ header {
     transition: color 200ms;
 }
 
-#sidenav #line_icon:hover {
+#sidenav .line_icon:hover {
     color: black;
 }
 
@@ -113,10 +113,11 @@ header {
     overflow-y: auto;
 }
 
-#line_icon {
+.line_icon {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    cursor: pointer;
 }
 
 .dropzone__button {
@@ -147,7 +148,7 @@ ul {
     text-align: center;
 }
 
-#space_storage {
+#storage_space {
     text-align: center;
     padding-bottom: 100px;
     padding-top: 25px;
