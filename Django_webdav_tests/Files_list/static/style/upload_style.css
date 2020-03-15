@@ -12,10 +12,12 @@ ul.errorlist,
 
 .dropzone {
     transition: all 0.5s;
+    height: 92%;
 }
 
 .dropzone.has-advanced-upload .dopzone__dragndrop {
     display: inline;
+    height: 50%;
 }
 
 .dropzone.is-dragover {
@@ -52,11 +54,6 @@ a.name__icon {
     text-decoration: none;
     /* background-color: #91b6ed; */
 }
-
-section form.has-advanced-upload {
-    height: calc(100vh - 75px);
-}
-
 
 /* Dropdowns menus */
 
