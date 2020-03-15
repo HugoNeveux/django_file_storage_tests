@@ -30,17 +30,17 @@ if (dragNDropSupport) {
     .on('dragover dragenter', function() {
         $form.addClass('is-dragover');
     })
+    .on('dragend dragleave drop', function(e) {
+        $form.removeClass('is-dragover');
+    })
     .on('drop', function(e) {
         droppedFiles = e.originalEvent.dataTransfer.files;
         if (!(fileExists(files, droppedFiles[0].name))) {
             ajax_file_upload(droppedFiles[0]);
             console.log("File sent");
-        } else {
-            $("#uploadModal").modal('show');
+        } else if (confirm("Voulez-vous vraiment envoyer ce fichier ?\nSi vous continuez, le fichier pré-existant sera écrasé.")){
+            ajax_file_upload(droppedFiles[0]);
         }
-    })
-    .on('dragend dragleave drop', function(e) {
-        $form.removeClass('is-dragover');
     })
     .on('change', function(e) {
     });
@@ -58,7 +58,7 @@ if (dragNDropSupport) {
                 data: form_data,
                 success: function(response) {
                     $('#file').val('');
-                    location.reload();
+                    location.reload();  
                 }
             });
         }
