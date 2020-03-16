@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^logout/$', views.logout_login, name='logout'),
     url(r'^password_reset/$', auth_views.PasswordResetView.as_view(),
         name='password_reset'),
-    url(r'^create_dir/(?P<path>.*)$', views.folder_creation, name='create_dir')
+    url(r'^create_dir/(?P<path>.*)$', views.folder_creation, name='create_dir'),
+    url(r'^del_file/(?P<path>.*)$', views.del_file, name='del_file'),
 ]

@@ -14,7 +14,7 @@ from django.shortcuts import get_object_or_404
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core import serializers
-
+import shutil
 
 @login_required
 def files(request, path=""):
@@ -97,3 +97,20 @@ def folder_creation(request, path):
         if not os.path.isdir(folder_path):
             os.mkdir(folder_path)
     return redirect(f"/files/{path}")
+
+@login_required
+def del_file(request, path):
+    """File or folder deletion"""
+    redirection = request.GET.get('redirect')
+    if os.path.isfile(path):
+        file = UserFile.objects.filter(file=path, owner=request.user.id).delete()
+        os.remove(path)
+    else:
+        path = os.path.join(settings.MEDIA_ROOT, request.user.username, "files", path)
+        dir_contents = os.listdir(path)
+        if len(dir_contents) == 0:
+            os.rmdir(path)
+        else:
+            shutil.rmtree(path)
+
+    return redirect(f"/files/{redirection}")
