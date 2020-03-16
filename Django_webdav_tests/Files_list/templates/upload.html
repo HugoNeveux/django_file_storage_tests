@@ -16,6 +16,7 @@
         let csrf_token = '{{ csrf_token }}';
         let files = '{{ files_json }}';
         files = JSON.parse(unescapeHTML(files));
+        current_dir = "{{ current_dir }}";
     </script>
     <script src="{% static "js/upload.js" %}" async></script>
 {% endblock html_head %}

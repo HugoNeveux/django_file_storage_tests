@@ -67,6 +67,7 @@ def files(request, path=""):
         'directory_directories': directories,
         'breadcrumb': breadcrumb,
         'files_json': files_json,
+        'current_dir': path,
     })
 
 @login_required()
@@ -91,7 +92,8 @@ def logout_login(request):
 def folder_creation(request, path):
     """Folder creation"""
     name = request.GET.get('dirname')
-    folder_path = os.path.join(settings.MEDIA_ROOT, request.user.username, "files", path, name)
-    if not os.path.isdir(folder_path):
-        os.mkdir(folder_path)
+    if name:
+        folder_path = os.path.join(settings.MEDIA_ROOT, request.user.username, "files", path, name)
+        if not os.path.isdir(folder_path):
+            os.mkdir(folder_path)
     return redirect(f"/files/{path}")

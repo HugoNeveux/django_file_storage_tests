@@ -58,7 +58,7 @@ if (dragNDropSupport) {
                 data: form_data,
                 success: function(response) {
                     $('#file').val('');
-                    location.reload();  
+                    location.reload();
                 }
             });
         }
@@ -80,3 +80,8 @@ if (dragNDropSupport) {
         return cookieValue;
     }
 }
+
+$("#new_folder").on('click', function() {
+    let name = prompt("Veuillez entrer le nom du dossier à créer");
+    window.location = `../create_dir/${current_dir}?dirname=${name}`;
+})
