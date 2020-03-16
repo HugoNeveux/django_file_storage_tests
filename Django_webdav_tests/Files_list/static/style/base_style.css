@@ -120,6 +120,10 @@ header {
     cursor: pointer;
 }
 
+.line_icon:hover {
+    text-decoration: none;
+}
+
 .dropzone__button {
     display: none;
 }
