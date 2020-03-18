@@ -1,5 +1,6 @@
-# django_webdav_tests
-Tests for webdav with Django framework for Python
+# django_file_storage
+
+A multi-user cloud app for file storage, using the Django framework for python and boostrap 4.
 
 ## To-do list
 
