@@ -27,7 +27,7 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'files' path='' %}"><span class="fa fa-home"></a></li>
               {% for parent in breadcrumb.path %}
-                <li class="breadcrumb-item"><a href="#">{{ parent }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'files' path=parent.1 %}">{{ parent.0 }}</a></li>
               {% endfor %}
               <li class="breadcrumb-item active" aria-current="page">{{ breadcrumb.active }}</li>
             </ol>
@@ -64,8 +64,7 @@
                                   Actions
                               </a>
                               <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
-                                  <a class="dropdown-item" href="#">Nouveau dossier</a>
-                                  <!-- <a class="dropdown-item action_delete" href="{% url 'del_file' path=element.url %}?redirect={{ current_dir }}">Supprimer</a> -->
+                                  <a class="dropdown-item action_dir_delete" href="{% url 'del_file' path=element.url %}?redirect={{ current_dir }}">Supprimer</a>
                               </div>
                           </div>
                         </li>

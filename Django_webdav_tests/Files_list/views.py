@@ -57,7 +57,12 @@ def files(request, path=""):
 
     breadcrumb = {}
     full_path = path.replace("/", "\\").split("\\")
-    breadcrumb["path"] = full_path[:-1]
+    breadcrumb["path"] = []
+    to_dir = ""
+    for dir in full_path[:-1]:
+        to_dir = os.path.join(to_dir, dir)
+        breadcrumb["path"].append([dir, to_dir])
+
     breadcrumb["active"] = full_path[-1]
     print(breadcrumb)
     # Showing web page & rendering template
