@@ -83,9 +83,15 @@ if (dragNDropSupport) {
 
 $("#new_folder").on('click', function() {
     let name = prompt("Veuillez entrer le nom du dossier à créer");
-    window.location = `/create_dir/${current_dir}?dirname=${name}`;
+    if (name != null) {
+        window.location = `/create_dir/${current_dir}?dirname=${name}`;
+    }
 });
 
 $(".action_dir_delete").on('click', function() {
     return confirm("Voulez-vous vraiment supprimer ce dossier ? Son contenu sera définitivement effacé.");
+});
+
+$(".action_file_delete").on('click', function() {
+    return confirm("Voulez-vous vraiment supprimer ce fichier ? Il sera définitivement effacé.");
 });
