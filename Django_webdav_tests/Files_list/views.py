@@ -119,3 +119,14 @@ def del_file(request, path):
             shutil.rmtree(path)
 
     return redirect(f"/files/{redirection}")
+
+@login_required
+def fav(request, path):
+    filename = request.sidenav__pagecontent.get('filename')
+    file = UserFile.objects.filter(file=os.path.join(path, filename), owner=request.user.id)
+    if not file.favorite:
+        file.favorite = True
+    else:
+        file.favorite = False
+    file.save()
+    return redirect()

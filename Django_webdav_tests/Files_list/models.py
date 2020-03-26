@@ -3,22 +3,12 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 import os
 
 
 fs = FileSystemStorage()
-
-# class UserDirectory(models.Model):
-#     directory = models.FileField(max_length=255)    # RELATIVE path to directory
-#     name = models.CharField(max_length=255, default="Folder")
-#     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-#
-#     def save(self, upload_to):
-#         for field in self._meta.fields:
-#             if field.name == "directory":
-#                 field.upload_to = os.path.join(upload_to)
-#         super(UserDirectory, self).save()
-
 
 class UserFile(models.Model):
     name = models.CharField(max_length=255, default="Untitled file")
@@ -38,3 +28,9 @@ class UserFile(models.Model):
             if field.name == "file":
                 field.upload_to = upload_to
         super(UserFile, self).save()
+
+@receiver(pre_save, sender=User)
+def create_user_files(sender, instance, **kwargs):
+    if User.objects.filter(username=instance.username).count() == 0:
+        os.mkdir(os.path.join(settings.MEDIA_ROOT, instance.username))
+        os.mkdir(os.path.join(settings.MEDIA_ROOT, instance.username, "files"))
