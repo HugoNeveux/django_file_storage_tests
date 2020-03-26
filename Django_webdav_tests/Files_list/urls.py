@@ -16,4 +16,6 @@ urlpatterns = [
         name='password_reset'),
     url(r'^create_dir/(?P<path>.*)$', views.folder_creation, name='create_dir'),
     url(r'^del_file/(?P<path>.*)$', views.del_file, name='del_file'),
+    url(r'^fav/(?P<path>.*)$', views.fav, name='fav'),
+    url(r'^favorites/$', views.fav_list, name='fav_list')
 ]

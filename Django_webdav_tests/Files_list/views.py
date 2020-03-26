@@ -66,7 +66,7 @@ def files(request, path=""):
     breadcrumb["active"] = full_path[-1]
     print(breadcrumb)
     # Showing web page & rendering template
-    return render(request, 'upload.html', {
+    return render(request, 'files.html', {
         'form': form,
         'directory_files': files,
         'directory_directories': directories,
@@ -122,11 +122,21 @@ def del_file(request, path):
 
 @login_required
 def fav(request, path):
-    filename = request.sidenav__pagecontent.get('filename')
-    file = UserFile.objects.filter(file=os.path.join(path, filename), owner=request.user.id)
+    filename = request.GET.get('filename')
+    to_file = os.path.join(settings.MEDIA_ROOT, request.user.username, "files", path)
+    print(to_file)
+    file = UserFile.objects.get(file=os.path.join(to_file, filename), owner=request.user.id)
     if not file.favorite:
         file.favorite = True
     else:
         file.favorite = False
-    file.save()
-    return redirect()
+    file.save(to_file)
+    return redirect(f"/files/{path}")
+
+@login_required
+def fav_list(request):
+    files = UserFile.objects.filter(favorite=True, owner=request.user.id)
+    return render(request, 'files.html', {
+        'directory_files': files,
+        'directory_directories': [],
+    })

@@ -15,7 +15,9 @@
         }
         let csrf_token = '{{ csrf_token }}';
         let files = '{{ files_json }}';
-        files = JSON.parse(unescapeHTML(files));
+        if (files.length > 0) {
+            files = JSON.parse(unescapeHTML(files));
+        }
         current_dir = "{{ current_dir }}";
     </script>
     <script src="{% static "js/upload.js" %}" async></script>
@@ -52,6 +54,13 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
                                     <a class="dropdown-item action_file_delete" href="{% url 'del_file' path=element.file %}?redirect={{ current_dir }}">Supprimer</a>
+                                    <a class="dropdown-item" href="{% url 'fav' path=current_dir %}?filename={{ element.name }}">
+                                        {% if element.favorite %}
+                                            Retirer des favoris
+                                        {% else %}
+                                            Ajouter aux favoris
+                                        {% endif %}
+                                    </a>
                                 </div>
                             </div>
                         </li>

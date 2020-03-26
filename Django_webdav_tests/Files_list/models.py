@@ -13,12 +13,14 @@ fs = FileSystemStorage()
 class UserFile(models.Model):
     name = models.CharField(max_length=255, default="Untitled file")
     directory = models.CharField(max_length=2000)
-    file = models.FileField(max_length=2000, storage=fs)    # RELATIVE path to file
+    file = models.FileField(max_length=2000, storage=fs)
     favorite = models.BooleanField(default=False)
     comment = models.TextField(max_length=255, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     creation_date = models.DateTimeField(default=timezone.now,
                             verbose_name="Date de création")
+    last_modification = models.DateTimeField(default=timezone.now,
+                            verbose_name="Date de la dernière modification")
 
     def __str__(self):
         return self.name
@@ -26,7 +28,7 @@ class UserFile(models.Model):
     def save(self, upload_to):
         for field in self._meta.fields:
             if field.name == "file":
-                field.upload_to = upload_to
+                field.upload_to = upload_to # Absolute path to dir
         super(UserFile, self).save()
 
 @receiver(pre_save, sender=User)
