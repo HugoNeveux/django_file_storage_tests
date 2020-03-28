@@ -23,7 +23,7 @@ h1 {
     padding-bottom: 2%;
     margin: auto;
     /* border: solid 1px #c6c6c6; */
-    border-radius: 25px;
+    border-radius: 15px;
     text-align: center;
     box-shadow: 0 5px 10px 0 rgba(0,0,0,.1);
 }
@@ -76,7 +76,7 @@ input[type=submit] {
     color: white;
     background-color: #007BFF;
     transition-property: background-color;
-    transition-duration: .5s;
+    transition-duration: 300ms;
     transition-timing-function: ease-in-out;
     font-size: 1.5em;
 }

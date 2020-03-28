@@ -45,6 +45,19 @@
             <button class="dropzone__button" type="submit">Upload</button>
             <p>
                 <ul>
+                    {% for element in directory_directories %}
+                        <li class="folder draggable"><a href="{% url 'files' path=element.url %}"><span class="fa fa-folder" id="icone_folder" ></span>{{ element.name }}</a>
+                          <div class="dropdown">
+                              <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  {# <span class="fa fa-ellipsis-v" id="dropdown_icon"></span> #}
+                                  Actions
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
+                                  <a class="dropdown-item action_dir_delete" href="{% url 'del_file' path=element.url %}?redirect={{ current_dir }}">Supprimer</a>
+                              </div>
+                          </div>
+                        </li>
+                    {% endfor %}
                     {% for element in directory_files %}
                         <li class="file draggable"><a class="name__icon" href="{% url 'download' path=element.file %}"><span class="fa fa-file" id="icone"></span>{{ element.name }}</a>
                                 <div class="dropdown">
@@ -63,19 +76,6 @@
                                     </a>
                                 </div>
                             </div>
-                        </li>
-                    {% endfor %}
-                    {% for element in directory_directories %}
-                        <li class="folder draggable"><a href="{% url 'files' path=element.url %}"><span class="fa fa-folder" id="icone_folder" ></span>{{ element.name }}</a>
-                          <div class="dropdown">
-                              <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  {# <span class="fa fa-ellipsis-v" id="dropdown_icon"></span> #}
-                                  Actions
-                              </a>
-                              <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
-                                  <a class="dropdown-item action_dir_delete" href="{% url 'del_file' path=element.url %}?redirect={{ current_dir }}">Supprimer</a>
-                              </div>
-                          </div>
                         </li>
                     {% endfor %}
                 </ul>
