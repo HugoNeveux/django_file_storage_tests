@@ -6,30 +6,30 @@ A multi-user cloud app for file storage, using the Django framework for python a
 
 ### Important features
 
-- [ ] User directories gestion
-  - [ ] Add user directory on user creation
+- [x] User directories gestion
+  - [x] Add user directory on user creation
   - [x] User directories privacy protection
-- [ ] Directory creation and deletion
-- [ ] Add storage restrictions
+- [x] Directory creation and deletion
+- [ ] **Add storage restrictions**
   - [ ] Edit user model
   - [ ] Show used space / allocated space
-- [ ] Front-end improvments
-  - [ ] Using boostrap
-- [ ] User profile managment
+- [x] Front-end improvments
+  - [x] Using boostrap
+- [ ] **User profile managment**
   - [ ] Username / password changes
   - [x] Username and password reset
-- [ ] File sharing
+- [ ] **File sharing**
 - [ ] Files and folders managment
-  - [ ] Folder creation
+  - [x] Folder creation
   - [ ] Moving files
-  - [ ] File deletion
-- [ ] Add files / folders icons
+  - [x] File deletion
+- [x] Add files / folders icons
 
 ###
 
 - [ ] Bug report feature
 - [ ] Credits
 - [ ] Theme settings
-- [ ] Favorite files / folders
-    - [ ] File model creation (association with FileSystemStorage)
-    - [ ] Favorite files view
+- [x] Favorite files / folders
+    - [x] File model creation (association with FileSystemStorage)
+    - [x] Favorite files view

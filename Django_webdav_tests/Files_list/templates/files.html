@@ -1,87 +1,88 @@
 {% extends "base.html" %}
 {% load static %}
 {% block html_head %}
-    <link rel="stylesheet" href="{% static "style/upload_style.css" %}" type="text/css" />
-    <script src="http://code.jquery.com/jquery-latest.min.js" type='text/javascript'></script>
-    <script type="text/javascript">
-        // Variables initialization with django
-        function unescapeHTML(unsafe) {
-            return unsafe
-                .replace(/&amp;/g, "&")
-                .replace(/&lt;/g, "<")
-                .replace(/&gt;/g, ">")
-                .replace(/&quot;/g, "\"")
-                .replace(/&#039;/g, "'");
-        }
-        let csrf_token = '{{ csrf_token }}';
-        let files = '{{ files_json }}';
-        if (files.length > 0) {
-            files = JSON.parse(unescapeHTML(files));
-        }
-        current_dir = "{{ current_dir }}";
-    </script>
-    <script src="{% static "js/upload.js" %}" async></script>
+<link rel="stylesheet" href="{% static "style/upload_style.css" %}" type="text/css" />
+<script src="http://code.jquery.com/jquery-latest.min.js" type='text/javascript'></script>
+<script type="text/javascript">
+    // Variables initialization with django
+    function unescapeHTML(unsafe) {
+        return unsafe
+            .replace(/&amp;/g, "&")
+            .replace(/&lt;/g, "<")
+            .replace(/&gt;/g, ">")
+            .replace(/&quot;/g, "\"")
+            .replace(/&#039;/g, "'");
+    }
+    let csrf_token = '{{ csrf_token }}';
+    let files = '{{ files_json }}';
+    if (files.length > 0) {
+        files = JSON.parse(unescapeHTML(files));
+    }
+    current_dir = "{{ current_dir }}";
+</script>
+<script src="{% static "js/upload.js" %}" async></script>
 {% endblock html_head %}
 
 {% block content %}
-    <div class="Breadcrumb">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="{% url 'files' path='' %}"><span class="fa fa-home"></a></li>
-              {% for parent in breadcrumb.path %}
-                <li class="breadcrumb-item"><a href="{% url 'files' path=parent.1 %}">{{ parent.0 }}</a></li>
-              {% endfor %}
-              <li class="breadcrumb-item active" aria-current="page">{{ breadcrumb.active }}</li>
-            </ol>
-        </nav>
+<div class="Breadcrumb">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'files' path='' %}"><span class="fa fa-home"></a></li>
+            {% for parent in breadcrumb.path %}
+            <li class="breadcrumb-item"><a href="{% url 'files' path=parent.1 %}">{{ parent.0 }}</a></li>
+            {% endfor %}
+            <li class="breadcrumb-item active" aria-current="page">{{ breadcrumb.active }}</li>
+        </ol>
+    </nav>
+</div>
+<form class="dropzone" method="post" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div id="dropzone__input">
+        <div class="dropzone__uploading">Uploading&hellip;</div>
+        <div class="dropzone__success">Done !</div>
+        <div class="dropzone__error">Error !</div>
+        {{ form.as_p }}
+        <button class="dropzone__button" type="submit">Upload</button>
+        <p>
+            <ul>
+                {% for element in directory_directories %}
+                <li class="folder draggable">
+                    <a href="{% url 'files' path=element.url %}"><span class="fa fa-folder" id="icone_folder"></span>{{ element.name }}</a>
+                    <div class="dropdown">
+                        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {# <span class="fa fa-ellipsis-v" id="dropdown_icon"></span> #}
+                            Actions
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item action_dir_delete" href="{% url 'del_file' path=element.url %}?redirect={{ current_dir }}">Supprimer</a>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+                {% for element in directory_files %}
+                <li class="file draggable"><a class="name__icon" href="{% url 'download' path=element.file %}"><span class="fa fa-file" id="icone"></span>{{ element.name }}</a>
+                    <div class="dropdown">
+                        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {# <span class="fa fa-ellipsis-v" id="dropdown_icon"></span> #}
+                            Actions
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item action_file_delete" href="{% url 'del_file' path=element.file %}?redirect={{ current_dir }}">Supprimer</a>
+                            <a class="dropdown-item" href="{% url 'fav' path=current_dir %}?filename={{ element.name }}">
+                                {% if element.favorite %}
+                                Retirer des favoris
+                                {% else %}
+                                Ajouter aux favoris
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </p>
     </div>
-    <form class="dropzone" method="post" action="" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div id="dropzone__input">
-            <div class="dropzone__uploading">Uploading&hellip;</div>
-            <div class="dropzone__success">Done !</div>
-            <div class="dropzone__error">Error !</div>
-            {{ form.as_p }}
-            <button class="dropzone__button" type="submit">Upload</button>
-            <p>
-                <ul>
-                    {% for element in directory_directories %}
-                        <li class="folder draggable"><a href="{% url 'files' path=element.url %}"><span class="fa fa-folder" id="icone_folder" ></span>{{ element.name }}</a>
-                          <div class="dropdown">
-                              <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  {# <span class="fa fa-ellipsis-v" id="dropdown_icon"></span> #}
-                                  Actions
-                              </a>
-                              <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
-                                  <a class="dropdown-item action_dir_delete" href="{% url 'del_file' path=element.url %}?redirect={{ current_dir }}">Supprimer</a>
-                              </div>
-                          </div>
-                        </li>
-                    {% endfor %}
-                    {% for element in directory_files %}
-                        <li class="file draggable"><a class="name__icon" href="{% url 'download' path=element.file %}"><span class="fa fa-file" id="icone"></span>{{ element.name }}</a>
-                                <div class="dropdown">
-                                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {# <span class="fa fa-ellipsis-v" id="dropdown_icon"></span> #}
-                                    Actions
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item action_file_delete" href="{% url 'del_file' path=element.file %}?redirect={{ current_dir }}">Supprimer</a>
-                                    <a class="dropdown-item" href="{% url 'fav' path=current_dir %}?filename={{ element.name }}">
-                                        {% if element.favorite %}
-                                            Retirer des favoris
-                                        {% else %}
-                                            Ajouter aux favoris
-                                        {% endif %}
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </p>
-        </div>
-    </form>
+</form>
 
 
 

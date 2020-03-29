@@ -1,44 +1,48 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
-    <head>
-        <meta charset="utf-8">
-        <title>Django file storage</title>
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-        <link rel="stylesheet" href="{% static 'style/base_style.css' %}">
-        {% block html_head %}{% endblock html_head %}
-    </head>
+<head>
+    <meta charset="utf-8">
+    <title>Django file storage</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-    <body>
-        <header>
-            <nav id="topnav">
-                <a href="{% url 'files' path='' %}"><h1>Nom Du Site Ou Logo<span class="fa fa-cloud"></h1></a>
-                <a href="{% url 'logout' %}" class="logout">Déconnexion<span class="fa fa-power-off"></span></a>
+    <link rel="stylesheet" href="{% static 'style/base_style.css' %}">
+    {% block html_head %}{% endblock html_head %}
+</head>
+
+<body>
+    <header>
+        <nav id="topnav">
+            <a href="{% url 'files' path='' %}">
+                <h1>Nom Du Site Ou Logo<span class="fa fa-cloud"></h1>
+            </a>
+            <a href="{% url 'logout' %}" class="logout">Déconnexion<span class="fa fa-power-off"></span></a>
+        </nav>
+    </header>
+
+    <section id="sidenav__pagecontent">
+        <aside>
+            <nav id="sidenav">
+                <ul id="sidenav_content">
+                    <li><a href="{% url 'files' path='' %}" class="line_icon">Fichiers<span class="fa fa-file side_icon"></a></li>
+                    <li><a class="line_icon" href="{% url 'fav_list' %}">Favoris<span class="fa fa-star side_icon"></a></li>
+                    <li><a href="{% url 'recent' %}" class="line_icon">Récents<span class="fa fa-history side_icon"></a></li>
+                    <li><a href="#" class="line_icon">Paramètres<span class="fa fa-cogs side_icon"></span></a></li>
+                    <li class="line_icon" id="new_folder">Nouveau dossier<span class="fa fa-folder-open side_icon"></span></li>
+                    <li id="storage_space">Espace de Stockage</li>
+                </ul>
             </nav>
-        </header>
-
-        <section id="sidenav__pagecontent">
-            <aside>
-                <nav id="sidenav">
-                    <ul id="sidenav_content">
-                        <li><a href="{% url 'files' path='' %}" class="line_icon">Fichiers<span class="fa fa-file side_icon"></a></li>
-                        <li><a class="line_icon" href="{% url 'fav_list' %}">Favoris<span class="fa fa-star side_icon"></a></li>
-                        <li><a href="#" class="line_icon">Récents<span class="fa fa-history side_icon"></a></li>
-                        <li><a href="#" class="line_icon">Paramètres<span class="fa fa-cogs side_icon"></span></a></li>
-                        <li class="line_icon" id="new_folder">Nouveau dossier<span class="fa fa-folder-open side_icon"></span></li>
-                        <li id="storage_space">Espace de Stockage</li>
-                    </ul>
-                </nav>
-            </aside>
-            <section>
-                {% block content %}{% endblock content %}
-            </section>
+        </aside>
+        <section>
+            {% block content %}{% endblock content %}
         </section>
-    </body>
+    </section>
+</body>
+
 </html>
