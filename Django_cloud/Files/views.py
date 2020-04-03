@@ -1,14 +1,11 @@
 import os
 from django.shortcuts import render, redirect
-from .forms import UploadFileForm, CustomLoginForm
+from .forms import UploadFileForm
 from .models import UserFile
 from django.conf import settings
-from django.http import HttpResponse, Http404, FileResponse
-from django.utils.datastructures import MultiValueDictKeyError
-from django.contrib.auth import views as auth_views
+from django.http import Http404, FileResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.urls import reverse
 from urllib.parse import unquote
 from django.shortcuts import get_object_or_404
 import json
@@ -95,11 +92,6 @@ def download(request, path):
         except IsADirectoryError:
             return redirect("/files/")
     raise Http404
-
-
-def logout_login(request):
-    """Logout user, then show login page"""
-    return auth_views.logout_then_login(request, login_url=reverse("login"))
 
 
 @login_required
