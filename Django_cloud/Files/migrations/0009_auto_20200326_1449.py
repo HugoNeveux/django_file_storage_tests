@@ -8,7 +8,7 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Files_list', '0008_auto_20200311_1333'),
+        ('Files', '0008_auto_20200311_1333'),
     ]
 
     operations = [

@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Files_list', '0007_userdirectory_name'),
+        ('Files', '0007_userdirectory_name'),
     ]
 
     operations = [

@@ -118,4 +118,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+volunteers.md
+
 # End of https://www.gitignore.io/api/django
