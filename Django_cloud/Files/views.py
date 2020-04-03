@@ -24,7 +24,7 @@ def tree(request, path=""):
     absolute_path = os.path.join(settings.MEDIA_ROOT, current_dir)
     files = []
     directories = []
-    print(absolute_path)
+    print(path)
 
     logged_user = User.objects.get(
         username=request.user.username, id=request.user.id)
@@ -47,6 +47,7 @@ def tree(request, path=""):
     # Showing directory content
     files = UserFile.objects.filter(
         directory=absolute_path, owner=request.user.id)
+    print(absolute_path)
     # files_to_json = UserFile.objects.filter(directory=absolute_path, owner=request.user.id).values_list('name')
     # files_json = json.dumps(list(files), cls=DjangoJSONEncoder)
     tmp_json = serializers.serialize("json", files)
