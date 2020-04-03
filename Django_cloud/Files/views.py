@@ -15,7 +15,7 @@ import shutil
 
 
 @login_required
-def files(request, path=""):
+def tree(request, path=""):
     """Main view
     * File reception (javascript upload)
     * File list (showing uploaded files / folder navigation)"""
