@@ -36,7 +36,12 @@
                     <li><a href="{% url 'recent' %}" class="line_icon">Récents<span class="fa fa-history side_icon"></a></li>
                     <li><a href="#" class="line_icon">Paramètres<span class="fa fa-cogs side_icon"></span></a></li>
                     <li class="line_icon" id="new_folder">Nouveau dossier<span class="fa fa-folder-open side_icon"></span></li>
-                    <li id="storage_space">Espace de Stockage</li>
+                    {% if space %}
+                        <li id="storage_space">
+                            Espace de Stockage<br />
+                            {{ space.used }} /  {{ space.available }}
+                        </li>
+                    {% endif %}
                 </ul>
             </nav>
         </aside>
