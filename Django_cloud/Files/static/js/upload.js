@@ -39,11 +39,17 @@ jQuery(document).ready(function($){
         })
         .on('drop', function(e) {
             droppedFiles = e.originalEvent.dataTransfer.files;
-            if (!(fileExists(files, droppedFiles[0].name))) {
-                ajax_file_upload(droppedFiles[0]);
-                console.log("File sent");
-            } else if (confirm("Voulez-vous vraiment envoyer ce fichier ?\nSi vous continuez, le fichier pré-existant sera écrasé.")){
-                ajax_file_upload(droppedFiles[0]);
+            for (var file of droppedFiles) {
+                if (!(fileExists(files, file.name))) {
+                    if (file.size <= space_available) {
+                        ajax_file_upload(file);
+                        $("#file_too_big_error").hide()
+                    } else {
+                        $("#file_too_big_error").show()
+                    }
+                } else if (confirm("Voulez-vous vraiment envoyer ce fichier ?\nSi vous continuez, le fichier pré-existant sera écrasé.")){
+                    ajax_file_upload(file);
+                }
             }
         })
         .on('change', function(e) {

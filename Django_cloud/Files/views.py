@@ -32,7 +32,8 @@ def tree(request, path=""):
     # Space available
     user_profile = Profile.objects.get(user=request.user.id)
     space = {"available": format_bytes(user_profile.upload_limit),
-            "used": format_bytes(user_profile.total_used)}
+            "used": format_bytes(user_profile.total_used),
+            "available_b": user_profile.upload_limit - user_profile.total_used }
 
     # Upload
     form = UploadFileForm(request.POST or None, request.FILES)
