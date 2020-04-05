@@ -20,10 +20,6 @@ ul.errorlist,
     height: 50%;
 }
 
-.dropzone.is-dragover {
-    background-color: rgba(35, 119, 209, 0.42);
-}
-
 /* File list style */
 
 .file, .folder {

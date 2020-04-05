@@ -1,0 +1,78 @@
+:root {
+    --primary-color: #007BFF;
+    --secondary-color: #fff;
+    --text-1: gray;
+    --text-2: black;
+    --dragover-color: rgba(35, 119, 209, 0.42);
+}
+
+h1 {
+    color: White;
+}
+
+header {
+    background-color: var(--primary-color);
+    color: var(text-2);
+}
+
+#topnav {
+    background-color: var(--primary-color);
+    color: var(--text-2);
+}
+
+#sidenav__pagecontent aside {
+    background-color: var(--primary-color);
+}
+
+#sidenav_content {
+    background-color: var(--secondary-color);
+}
+
+section {
+    background-color: var(--secondary-color);
+}
+
+#topnav a {
+      color: var(--secondary-color);
+}
+
+#sidenav .line_icon {
+    color: var(--text-1);
+    transition: color 200ms;
+}
+
+#sidenav .line_icon:hover {
+    color: var(--text-2);
+}
+
+#storage_space {
+    color: var(--text-2);
+}
+
+.dropzone.is-dragover {
+    background-color: var(--dragover-color)
+}
+
+.button {
+    background-color: var(--primary-color);
+}
+
+.button-icon {
+    color: White;
+}
+
+.dropdown-menu {
+    background-color: White;
+}
+
+.slider {
+    background-color: var(--primary-color);
+}
+
+input:checked + .slider {
+  background-color: var(--primary-color);
+}
+
+input:focus + .slider {
+ box-shadow: 0 0 1px var(--primary-color);
+}
