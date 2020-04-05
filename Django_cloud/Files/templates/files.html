@@ -34,14 +34,14 @@
         </ol>
     </nav>
 </div>
-{% if upload_error %}
-<div class="alert alert-danger alert-dismissible" style="margin: 10px;">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    Le fichier envoyé est trop lourd !
-</div>
-{% endif %}
 
 <form class="dropzone" method="post" action="" enctype="multipart/form-data">
+    {% if upload_error %}
+    <div class="alert alert-danger alert-dismissible" style="margin: 10px;">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        Le fichier envoyé est trop lourd !
+    </div>
+    {% endif %}
     {% csrf_token %}
     <div id="dropzone__input">
         <div class="dropzone__uploading">Uploading&hellip;</div>

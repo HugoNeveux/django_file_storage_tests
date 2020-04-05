@@ -100,6 +100,7 @@ def tree(request, path=""):
         'current_dir': path,
         'space': space,
         'upload_error': upload_error,
+        'user': request.user,
     })
 
 
