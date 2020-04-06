@@ -3,10 +3,6 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
-import os
-
 
 fs = FileSystemStorage()
 
@@ -21,6 +17,7 @@ class UserFile(models.Model):
                             verbose_name="Date de création")
     last_modification = models.DateTimeField(default=timezone.now,
                             verbose_name="Date de la dernière modification")
+    size = models.IntegerField()
 
     def __str__(self):
         return self.name
@@ -30,9 +27,3 @@ class UserFile(models.Model):
             if field.name == "file":
                 field.upload_to = upload_to # Absolute path to dir
         super(UserFile, self).save()
-
-@receiver(pre_save, sender=User)
-def create_user_files(sender, instance, **kwargs):
-    if User.objects.filter(username=instance.username).count() == 0:
-        os.mkdir(os.path.join(settings.MEDIA_ROOT, instance.username))
-        os.mkdir(os.path.join(settings.MEDIA_ROOT, instance.username, "files"))

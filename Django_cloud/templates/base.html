@@ -8,7 +8,7 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <link href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" rel="stylesheet">
@@ -38,9 +38,19 @@
                     <li><a href="{% url 'files' path='' %}" class="line_icon">Fichiers<span class="fa fa-file side_icon"></a></li>
                     <li><a class="line_icon" href="{% url 'fav_list' %}">Favoris<span class="fa fa-star side_icon"></a></li>
                     <li><a href="{% url 'recent' %}" class="line_icon">Récents<span class="fa fa-history side_icon"></a></li>
-                    <li><a href="#" class="line_icon">Paramètres<span class="fa fa-cogs side_icon"></a>
-                    <li class="line_icon" id="new_folder">Nouveau dossier<span class="fa fa-folder-open side_icon"></li>
-                    <li id="storage_space">Espace de Stockage</li>
+                    <li><a href="#" class="line_icon">Paramètres<span class="fa fa-cogs side_icon"></span></a></li>
+                    <li class="line_icon" id="new_folder">Nouveau dossier<span class="fa fa-folder-open side_icon"></span></li>
+                    {% if user.is_staff %}
+                        <li><a class="line_icon" href="{% url 'admin:index' %}">Administration<span class="fas fa-tools side_icon"></span></a></li>
+                    {% endif %}
+
+                    {% if space %}
+                        <li id="storage_space">
+                            Espace de Stockage<br />
+                            {{ space.used }} /  {{ space.available }}
+                        </li>
+                    {% endif %}
+                    
                     <li><div class="theme_button">
                       <label class="switch">
 
@@ -56,6 +66,20 @@
             {% block content %}{% endblock content %}
         </section>
     </section>
+    <div class="modal fade" id="modal-progress" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Envoi du fichier...</h4>
+                </div>
+                <div class="modal-body">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

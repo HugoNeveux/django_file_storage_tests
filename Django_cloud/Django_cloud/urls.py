@@ -19,6 +19,6 @@ import Files, Auth
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('Files.urls'), name='Files'),
-    path('', include('Auth.urls'), name='Auth')
+    path('Files/', include('Files.urls'), name='Files'),
+    path('', include('Auth.urls'), name='Auth'),
 ]
