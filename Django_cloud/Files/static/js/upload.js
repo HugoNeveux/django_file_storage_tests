@@ -1,8 +1,6 @@
 jQuery(document).ready(function($){
-    //you can now use $ as your jQuery object.
-    var body = $( 'body' );
     // Correcting boostrap conflicts issues
-    $.noConflict();
+    // $.noConflict();
 
 
     // Checks if file exists
@@ -40,15 +38,14 @@ jQuery(document).ready(function($){
         .on('drop', function(e) {
             droppedFiles = e.originalEvent.dataTransfer.files;
             for (var file of droppedFiles) {
-                if (!(fileExists(files, file.name))) {
-                    if (file.size <= space_available) {
+                if (file.size <= space_available) {
+                    if (!(fileExists(files, file.name))) {
                         ajax_file_upload(file);
-                        $("#file_too_big_error").hide()
-                    } else {
-                        $("#file_too_big_error").show()
+                    } else if (confirm("Voulez-vous vraiment envoyer ce fichier ?\nSi vous continuez, le fichier pré-existant sera écrasé.")){
+                        ajax_file_upload(file);
                     }
-                } else if (confirm("Voulez-vous vraiment envoyer ce fichier ?\nSi vous continuez, le fichier pré-existant sera écrasé.")){
-                    ajax_file_upload(file);
+                } else {
+                    $("#file_too_big_error").show()
                 }
             }
         })
@@ -65,8 +62,28 @@ jQuery(document).ready(function($){
                     headers: {'X-CSRFToken': csrf_token},
                     contentType: false,
                     processData: false,
+                    sequentialUploads: true,
                     data: form_data,
+                    beforeSend: function(e) {
+                        $("#modal-progress").modal("show");
+                    },
+                    xhr: function () {
+                        let xhr = $.ajaxSettings.xhr();
+                        xhr.upload.addEventListener('progress', function (e) {
+                            let percent = 0;
+                            let position = e.loaded || e.position;
+                            let total = e.total;
+                            if (e.lengthComputable) {
+                                percent = Math.ceil(position / total * 100);
+                            }
+                            let strProgress = percent + "%";
+                            $(".progress-bar").width(strProgress);
+                            $(".progress-bar").text(strProgress);
+                        }, true);
+                        return xhr;
+                    },
                     success: function(response) {
+                        $("#modal-progress").modal("hide");
                         $('#file').val('');
                         location.reload();
                     }

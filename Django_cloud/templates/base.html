@@ -53,6 +53,20 @@
             {% block content %}{% endblock content %}
         </section>
     </section>
+    <div class="modal fade" id="modal-progress" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Envoi du fichier...</h4>
+                </div>
+                <div class="modal-body">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

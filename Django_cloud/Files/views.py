@@ -39,6 +39,7 @@ def tree(request, path=""):
     form = UploadFileForm(request.POST or None, request.FILES)
 
     if form.is_valid():
+        print(form.cleaned_data)
         existing_file = UserFile.objects.filter(
             directory=current_dir, owner=request.user.id, name=request.FILES['file'].name)
         if existing_file.count():
@@ -50,8 +51,6 @@ def tree(request, path=""):
             if user_profile.total_used <= user_profile.upload_limit:
                 user_profile.save()
                 existing_file[0].save(current_dir)
-            else:
-                upload_error = True
         else:
             file = UserFile(file=form.cleaned_data["file"],
                             name=form.cleaned_data["file"].name,
@@ -62,9 +61,6 @@ def tree(request, path=""):
             if user_profile.total_used <= user_profile.upload_limit:
                 user_profile.save()
                 file.save(os.path.join(current_dir))
-            else:
-                upload_error = True
-                print('UPLOAD ERROR')
 
     # Showing directory content
     files = UserFile.objects.filter(
