@@ -39,7 +39,6 @@ def tree(request, path=""):
     form = UploadFileForm(request.POST or None, request.FILES)
 
     if form.is_valid():
-        print(form.cleaned_data)
         existing_file = UserFile.objects.filter(
             directory=current_dir, owner=request.user.id, name=request.FILES['file'].name)
         if existing_file.count():

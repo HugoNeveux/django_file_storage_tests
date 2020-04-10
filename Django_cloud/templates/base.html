@@ -38,7 +38,7 @@
                     <li><a href="{% url 'files' path='' %}" class="line_icon">Fichiers<span class="fa fa-file side_icon"></a></li>
                     <li><a class="line_icon" href="{% url 'fav_list' %}">Favoris<span class="fa fa-star side_icon"></a></li>
                     <li><a href="{% url 'recent' %}" class="line_icon">Récents<span class="fa fa-history side_icon"></a></li>
-                    <li><a href="#" class="line_icon">Paramètres<span class="fa fa-cogs side_icon"></span></a></li>
+                    <li><a href="{% url 'settings_main' %}" class="line_icon">Paramètres<span class="fa fa-cogs side_icon"></span></a></li>
                     <li class="line_icon" id="new_folder">Nouveau dossier<span class="fa fa-folder-open side_icon"></span></li>
                     {% if user.is_staff %}
                         <li><a class="line_icon" href="{% url 'admin:index' %}">Administration<span class="fas fa-tools side_icon"></span></a></li>
