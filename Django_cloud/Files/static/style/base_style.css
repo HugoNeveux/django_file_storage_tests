@@ -205,7 +205,7 @@ ul {
    bottom: 4px;
    background-color: white;
    -webkit-transition: .4s;
-   transition: .4s;   
+   transition: .4s;
 }
 
 input:checked + .slider:before {
@@ -221,5 +221,7 @@ input:checked + .slider:before {
 }
 
 .slider.round:before {
- border-radius: 50%;
+    border-radius: 50%;
 }
+
+:focus {outline:none;} ::-moz-focus-inner {border:0;}
