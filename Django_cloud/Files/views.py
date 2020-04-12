@@ -183,3 +183,10 @@ def last_files(request):
         'directory_files': files,
         'directory_directories': [],
     })
+
+@login_required
+def files_json(request, path):
+    current_dir = os.path.join(request.user.username, "files", path)
+    # Showing directory content
+    files = UserFile.objects.filter(
+        directory=current_dir, owner=request.user.id)
