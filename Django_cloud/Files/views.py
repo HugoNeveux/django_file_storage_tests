@@ -185,8 +185,20 @@ def last_files(request):
     })
 
 @login_required
-def files_json(request, path):
-    current_dir = os.path.join(request.user.username, "files", path)
-    # Showing directory content
-    files = UserFile.objects.filter(
-        directory=current_dir, owner=request.user.id)
+def mv(request):
+    """Moves file from origin to dest"""
+    origin = request.GET.get('from')
+    dest = request.GET.get('to')
+    full_dest = os.path.join(request.user.username, 'files', dest)
+    file_origin = os.path.join(request.user.username, 'files', origin)
+    print(file_origin)
+    moved_file = get_object_or_404(UserFile, owner=request.user, file=file_origin)
+    if os.path.isdir(os.path.join(settings.MEDIA_ROOT, full_dest)):
+        os.rename(os.path.join(settings.MEDIA_ROOT, file_origin),
+                  os.path.join(settings.MEDIA_ROOT, full_dest, moved_file.name))
+        moved_file.file = os.path.join(full_dest, moved_file.name)
+        moved_file.directory = full_dest
+        print(moved_file.file)
+        moved_file.save(upload_to=full_dest)
+        return redirect(reverse('files', kwargs={'path': ''}))
+    return Http404
