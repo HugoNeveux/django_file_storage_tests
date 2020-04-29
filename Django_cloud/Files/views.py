@@ -4,7 +4,7 @@ from .forms import UploadFileForm
 from .models import UserFile
 from Auth.models import Profile
 from django.conf import settings
-from django.http import Http404, FileResponse
+from django.http import Http404, FileResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from urllib.parse import unquote
@@ -13,8 +13,10 @@ import json
 from django.urls import reverse
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core import serializers
-from .size import format_bytes
+from .file_utils import format_bytes, recursive_file_list
 import shutil
+from io import BytesIO
+import zipfile
 
 
 @login_required
@@ -108,11 +110,21 @@ def download(request, path):
     file_path = unquote(file_path)
     if file_path.endswith("/"):
         file_path = file_path[0:-1]
-    if os.path.exists(file_path):
-        try:
-            return FileResponse(open(file_path, 'rb'), os.path.basename(file_path), as_attachment=True)
-        except IsADirectoryError:
-            return redirect(reverse('files'))
+    if os.path.isfile(file_path):
+        return FileResponse(open(file_path, 'rb'), os.path.basename(file_path), as_attachment=True)
+    elif os.path.isdir(file_path):  # Compress all folder into zip and return it
+        filenames = recursive_file_list(file_path)
+        zip_filename = f"{file_path.split('/')[-1]}.zip"
+        s = BytesIO()
+        zf = zipfile.ZipFile(s, "w")
+        for fpath in filenames:
+            fdir, fname = os.path.split(fpath)
+
+            zf.write(fpath, fpath.replace(os.path.join(settings.MEDIA_ROOT, request.user.username, 'files'), ''))
+        zf.close()
+        resp = HttpResponse(s.getvalue(), content_type="application/x-zip-compressed")
+        resp['Content-Disposition'] = f'attachment; filename={zip_filename}'
+        return resp
     raise Http404
 
 
@@ -183,6 +195,7 @@ def last_files(request):
         'directory_files': files,
         'directory_directories': [],
     })
+
 
 @login_required
 def mv(request):
