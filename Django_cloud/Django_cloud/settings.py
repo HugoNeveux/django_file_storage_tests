@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'Files',
     'Auth',
     'Settings',
+    'Share',
 ]
 
 MIDDLEWARE = [
