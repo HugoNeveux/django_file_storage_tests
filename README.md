@@ -16,15 +16,22 @@ A multi-user cloud app for file storage, using the Django framework for python a
   - [x] Show used space / allocated space
 - [x] Front-end improvments
   - [x] Using boostrap
-- [ ] **User profile managment**
-  - [ ] Username / password changes
+- [x] **User profile managment**
+  - [x] Username / password changes
   - [x] Username and password reset
 - [ ] **File sharing**
 - [ ] Files and folders managment
   - [x] Folder creation
   - [ ] Moving files
+    - [x] Moving files view
+    - [ ] Moving files front-end
   - [x] File deletion
 - [x] Add files / folders icons
+
+### Possibilités d'amélioration
+
+- [ ] Utilisation d'une API pour afficher les fichiers
+- [ ] Utilisation de dropzone.js pour l'upload des fichiers
 
 ###
 
