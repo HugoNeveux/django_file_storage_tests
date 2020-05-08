@@ -1,5 +1,7 @@
 # django_file_storage
 
+![Django CI](https://github.com/HugoNeveux/django_file_storage/workflows/Django%20CI/badge.svg)
+
 A multi-user cloud app for file storage, using the Django framework for python and boostrap 4.
 
 ## To-do list
