@@ -4,7 +4,7 @@ from .forms import UploadFileForm
 from .models import UserFile
 from Auth.models import Profile
 from django.conf import settings
-from django.http import Http404, FileResponse
+from django.http import Http404, FileResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from urllib.parse import unquote
@@ -13,8 +13,10 @@ import json
 from django.urls import reverse
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core import serializers
-from .size import format_bytes
+from .file_utils import format_bytes, recursive_file_list
 import shutil
+from io import BytesIO
+import zipfile
 
 
 @login_required
@@ -39,7 +41,6 @@ def tree(request, path=""):
     form = UploadFileForm(request.POST or None, request.FILES)
 
     if form.is_valid():
-        print(form.cleaned_data)
         existing_file = UserFile.objects.filter(
             directory=current_dir, owner=request.user.id, name=request.FILES['file'].name)
         if existing_file.count():
@@ -109,11 +110,21 @@ def download(request, path):
     file_path = unquote(file_path)
     if file_path.endswith("/"):
         file_path = file_path[0:-1]
-    if os.path.exists(file_path):
-        try:
-            return FileResponse(open(file_path, 'rb'), os.path.basename(file_path), as_attachment=True)
-        except IsADirectoryError:
-            return redirect(reverse('files'))
+    if os.path.isfile(file_path):
+        return FileResponse(open(file_path, 'rb'), os.path.basename(file_path), as_attachment=True)
+    elif os.path.isdir(file_path):  # Compress all folder into zip and return it
+        filenames = recursive_file_list(file_path)
+        zip_filename = f"{file_path.split('/')[-1]}.zip"
+        s = BytesIO()
+        zf = zipfile.ZipFile(s, "w")
+        for fpath in filenames:
+            fdir, fname = os.path.split(fpath)
+
+            zf.write(fpath, fpath.replace(os.path.join(settings.MEDIA_ROOT, request.user.username, 'files'), ''))
+        zf.close()
+        resp = HttpResponse(s.getvalue(), content_type="application/x-zip-compressed")
+        resp['Content-Disposition'] = f'attachment; filename={zip_filename}'
+        return resp
     raise Http404
 
 
@@ -184,3 +195,23 @@ def last_files(request):
         'directory_files': files,
         'directory_directories': [],
     })
+
+
+@login_required
+def mv(request):
+    """Moves file from origin to dest"""
+    origin = request.GET.get('from')
+    dest = request.GET.get('to')
+    full_dest = os.path.join(request.user.username, 'files', dest)
+    file_origin = os.path.join(request.user.username, 'files', origin)
+    print(file_origin)
+    moved_file = get_object_or_404(UserFile, owner=request.user, file=file_origin)
+    if os.path.isdir(os.path.join(settings.MEDIA_ROOT, full_dest)):
+        os.rename(os.path.join(settings.MEDIA_ROOT, file_origin),
+                  os.path.join(settings.MEDIA_ROOT, full_dest, moved_file.name))
+        moved_file.file = os.path.join(full_dest, moved_file.name)
+        moved_file.directory = full_dest
+        print(moved_file.file)
+        moved_file.save(upload_to=full_dest)
+        return redirect(reverse('files', kwargs={'path': ''}))
+    return Http404

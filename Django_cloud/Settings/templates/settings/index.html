@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block hdml_head %}{% endblock hdml_head %}
+{% block content %}
+<form action="{% url 'settings_main' %}" method="post">
+    {% csrf_token %}
+    {{ uform.non_field_errors }}
+    {% for hidden_field in form.hidden_fields %}
+        {{ hidden_field.errors }}
+        {{ hidden_field }}
+    {% endfor %}
+
+        <div class="container pt-4 pb-4">
+            <h2>Paramètres généraux</h2>
+            <!-- user model settings -->
+            <div class="row pt-3">
+                {% for field in uform %}
+                            <div class="col">
+                                <h4>{{ field.label }}</h4>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ field.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                    {% if forloop.counter|divisibleby:3 %}
+                        </div>
+                        <div class="row mt-3 mb-3">
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <h2>Apparence</h2>
+            <div class="row pt-3 pm-3">
+                <div class="col">
+                    <h4>{{ pform.theme.label }}</h4>
+                    {{ pform.theme }}
+                    {% if pform.theme.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ pform.theme.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col">
+                    <a class="btn btn-secondary" href="{% url 'change_password' %}" role="button">Changer le mot de passe</a>
+                </div>
+                <div class="col">
+                    <input class="btn btn-primary" type="submit" name="Enregistrer" value="Enregistrer" style="float:right;">
+                </div>
+            </div>
+        </div>
+</form>
+{% endblock content %}
