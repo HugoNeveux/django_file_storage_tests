@@ -64,6 +64,7 @@ def tree(request, path=""):
                 user_profile.save()
                 file.save(os.path.join(current_dir))
 
+
     # Showing directory content
     files = UserFile.objects.filter(
         directory=current_dir, owner=request.user.id)
@@ -73,7 +74,6 @@ def tree(request, path=""):
     files_json = json.dumps(json.loads(tmp_json))
     directories_names = [dir for dir in os.listdir(
         absolute_path) if os.path.isdir(os.path.join(absolute_path, dir))]
-    print(directories_names)
     for name in directories_names:
         directories.append({'name': name, 'url': os.path.join(path, name)})
 
@@ -88,7 +88,6 @@ def tree(request, path=""):
         breadcrumb["path"].append([dir, to_dir])
 
     breadcrumb["active"] = full_path[-1]
-    print(breadcrumb)
     # Showing web page & rendering template
     return render(request, 'files.html', {
         'form': form,
