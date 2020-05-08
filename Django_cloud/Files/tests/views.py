@@ -7,6 +7,8 @@ import shutil
 
 class UploadFileTest(TestCase):
     def setUp(self):
+        if not os.path.isdir('./media'):
+            os.mkdir('./media')
         if os.path.isdir('./media/temporary'):
             shutil.rmtree('./media/temporary')
         user = User.objects.create_user(
@@ -34,6 +36,8 @@ class UploadFileTest(TestCase):
 
 class FileListTest(TestCase):
     def setUp(self):
+        if not os.path.isdir('./media'):
+            os.mkdir('./media')
         if os.path.isdir('./media/temporary'):
             shutil.rmtree('./media/temporary')
         user = User.objects.create_user(

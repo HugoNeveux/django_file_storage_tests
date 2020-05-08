@@ -5,6 +5,8 @@ import shutil
 
 class UserSignalsTest(TestCase):
     def tearDown(self):
+        if not os.path.isdir('./media'):
+            os.mkdir('./media')
         if os.path.isdir('./media/temporary'):
             shutil.rmtree('./media/temporary')
 
