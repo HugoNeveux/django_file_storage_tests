@@ -108,7 +108,7 @@ def download_dir(request, path):
     """Download dir"""
     dir_path = os.path.join(
         settings.MEDIA_ROOT, path)
-    dir_path = unquote(file_path)
+    dir_path = unquote(dir_path)
     if dir_path.endswith("/"):
         dir_path = dir_path[0:-1]
     if os.path.isdir(dir_path):  # Compress all folder into zip and return it
