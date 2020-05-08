@@ -4,7 +4,8 @@ from .forms import UploadFileForm
 from .models import UserFile
 from Auth.models import Profile
 from django.conf import settings
-from django.http import Http404, FileResponse, HttpResponse, HttpResponseForbidden
+from django.http import Http404, FileResponse, HttpResponse
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from urllib.parse import unquote
@@ -131,7 +132,7 @@ def download_file(request, id):
     file = get_object_or_404(UserFile, id=id)
     if request.user == file.owner:
         return FileResponse(open(file.file.path, 'rb'), file.name, as_attachment=True)
-    return HttpResponseForbidden()
+    raise PermissionDenied
 
 @login_required
 def folder_creation(request, path):
