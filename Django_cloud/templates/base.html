@@ -13,7 +13,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <link href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" rel="stylesheet">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{% static 'style/base_style.css' %}">
+    <link rel="stylesheet" media="all" href="{% static 'style/base_style.css' %}">
+    <link rel="stylesheet" media="all and (max-height: 1000px)" href="{% static 'style/base_style.css' %}">
     <link rel="stylesheet" href="{% static 'style/blue_style.css' %}">
 
     <script src="{% static 'js/Theme.js' %}" type="text/javascript"></script>
@@ -35,14 +36,22 @@
         <aside>
             <nav id="sidenav">
                 <ul id="sidenav_content">
-                    <li><a href="{% url 'files' path='' %}" class="line_icon">Fichiers<span class="fa fa-file side_icon"></a></li>
-                    <li><a class="line_icon" href="{% url 'fav_list' %}">Favoris<span class="fa fa-star side_icon"></a></li>
-                    <li><a href="{% url 'recent' %}" class="line_icon">Récents<span class="fa fa-history side_icon"></a></li>
-                    <li><a href="{% url 'settings_main' %}" class="line_icon">Paramètres<span class="fa fa-cogs side_icon"></span></a></li>
-                    <li class="line_icon" id="new_folder">Nouveau dossier<span class="fa fa-folder-open side_icon"></span></li>
+                    <li><a href="{% url 'files' path='' %}" class="line_icon"><span class="menu_text">Fichiers</span><span class="fa fa-file side_icon"></a></li>
+                    <li><a href="{% url 'fav_list' %}" class="line_icon"><span class="menu_text">Favoris</span><span class="fa fa-star side_icon"></a></li>
+                    <li><a href="{% url 'recent' %}" class="line_icon"><span class="menu_text">Récents</span><span class="fa fa-history side_icon"></a></li>
+                    <li><a href="{% url 'settings_main' %}" class="line_icon"><span class="menu_text">Paramètres</span><span class="fa fa-cogs side_icon"></span></a></li>
+                    <li class="line_icon" id="new_folder"><span class="menu_text">Nouveau dossier</span><span class="fa fa-folder-open side_icon"></span></li>
                     {% if user.is_staff %}
-                        <li><a class="line_icon" href="{% url 'admin:index' %}">Administration<span class="fas fa-tools side_icon"></span></a></li>
+                        <li><a class="line_icon" href="{% url 'admin:index' %}"><div class="menu_text">Administration</div><span class="fas fa-tools side_icon"></span></a></li>
                     {% endif %}
+                    <div class="menu_text">
+                      {% if space %}
+                          <li id="storage_space">
+                              Espace de Stockage<br />
+                              {{ space.used }} /  {{ space.available }}
+                          </li>
+                      {% endif %}
+                    </div>
 
                     {% if space %}
                         <li id="storage_space">
@@ -50,15 +59,19 @@
                             {{ space.used }} /  {{ space.available }}
                         </li>
                     {% endif %}
+                    <div class="menu_text">
+                      <li><div class="theme_button">
+                        <label class="switch">
+                            {% if theme.dark %}
+                              <input type="checkbox" onclick="LoadCSS('{% static 'style/dark_style.css' %}')">
+                            {% else %}
+                              <input type="checkbox" onclick="LoadCSS('{% static 'style/blue_style.css' %}')">
+                            {% endif %}
+                              <span class="slider round"></span>
+                        </label>
+                      </div></li>
+                    </div>
 
-                    <li><div class="theme_button">
-                      <label class="switch">
-
-                            <input type="checkbox" onclick="LoadCSS('{% static 'style/dark_style.css' %}')">
-                            <!-- <input type="checkbox" onclick="LoadCSS('{% static 'style/blue_style.css' %}')">-->
-                            <span class="slider round"></span>
-                      </label>
-                    </div></li>
                 </ul>
             </nav>
         </aside>

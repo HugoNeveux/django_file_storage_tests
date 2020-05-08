@@ -147,16 +147,6 @@ ul {
     border-bottom: 1px #ededed solid;
 }
 
-@media screen and (max-width: 1000px) {
-    #sidenav__pagecontent aside {
-        display: none;
-    }
-
-    #sidenav__pagecontent section {
-        width: 100%;
-    }
-}
-
 .theme_button {
     display: flex;
     flex-direction: row;
@@ -224,4 +214,24 @@ input:checked + .slider:before {
     border-radius: 50%;
 }
 
-:focus {outline:none;} ::-moz-focus-inner {border:0;}
+@media screen and (max-height: 1000px) {
+    .menu_text {
+        display: none;
+    }
+
+    #sidenav_content {
+        width: 50%;
+        flex-direction: row-reverse;
+        padding: 0px;
+    }
+
+    #sidenav__pagecontent section {
+        width: 95%;
+    }
+
+    .side_icon {
+        font-size: 1em;
+        text-align: center;
+        padding-left: 0px;
+    }
+}
