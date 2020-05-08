@@ -5,6 +5,7 @@ from .models import UserFile
 from Auth.models import Profile
 from django.conf import settings
 from django.http import Http404, FileResponse, HttpResponse
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from urllib.parse import unquote
@@ -103,18 +104,16 @@ def tree(request, path=""):
 
 
 @login_required()
-def download(request, path):
-    """Download file when clicking on it"""
-    file_path = os.path.join(
+def download_dir(request, path):
+    """Download dir"""
+    dir_path = os.path.join(
         settings.MEDIA_ROOT, path)
-    file_path = unquote(file_path)
-    if file_path.endswith("/"):
-        file_path = file_path[0:-1]
-    if os.path.isfile(file_path):
-        return FileResponse(open(file_path, 'rb'), os.path.basename(file_path), as_attachment=True)
-    elif os.path.isdir(file_path):  # Compress all folder into zip and return it
-        filenames = recursive_file_list(file_path)
-        zip_filename = f"{file_path.split('/')[-1]}.zip"
+    dir_path = unquote(file_path)
+    if dir_path.endswith("/"):
+        dir_path = dir_path[0:-1]
+    if os.path.isdir(dir_path):  # Compress all folder into zip and return it
+        filenames = recursive_file_list(dir_path)
+        zip_filename = f"{dir_path.split('/')[-1]}.zip"
         s = BytesIO()
         zf = zipfile.ZipFile(s, "w")
         for fpath in filenames:
@@ -127,6 +126,13 @@ def download(request, path):
         return resp
     raise Http404
 
+@login_required()
+def download_file(request, id):
+    """Download file"""
+    file = get_object_or_404(UserFile, id=id)
+    if request.user == file.owner:
+        return FileResponse(open(file.file.path, 'rb'), file.name, as_attachment=True)
+    raise PermissionDenied
 
 @login_required
 def folder_creation(request, path):

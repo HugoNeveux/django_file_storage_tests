@@ -13,14 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path, include
-import Files, Auth, Settings
+from Share import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('Files/', include('Files.urls'), name='Files'),
-    path('', include('Auth.urls'), name='Auth'),
-    path('Settings/', include('Settings.urls'), name='Settings'),
-    path('Share/', include('Share.urls'), name='Share'),
+    path('create/<int:file_id>/', views.create_share_link, name='share_create'),
+    path('s/<str:file_link>/', views.s, name='get_shared_file')
 ]
