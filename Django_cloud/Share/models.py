@@ -8,10 +8,10 @@ class ShareLink(models.Model):
     creator = models.ForeignKey(to=User, on_delete=models.CASCADE)
     to_file = models.ForeignKey(to=UserFile, on_delete=models.CASCADE)
 
-    def link_generation(nb_chars):
+    def link_generation():
         chars = string.ascii_letters + string.digits
-        random = [random.choice(chars) for _ in range(nb_chars)]
-        code = ''.join(random)
-        if ShareLink.objects.filter(url=code).exists():
+        rand = [random.choice(chars) for _ in range(16)]
+        code = ''.join(rand)
+        if ShareLink.objects.filter(link=code).exists():
             return self.link_generation(nb_chars)
         return code
