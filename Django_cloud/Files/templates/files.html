@@ -148,7 +148,8 @@ $('#multiFileUpload').dropzone({
                 }
             }
         });
-        this.on('sending', function(file) {
+        this.on('sending', function(file, xhr, formData) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
             if ((fileExists(files, file.name))) {
                 if (!confirm("Voulez-vous vraiment envoyer ce fichier ?\nSi vous continuez, le fichier pré-existant sera écrasé.")) {
                     this.removeFile(file);
@@ -159,7 +160,8 @@ $('#multiFileUpload').dropzone({
             let res = eval('(' + data.xhr.responseText + ')');
         });
         this.on("error", function(file, message) {
-            if (!message == undefined) {
+            console.log(message);
+            if (message != undefined) {
                 if ($('#errorMsg').length > 0) {
                     $('#errorMsg').remove();
                 }
@@ -167,11 +169,13 @@ $('#multiFileUpload').dropzone({
                 $('#errorZone').show();
             }
         });
-        this.on('sending', function(file, xhr, formData) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        });
-        this.on('queuecomplete', function() {
-            location.reload;
+        // this.on('queuecomplete', function(file) {
+        //     if ($('#errorZone').is(":visible") || $('#errorZone').css('display') != 'none') {
+        //         location.reload();
+        //     }
+        // });
+        this.on('complete', function(file) {
+            this.removeFile(file);
         });
     },
 });
