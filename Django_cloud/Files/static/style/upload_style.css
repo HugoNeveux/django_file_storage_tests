@@ -11,8 +11,7 @@ ul.errorlist,
 }
 
 .dropzone {
-    transition: all 0.2s;
-    height: 92%;
+    height: 100%;
 }
 
 .dropzone.has-advanced-upload .dopzone__dragndrop {
@@ -56,4 +55,44 @@ a.name__icon {
 .btn-primary {
     color: white;
     margin-right: 15px;
+}
+
+.dropzone__button {
+    display: none;
+}
+
+#icone {
+    padding-right: 20px;
+    font-size: 1.4em;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+}
+
+#icone_folder {
+    padding-right: 20px;
+    font-size: 2em;
+    margin-top: 1s%;
+    margin-bottom: 0.1%;
+}
+
+.dz-message {
+    display: none !important;
+}
+
+.dropzone.dz-drag-hover {
+    background-color: aliceblue !important;
+    border-radius: 5px;
+}
+
+.dz-upload {
+    background: var(--primary-color);
+    display: block;
+    height: 20px;
+    width: 0%;
+    border-radius: 5px;
+}
+
+.dz-progress {
+    padding: 5px;
+    text-align: center;
 }

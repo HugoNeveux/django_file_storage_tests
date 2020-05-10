@@ -4,13 +4,15 @@ from .forms import UploadFileForm
 from .models import UserFile
 from Auth.models import Profile
 from django.conf import settings
-from django.http import Http404, FileResponse, HttpResponse
+from django.http import Http404, FileResponse, HttpResponse, JsonResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from urllib.parse import unquote
 from django.shortcuts import get_object_or_404
 import json
+from django.views.generic.edit import FormView
 from django.urls import reverse
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core import serializers
@@ -101,12 +103,102 @@ def tree(request, path=""):
         'user': request.user,
     })
 
+class FileUploadAndListView(LoginRequiredMixin, FormView):
+    """Read ans save sent file"""
+    form_class = UploadFileForm
+    template_name = 'files.html'
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        files = request.FILES.getlist('file')
+        if form.is_valid():
+            # Space available
+            user_profile = Profile.objects.get(user=request.user.id)
+            space_available = user_profile.upload_limit - user_profile.total_used
+            for file in files:
+                if file.size > space_available:
+                    return JsonResponse({'error': f'Limite de stockage dépassée: le fichier {file.name} ne peut pas être enregistré.'},
+                                        status=500)
+            #     existing_file = UserFile.objects.filter(
+            #         directory=current_dir, owner=request.user.id, name=request.FILES['file'].name)
+            #     if existing_file.count() > 0:
+            #         old_size = existing_file[0].size
+            #         new_size = existing_file[0].size + (old_size - form.cleaned_data["file"].size)
+            #         existing_file[0].file = form.cleaned_data["file"]
+            #         existing_file[0].size == new_size
+            #         user_profile.total_used += old_size - form.cleaned_data["file"].size
+            #         if user_profile.total_used <= user_profile.upload_limit:
+            #             user_profile.save()
+            #             existing_file[0].save(current_dir)
+            #     else:
+            #         file = UserFile(file=form.cleaned_data["file"],
+            #                         name=form.cleaned_data["file"].name,
+            #                         owner=request.user,
+            #                         directory=current_dir,
+            #                         size=form.cleaned_data["file"].size)
+            #         user_profile.total_used += form.cleaned_data["file"].size
+            #         if user_profile.total_used <= user_profile.upload_limit:
+            #             user_profile.save()
+            #             file.save(os.path.join(current_dir))
+
+
+    def get(self, request, path='', *args, **kwargs):
+        # Variables and file storage initialisation
+        current_dir = os.path.join(request.user.username, "files", path)
+        absolute_path = os.path.join(settings.MEDIA_ROOT, current_dir)
+        files = []
+        directories = []
+        upload_error = False
+
+        # Space available
+        user_profile = Profile.objects.get(user=request.user.id)
+        space = {"available": format_bytes(user_profile.upload_limit),
+                "used": format_bytes(user_profile.total_used),
+                "available_b": user_profile.upload_limit - user_profile.total_used }
+
+        # Showing directory content
+        files = UserFile.objects.filter(
+            directory=current_dir, owner=request.user.id)
+
+        # Json file list
+        tmp_json = serializers.serialize("json", files)
+        files_json = json.dumps(json.loads(tmp_json))
+        directories_names = [dir for dir in os.listdir(
+            absolute_path) if os.path.isdir(os.path.join(absolute_path, dir))]
+        for name in directories_names:
+            directories.append({'name': name, 'url': os.path.join(path, name)})
+
+
+        # Breadcrumb
+        breadcrumb = {}
+        full_path = path.replace("/", "\\").split("\\")
+        breadcrumb["path"] = []
+        to_dir = ""
+        for dir in full_path[:-1]:
+            to_dir = os.path.join(to_dir, dir)
+            breadcrumb["path"].append([dir, to_dir])
+
+        breadcrumb["active"] = full_path[-1]
+
+        # Preparing context
+        return render(request, 'files.html', {
+            'form': self.get_form_class(),
+            'directory_files': files,
+            'directory_directories': directories,
+            'breadcrumb': breadcrumb,
+            'files_json': files_json,
+            'current_dir': path,
+            'space': space,
+            'upload_error': upload_error,
+            'user': request.user,
+        })
 
 @login_required()
 def download_dir(request, path):
     """Download dir"""
     dir_path = os.path.join(
-        settings.MEDIA_ROOT, path)
+        settings.MEDIA_ROOT, request.user.username, "files", path)
     dir_path = unquote(dir_path)
     if dir_path.endswith("/"):
         dir_path = dir_path[0:-1]
