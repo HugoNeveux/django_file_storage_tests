@@ -108,7 +108,12 @@ class FileUploadAndListView(LoginRequiredMixin, FormView):
     form_class = UploadFileForm
     template_name = 'files.html'
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, path, *args, **kwargs):
+        # Variables and file storage initialisation
+        current_dir = os.path.join(request.user.username, "files", path)
+        absolute_path = os.path.join(settings.MEDIA_ROOT, current_dir)
+        files = []
+        directories = []
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         files = request.FILES.getlist('file')
@@ -120,27 +125,32 @@ class FileUploadAndListView(LoginRequiredMixin, FormView):
                 if file.size > space_available:
                     return JsonResponse({'error': f'Limite de stockage dépassée: le fichier {file.name} ne peut pas être enregistré.'},
                                         status=500)
-            #     existing_file = UserFile.objects.filter(
-            #         directory=current_dir, owner=request.user.id, name=request.FILES['file'].name)
-            #     if existing_file.count() > 0:
-            #         old_size = existing_file[0].size
-            #         new_size = existing_file[0].size + (old_size - form.cleaned_data["file"].size)
-            #         existing_file[0].file = form.cleaned_data["file"]
-            #         existing_file[0].size == new_size
-            #         user_profile.total_used += old_size - form.cleaned_data["file"].size
-            #         if user_profile.total_used <= user_profile.upload_limit:
-            #             user_profile.save()
-            #             existing_file[0].save(current_dir)
-            #     else:
-            #         file = UserFile(file=form.cleaned_data["file"],
-            #                         name=form.cleaned_data["file"].name,
-            #                         owner=request.user,
-            #                         directory=current_dir,
-            #                         size=form.cleaned_data["file"].size)
-            #         user_profile.total_used += form.cleaned_data["file"].size
-            #         if user_profile.total_used <= user_profile.upload_limit:
-            #             user_profile.save()
-            #             file.save(os.path.join(current_dir))
+                else:
+                    existing_file = UserFile.objects.filter(
+                        directory=current_dir, owner=request.user.id, name=request.FILES['file'].name)
+                    if existing_file.count() > 0:
+                        old_size = existing_file[0].size
+                        new_size = existing_file[0].size + (old_size - form.cleaned_data["file"].size)
+                        existing_file[0].file = form.cleaned_data["file"]
+                        existing_file[0].size == new_size
+                        user_profile.total_used += old_size - form.cleaned_data["file"].size
+                        if user_profile.total_used <= user_profile.upload_limit:
+                            user_profile.save()
+                            existing_file[0].save(current_dir)
+                    else:
+                        file = UserFile(file=form.cleaned_data["file"],
+                                        name=form.cleaned_data["file"].name,
+                                        owner=request.user,
+                                        directory=current_dir,
+                                        size=form.cleaned_data["file"].size)
+                        user_profile.total_used += form.cleaned_data["file"].size
+                        if user_profile.total_used <= user_profile.upload_limit:
+                            user_profile.save()
+                            file.save(os.path.join(current_dir))
+
+            return JsonResponse({'form': True})
+        else:
+            return JsonResponse({'form': False})
 
 
     def get(self, request, path='', *args, **kwargs):

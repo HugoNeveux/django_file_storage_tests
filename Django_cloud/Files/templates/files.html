@@ -64,7 +64,6 @@
                         {% endfor %}
                     </ul>
                 </p>
-            </div>
         </form>
 
 {% endblock content %}
@@ -142,18 +141,17 @@ $('#multiFileUpload').dropzone({
             percent = Math.floor(progress);
             if (file.previewElement) {
                 let progressElement = file.previewElement.querySelector('[data-dz-uploadprogress]');
-                progressElement.querySelector('.progress-text').textContent = percent + "%";
+                if (percent <= 100) {
+                    progressElement.querySelector('.progress-text').textContent = percent + "%";
+                } else {
+                    progressElement.querySelector('.progress-text').textContent = '100%';
+                }
             }
         });
-        this.on('drop', function(e) {
-            droppedFiles = e.originalEvent.dataTransfer.files;
-            for (var file of droppedFiles) {
-                if (!(fileExists(files, file.name))) {
-                    this.enqueueFile(file);
-                } else if (confirm("Voulez-vous vraiment envoyer ce fichier ?\nSi vous continuez, le fichier pré-existant sera écrasé.")){
-                    this.enqueueFile(file);
-                } else {
-                    this.removeQueue(file);
+        this.on('sending', function(file) {
+            if ((fileExists(files, file.name))) {
+                if (!confirm("Voulez-vous vraiment envoyer ce fichier ?\nSi vous continuez, le fichier pré-existant sera écrasé.")) {
+                    this.removeFile(file);
                 }
             }
         });
@@ -161,13 +159,13 @@ $('#multiFileUpload').dropzone({
             let res = eval('(' + data.xhr.responseText + ')');
         });
         this.on("error", function(file, message) {
-            console.log(message);
-            $('#modal-progress').modal('hide');
-            if ($('#errorMsg').length > 0) {
-                $('#errorMsg').remove();
+            if (!message == undefined) {
+                if ($('#errorMsg').length > 0) {
+                    $('#errorMsg').remove();
+                }
+                $('#errorZone').append(`<span id="errorMsg">${message.error}</span>`);
+                $('#errorZone').show();
             }
-            $('#errorZone').append(`<span id="errorMsg">${message.error}</span>`);
-            $('#errorZone').show();
         });
         this.on('sending', function(file, xhr, formData) {
             xhr.setRequestHeader("X-CSRFToken", csrftoken);
