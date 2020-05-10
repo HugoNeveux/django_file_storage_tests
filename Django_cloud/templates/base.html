@@ -51,7 +51,7 @@
                         <li>
                             <div class="theme_button">
                                 <label class="switch">
-                                    {% if theme.dark %}
+                                    {% if theme == "dark" %}
                                     <input type="checkbox" onclick="LoadCSS('{% static 'style/dark_style.css' %}')">
                                     {% else %}
                                     <input type="checkbox" onclick="LoadCSS('{% static 'style/blue_style.css' %}')">
