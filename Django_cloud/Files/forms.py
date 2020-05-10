@@ -14,5 +14,5 @@ class UploadFileForm(forms.ModelForm):
                     'data-multiple-caption': '{count} files selected',
                     'multiple': True
                 }
-            )
+            ),
         }
