@@ -109,6 +109,8 @@ class FileUploadAndListView(LoginRequiredMixin, FormView):
     template_name = 'files.html'
 
     def post(self, request, path, *args, **kwargs):
+        path = request.POST.get('path', None)
+        print(path)
         # Variables and file storage initialisation
         current_dir = os.path.join(request.user.username, "files", path)
         absolute_path = os.path.join(settings.MEDIA_ROOT, current_dir)

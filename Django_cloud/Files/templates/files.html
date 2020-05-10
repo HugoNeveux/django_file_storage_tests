@@ -24,6 +24,7 @@
         <div id="dropzone-previews" class="row">
         </div>
         <form class="dropzone" method="post" id="multiFileUpload" enctype="multipart/form-data" style="border: none; padding: 0;">
+            <input type="hidden" name="path" id="id_path" value="{{ current_dir }}">
             {{ form.file }}
                 <p>
                     <ul>
@@ -87,6 +88,8 @@ if (files.length > 0) {
 }
 current_dir = "{{ current_dir }}";
 space_available = {{ space.available_b }} ;
+
+$('#id_path').data('value', current_dir);
 
 function fileExists(files, filename) {
     for (i in files) {
@@ -169,11 +172,9 @@ $('#multiFileUpload').dropzone({
                 $('#errorZone').show();
             }
         });
-        // this.on('queuecomplete', function(file) {
-        //     if ($('#errorZone').is(":visible") || $('#errorZone').css('display') != 'none') {
-        //         location.reload();
-        //     }
-        // });
+        this.on('successmultiple', function(file) {
+            location.reload();
+        });
         this.on('complete', function(file) {
             this.removeFile(file);
         });
