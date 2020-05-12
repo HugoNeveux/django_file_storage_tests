@@ -34,13 +34,13 @@ A multi-user cloud app for file storage, using the Django framework for python a
 ### Possibilités d'amélioration
 
 - [ ] Utilisation d'une API pour afficher les fichiers
-- [ ] Utilisation de dropzone.js pour l'upload des fichiers
+- [x] Utilisation de dropzone.js pour l'upload des fichiers
 
 ###
 
 - [ ] Bug report feature
 - [ ] Credits
-- [ ] Theme settings
+- [x] Theme settings
 - [x] Favorite files / folders
     - [x] File model creation (association with FileSystemStorage)
     - [x] Favorite files view
