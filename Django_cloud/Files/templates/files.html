@@ -20,6 +20,7 @@
 
         <div id="errorZone" class="alert alert-danger alert-dismissible" style="margin: 10px; display:none;">
             <a href="#" class="close" onclick="$('#errorZone').hide();">&times;</a>
+            {{ form.errors }}
         </div>
         <div id="dropzone-previews" class="row">
         </div>
@@ -127,7 +128,7 @@ $('#multiFileUpload').dropzone({
     dictRemoveFileConfirmation: null,
     clickable: false,
     previewsContainer: '#dropzone-previews',
-    previewTemplate: '<div id="dztp" class="col text-center">\
+    previewTemplate: '<div id="dztp" class="col text-center transition-width">\
                     <div class="dz-filename">\
                     <span data-dz-name=""></span>\
                     </div>\
@@ -170,7 +171,7 @@ $('#multiFileUpload').dropzone({
                 }
                 $('#errorZone').append(`<span id="errorMsg">${message.error}</span>`);
                 $('#errorZone').show();
-            }
+            } 
         });
         this.on('successmultiple', function(file) {
             location.reload();
