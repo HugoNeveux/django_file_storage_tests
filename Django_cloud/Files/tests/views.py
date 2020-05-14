@@ -49,6 +49,15 @@ class UploadFileTest(TestCase):
             })
             self.assertEqual(UserFile.objects.filter(name='too_big.txt').count(), 0)
 
+    def test_file_empty(self):
+        self.client.login(username='temporary', password='temporary')
+        with open(f'./Files/tests/upload_f_err/empty.txt') as f:
+            response = self.client.post(
+                '/Files/tree', {'file': f, 'path': ''}
+            )
+            self.assertEqual(response.status_code, 500)
+            self.assertEqual(UserFile.objects.filter(name='empty.txt').count(), 0)
+
 
 class FileListTest(TestCase):
     def setUp(self):

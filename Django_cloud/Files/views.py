@@ -21,8 +21,15 @@ import shutil
 from io import BytesIO
 import zipfile
 
+class AjaxResponsibleMixin:
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        if self.request.is_ajax():
+            return JsonResponse(form.errors, status=400)
+        else:
+            return response
 
-class FileUploadAndListView(LoginRequiredMixin, FormView):
+class FileUploadAndListView(AjaxResponsibleMixin, LoginRequiredMixin, FormView):
     """Read ans save sent file"""
     form_class = UploadFileForm
     template_name = 'files.html'
@@ -70,8 +77,8 @@ class FileUploadAndListView(LoginRequiredMixin, FormView):
 
             return JsonResponse({'form': True})
         else:
-            return JsonResponse({'error': 'Une erreur inconnue s\'est produite. Merci de contacter un administrateur.'}, status=500)
-
+            # return JsonResponse({'form': False})
+            return JsonResponse(form.errors, status=400)
 
 
     def get(self, request, path='', *args, **kwargs):

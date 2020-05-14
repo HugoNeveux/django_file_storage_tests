@@ -20,7 +20,6 @@
 
         <div id="errorZone" class="alert alert-danger alert-dismissible" style="margin: 10px; display:none;">
             <a href="#" class="close" onclick="$('#errorZone').hide();">&times;</a>
-            {{ form.errors }}
         </div>
         <div id="dropzone-previews" class="row">
         </div>
@@ -164,14 +163,17 @@ $('#multiFileUpload').dropzone({
             let res = eval('(' + data.xhr.responseText + ')');
         });
         this.on("error", function(file, message) {
-            console.log(message);
-            if (message != undefined) {
-                if ($('#errorMsg').length > 0) {
-                    $('#errorMsg').remove();
-                }
-                $('#errorZone').append(`<span id="errorMsg">${message.error}</span>`);
-                $('#errorZone').show();
-            } 
+            if ($('#errorMsg').length > 0) {
+                $('#errorMsg').remove();
+            }
+            let msg = "";
+            if (message.error) {
+                msg = message.error;
+            } else if (message.file) {
+                msg = message.file;
+            }
+            $('#errorZone').append(`<span id="errorMsg">${msg}</span>`);
+            $('#errorZone').show();
         });
         this.on('successmultiple', function(file) {
             location.reload();
@@ -183,5 +185,4 @@ $('#multiFileUpload').dropzone({
 });
 
 </script>
-<!-- <script src="{% static "js/upload.js" %}" async></script> -->
 {% endblock extra_js %}
