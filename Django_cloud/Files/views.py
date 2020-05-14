@@ -51,7 +51,7 @@ class FileUploadAndListView(AjaxResponsibleMixin, LoginRequiredMixin, FormView):
             for file in files:
                 if file.size > space_available:
                     return JsonResponse({'error': f'Limite de stockage dépassée: le fichier {file.name} ne peut pas être enregistré.'},
-                                        status=500)
+                                        status=400)
                 else:
                     existing_file = UserFile.objects.filter(
                         directory=current_dir, owner=request.user.id, name=request.FILES['file'].name)
