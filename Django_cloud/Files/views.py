@@ -20,9 +20,20 @@ from .file_utils import format_bytes, recursive_file_list
 import shutil
 from io import BytesIO
 import zipfile
+<<<<<<< HEAD
 from django.views.generic.base import TemplateView
+=======
 
-class FileUploadAndListView(LoginRequiredMixin, FormView):
+class AjaxResponsibleMixin:
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        if self.request.is_ajax():
+            return JsonResponse(form.errors, status=400)
+        else:
+            return response
+>>>>>>> a0d2ac186b4c16160c0c5fe843c4dfdd26abbd92
+
+class FileUploadAndListView(AjaxResponsibleMixin, LoginRequiredMixin, FormView):
     """Read ans save sent file"""
     form_class = UploadFileForm
     template_name = 'files.html'
@@ -44,7 +55,7 @@ class FileUploadAndListView(LoginRequiredMixin, FormView):
             for file in files:
                 if file.size > space_available:
                     return JsonResponse({'error': f'Limite de stockage dépassée: le fichier {file.name} ne peut pas être enregistré.'},
-                                        status=500)
+                                        status=400)
                 else:
                     existing_file = UserFile.objects.filter(
                         directory=current_dir, owner=request.user.id, name=request.FILES['file'].name)
@@ -70,8 +81,8 @@ class FileUploadAndListView(LoginRequiredMixin, FormView):
 
             return JsonResponse({'form': True})
         else:
-            return JsonResponse({'error': 'Une erreur inconnue s\'est produite. Merci de contacter un administrateur.'}, status=500)
-
+            # return JsonResponse({'form': False})
+            return JsonResponse(form.errors, status=400)
 
 
     def get(self, request, path='', *args, **kwargs):

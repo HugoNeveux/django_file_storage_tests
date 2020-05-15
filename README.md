@@ -27,6 +27,7 @@ A multi-user cloud app for file storage, using the Django framework for python a
   - [x] Username / password changes
   - [x] Username and password reset
 - [ ] **File sharing**
+  - [ ] File sharing implementation
 - [ ] Files and folders managment
   - [x] Folder creation
   - [ ] Moving files
@@ -35,11 +36,11 @@ A multi-user cloud app for file storage, using the Django framework for python a
   - [x] File deletion
 - [x] Add files / folders icons
 - [ ] Add 403, 404 and 500 html templates
+- [ ] Add files with js on upload to avoid page reload
 
-### Possibilités d'amélioration
-
-- [ ] Utilisation d'une API pour afficher les fichiers
-- [x] Utilisation de dropzone.js pour l'upload des fichiers
+### Improvements
+- [ ] API Creation
+- [x] Use dropzone.js
 
 ### Secondary features
 
@@ -49,4 +50,3 @@ A multi-user cloud app for file storage, using the Django framework for python a
 - [x] Favorite files / folders
     - [x] File model creation (association with FileSystemStorage)
     - [x] Favorite files view
-

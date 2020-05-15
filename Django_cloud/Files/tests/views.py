@@ -29,25 +29,39 @@ class UploadFileTest(TestCase):
             with open(f'./Files/tests/upload_f/{file}') as f:
                 response = self.client.post(
                     '/Files/tree/', {'file': f, 'path': ''})
-                self.assertEqual(UserFile.objects.filter(name=os.path.basename(f.name)).count(), 1)
+                self.assertEqual(UserFile.objects.filter(
+                    name=os.path.basename(f.name)).count(), 1)
                 self.assertEqual(response.status_code, 200)
                 self.assertJSONEqual(response.content, {'form': True})
 
     def test_file_too_big(self):
         user = User.objects.get(username='temporary')
         profile = Profile.objects.get(user=user)
-        profile.upload_limit = 4*1024
+        profile.upload_limit = 4 * 1024
         profile.save()
         self.client.login(username='temporary', password='temporary')
         with open(f'./Files/tests/upload_f_err/too_big.txt') as f:
             response = self.client.post(
                 '/Files/tree/', {'file': f, 'path': ''}
             )
-            self.assertEqual(response.status_code, 500)
+            self.assertEqual(response.status_code, 400)
             self.assertJSONEqual(response.content, {
                 'error': f'Limite de stockage dépassée: le fichier too_big.txt ne peut pas être enregistré.'
             })
-            self.assertEqual(UserFile.objects.filter(name='too_big.txt').count(), 0)
+            self.assertEqual(UserFile.objects.filter(
+                name='too_big.txt').count(), 0)
+
+    def test_file_empty(self):
+        self.client.login(username='temporary', password='temporary')
+        with open(f'./Files/tests/upload_f_err/empty.txt') as f:
+            response = self.client.post(
+                '/Files/tree/', {'file': f, 'path': ''}
+            )
+            self.assertEqual(response.status_code, 400)
+            self.assertEqual(UserFile.objects.filter(
+                name='empty.txt').count(), 0)
+            self.assertJSONEqual(response.content, {
+                                 'file': ['The submitted file is empty.']})
 
 
 class FileListTest(TestCase):
