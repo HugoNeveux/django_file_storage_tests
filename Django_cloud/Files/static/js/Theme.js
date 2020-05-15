@@ -5,7 +5,7 @@ function LoadCSS( cssURL ) {
         link.href = cssURL;
         theme = "dark";
         document.head.appendChild( link );
-        if (cssURL == '{% static 'style/blue_style.css' %}'){
+        if (cssURL == "{% static 'style/blue_style.css' %}"){
             theme = "light";
         } else {
             theme = "dark";

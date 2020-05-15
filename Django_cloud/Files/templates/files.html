@@ -60,6 +60,7 @@
                                         {% endif %}
                                     </a>
                                     <a class="dropdown-item action_file_move" href="#">Déplacer</a>
+                                    <a class="dropdown-item action_file_share" href="#" fid="{{ element.id }}">Partager</a>
                                 </div>
                             </div>
                         </li>
@@ -187,4 +188,5 @@ $('#multiFileUpload').dropzone({
 
 </script>
 <script type="text/javascript" src="{% static 'js/move.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/share.js' %}"></script>
 {% endblock extra_js %}

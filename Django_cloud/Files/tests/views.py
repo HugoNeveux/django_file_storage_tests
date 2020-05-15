@@ -2,6 +2,7 @@ from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from Files.models import UserFile
 from Auth.models import Profile
+from django.core.files import File
 import os
 import shutil
 
@@ -85,3 +86,18 @@ class FileListTest(TestCase):
         self.client.login(username='temporary', password='temporary')
         r = self.client.get('/Files/')
         self.assertTemplateUsed('files.html')
+
+# class FileMoveTest(TestCase):
+#     def setUp(self):
+#         user = User.objects.create_user(
+#             'temporary', 'temporary@abcd.com', 'temporary')
+#         f = File(open('./Files/tests/upload_f/text.txt'))
+#         uf = UserFile(file=f, name=os.path.basename(f.name), owner=user,
+#                       size=f.size)
+#         uf.save(os.path.join('temporary', 'files'))
+#         os.mkdir('./media/temporary/files/dir1')
+#         f.close()
+#
+#     def test_file_move_success(self):
+#         r = self.client.get('/Files/mv/?from=test.txt&to=dir1&redirect=""', follow=True)
+#         self.assertRedirects(r, '/Files/tree/')

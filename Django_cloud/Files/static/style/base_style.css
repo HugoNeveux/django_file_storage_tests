@@ -150,6 +150,10 @@ main {
     height: 100%;
 }
 
+.tooltip {
+    font-size: 1em;
+}
+
 @media all and (max-width: 360px) {
     #logout-txt {
         display: none;
