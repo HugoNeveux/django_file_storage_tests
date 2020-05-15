@@ -30,7 +30,7 @@
                     <ul>
                         {% for element in directory_directories %}
                         <li class="folder draggable">
-                            <a href="{% url 'files' path=element.url %}"><span class="fa fa-folder" id="icone_folder"></span>{{ element.name }}</a>
+                            <a href="{% url 'files' path=element.url %}" class="dir"><span class="fa fa-folder" id="icone_folder"></span>{{ element.name }}</a>
                             <div class="dropdown">
                                 <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {# <span class="fa fa-ellipsis-v" id="dropdown_icon"></span> #}
@@ -44,7 +44,7 @@
                         </li>
                         {% endfor %}
                         {% for element in directory_files %}
-                        <li class="file draggable"><a class="name__icon" href="{% url 'download_file' id=element.id %}"><span class="fa fa-file" id="icone"></span>{{ element.name }}</a>
+                        <li class="file draggable"><a class="name__icon" href="{% url 'download_file' id=element.id %}"><span class="fa fa-file" id="icone"></span><span class="fname">{{ element.name }}</span></a>
                             <div class="dropdown">
                                 <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {# <span class="fa fa-ellipsis-v" id="dropdown_icon"></span> #}
@@ -59,6 +59,7 @@
                                         Ajouter aux favoris
                                         {% endif %}
                                     </a>
+                                    <a class="dropdown-item action_file_move" href="#">Déplacer</a>
                                 </div>
                             </div>
                         </li>
@@ -185,4 +186,5 @@ $('#multiFileUpload').dropzone({
 });
 
 </script>
+<script type="text/javascript" src="{% static 'js/move.js' %}"></script>
 {% endblock extra_js %}
