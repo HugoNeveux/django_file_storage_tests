@@ -21,6 +21,7 @@ import shutil
 from io import BytesIO
 import zipfile
 
+
 class AjaxResponsibleMixin:
     def form_invalid(self, form):
         response = super().form_invalid(form)
@@ -28,6 +29,7 @@ class AjaxResponsibleMixin:
             return JsonResponse(form.errors, status=400)
         else:
             return response
+
 
 class FileUploadAndListView(AjaxResponsibleMixin, LoginRequiredMixin, FormView):
     """Read ans save sent file"""
@@ -57,10 +59,12 @@ class FileUploadAndListView(AjaxResponsibleMixin, LoginRequiredMixin, FormView):
                         directory=current_dir, owner=request.user.id, name=request.FILES['file'].name)
                     if existing_file.count() > 0:
                         old_size = existing_file[0].size
-                        new_size = existing_file[0].size + (old_size - form.cleaned_data["file"].size)
+                        new_size = existing_file[0].size + \
+                            (old_size - form.cleaned_data["file"].size)
                         existing_file[0].file = form.cleaned_data["file"]
                         existing_file[0].size == new_size
-                        user_profile.total_used += old_size - form.cleaned_data["file"].size
+                        user_profile.total_used += old_size - \
+                            form.cleaned_data["file"].size
                         if user_profile.total_used <= user_profile.upload_limit:
                             user_profile.save()
                             existing_file[0].save(current_dir)
@@ -80,7 +84,6 @@ class FileUploadAndListView(AjaxResponsibleMixin, LoginRequiredMixin, FormView):
             # return JsonResponse({'form': False})
             return JsonResponse(form.errors, status=400)
 
-
     def get(self, request, path='', *args, **kwargs):
         # Variables and file storage initialisation
         current_dir = os.path.join(request.user.username, "files", path)
@@ -92,8 +95,8 @@ class FileUploadAndListView(AjaxResponsibleMixin, LoginRequiredMixin, FormView):
         # Space available
         user_profile = Profile.objects.get(user=request.user.id)
         space = {"available": format_bytes(user_profile.upload_limit),
-                "used": format_bytes(user_profile.total_used),
-                "available_b": user_profile.upload_limit - user_profile.total_used }
+                 "used": format_bytes(user_profile.total_used),
+                 "available_b": user_profile.upload_limit - user_profile.total_used}
 
         # Showing directory content
         files = UserFile.objects.filter(
@@ -107,7 +110,6 @@ class FileUploadAndListView(AjaxResponsibleMixin, LoginRequiredMixin, FormView):
             absolute_path) if os.path.isdir(os.path.join(absolute_path, dir))]
         for name in directories_names:
             directories.append({'name': name, 'url': os.path.join(path, name)})
-
 
         # Breadcrumb
         breadcrumb = {}
@@ -133,6 +135,7 @@ class FileUploadAndListView(AjaxResponsibleMixin, LoginRequiredMixin, FormView):
             'user': request.user,
         })
 
+
 @login_required()
 def download_dir(request, path):
     """Download dir"""
@@ -149,12 +152,15 @@ def download_dir(request, path):
         for fpath in filenames:
             fdir, fname = os.path.split(fpath)
 
-            zf.write(fpath, fpath.replace(os.path.join(settings.MEDIA_ROOT, request.user.username, 'files'), ''))
+            zf.write(fpath, fpath.replace(os.path.join(
+                settings.MEDIA_ROOT, request.user.username, 'files'), ''))
         zf.close()
-        resp = HttpResponse(s.getvalue(), content_type="application/x-zip-compressed")
+        resp = HttpResponse(
+            s.getvalue(), content_type="application/x-zip-compressed")
         resp['Content-Disposition'] = f'attachment; filename={zip_filename}'
         return resp
     raise Http404
+
 
 @login_required()
 def download_file(request, id):
@@ -163,6 +169,7 @@ def download_file(request, id):
     if request.user == file.owner:
         return FileResponse(open(file.file.path, 'rb'), file.name, as_attachment=True)
     raise PermissionDenied
+
 
 @login_required
 def folder_creation(request, path):
@@ -188,16 +195,18 @@ def del_file(request, path):
         profile.save()
         file.delete()
         os.remove(os.path.join(settings.MEDIA_ROOT, path))
-    else:
+    elif path != '':
         path = os.path.join(settings.MEDIA_ROOT,
                             request.user.username, 'files', path)
         dir_contents = os.listdir(path)
         if len(dir_contents) == 0:
             os.rmdir(path)
         else:
+            to_delete = UserFile.objects.filter(
+                directory__startswith=path.replace(settings.MEDIA_ROOT, '')[1:]).delete()
             shutil.rmtree(path)
 
-    return redirect(reverse("files", kwargs={'path': redirection}))
+    return redirect(reverse("files", kwargs={'path': redirection if redirection is not None else ''}))
 
 
 @login_required
@@ -240,12 +249,13 @@ def mv(request):
     dest = request.GET.get('to')
     file_origin = os.path.join(request.user.username, 'files', origin)
     if dest == 'previous':
-        full_dest =  os.path.join(os.path.dirname(os.path.dirname(file_origin)))
+        full_dest = os.path.join(os.path.dirname(os.path.dirname(file_origin)))
     else:
         full_dest = os.path.join(request.user.username, 'files', dest)
     if not full_dest.startswith(os.path.join(request.user.username, 'files')):
         full_dest = os.path.join(request.user.username, 'files')
-    moved_file = get_object_or_404(UserFile, owner=request.user, file=file_origin)
+    moved_file = get_object_or_404(
+        UserFile, owner=request.user, file=file_origin)
     if os.path.isdir(os.path.join(settings.MEDIA_ROOT, full_dest)):
         os.rename(os.path.join(settings.MEDIA_ROOT, file_origin),
                   os.path.join(settings.MEDIA_ROOT, full_dest, moved_file.name))
