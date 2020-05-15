@@ -28,7 +28,7 @@ A multi-user cloud app for file storage, using the Django framework for python a
   - [x] Username and password reset
 - [ ] **File sharing**
   - [ ] File sharing implementation
-- [ ] Files and folders managment
+- [x] Files and folders managment
   - [x] Folder creation
   - [x] Moving files
     - [x] Moving files view
