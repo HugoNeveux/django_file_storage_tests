@@ -4,7 +4,6 @@ from . import views
 from django.contrib.auth import views as auth_views
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
-from Files.views import about
 
 urlpatterns = [
     url(r'^$', views.FileUploadAndListView.as_view()),
@@ -17,5 +16,5 @@ urlpatterns = [
     url(r'^favorites/$', views.fav_list, name='fav_list'),
     url(r'^last_files/$', views.last_files, name='recent'),
     url(r'^mv/', views.mv, name='move'),
-    path('about/', about.as_view(), name="about"),
+    url(r'^about/', TemplateView.as_view(template_name='about.html'), name='about'),
 ]

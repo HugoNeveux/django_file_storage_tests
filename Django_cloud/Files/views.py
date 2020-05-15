@@ -20,9 +20,6 @@ from .file_utils import format_bytes, recursive_file_list
 import shutil
 from io import BytesIO
 import zipfile
-<<<<<<< HEAD
-from django.views.generic.base import TemplateView
-=======
 
 class AjaxResponsibleMixin:
     def form_invalid(self, form):
@@ -31,7 +28,6 @@ class AjaxResponsibleMixin:
             return JsonResponse(form.errors, status=400)
         else:
             return response
->>>>>>> a0d2ac186b4c16160c0c5fe843c4dfdd26abbd92
 
 class FileUploadAndListView(AjaxResponsibleMixin, LoginRequiredMixin, FormView):
     """Read ans save sent file"""
@@ -101,7 +97,8 @@ class FileUploadAndListView(AjaxResponsibleMixin, LoginRequiredMixin, FormView):
 
         # Showing directory content
         files = UserFile.objects.filter(
-            directory=current_dir, owner=request.user.id)
+            directory=current_dir, owner=request.user.id) | UserFile.objects.filter(
+            directory=current_dir[:-1], owner=request.user.id)
 
         # Json file list
         tmp_json = serializers.serialize("json", files)
@@ -241,9 +238,13 @@ def mv(request):
     """Moves file from origin to dest"""
     origin = request.GET.get('from')
     dest = request.GET.get('to')
-    full_dest = os.path.join(request.user.username, 'files', dest)
     file_origin = os.path.join(request.user.username, 'files', origin)
-    print(file_origin)
+    if dest == 'previous':
+        full_dest =  os.path.join(os.path.dirname(os.path.dirname(file_origin)))
+    else:
+        full_dest = os.path.join(request.user.username, 'files', dest)
+    if not full_dest.startswith(os.path.join(request.user.username, 'files')):
+        full_dest = os.path.join(request.user.username, 'files')
     moved_file = get_object_or_404(UserFile, owner=request.user, file=file_origin)
     if os.path.isdir(os.path.join(settings.MEDIA_ROOT, full_dest)):
         os.rename(os.path.join(settings.MEDIA_ROOT, file_origin),
@@ -252,8 +253,5 @@ def mv(request):
         moved_file.directory = full_dest
         print(moved_file.file)
         moved_file.save(upload_to=full_dest)
-        return redirect(reverse('files', kwargs={'path': ''}))
+        return redirect(reverse('files', kwargs={'path': request.GET.get('redirect')}))
     return Http404
-
-class about(TemplateView):
-    template_name = 'about.html'
