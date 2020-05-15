@@ -8,7 +8,7 @@ A multi-user cloud app for file storage, using the Django framework for python a
 
 ### Urgent bugs that needs to be solved
 
-- [ ] files are not deleted when their folder is deleted
+- [x] files are not deleted when their folder is deleted
 
 
 ### Important features
@@ -28,11 +28,11 @@ A multi-user cloud app for file storage, using the Django framework for python a
   - [x] Username and password reset
 - [ ] **File sharing**
   - [ ] File sharing implementation
-- [ ] Files and folders managment
+- [x] Files and folders managment
   - [x] Folder creation
-  - [ ] Moving files
+  - [x] Moving files
     - [x] Moving files view
-    - [ ] Moving files front-end
+    - [x] Moving files front-end
   - [x] File deletion
 - [x] Add files / folders icons
 - [ ] Add 403, 404 and 500 html templates
