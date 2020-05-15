@@ -149,3 +149,12 @@ main {
 .file_location {
     height: 100%;
 }
+
+@media all and (max-width: 360px) {
+    #logout-txt {
+        display: none;
+    }
+    .logout {
+        padding-right: 15px;
+    }
+}
