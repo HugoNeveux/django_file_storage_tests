@@ -20,7 +20,7 @@ from .file_utils import format_bytes, recursive_file_list
 import shutil
 from io import BytesIO
 import zipfile
-
+from django.views.generic.base import TemplateView
 
 class FileUploadAndListView(LoginRequiredMixin, FormView):
     """Read ans save sent file"""
@@ -243,3 +243,6 @@ def mv(request):
         moved_file.save(upload_to=full_dest)
         return redirect(reverse('files', kwargs={'path': ''}))
     return Http404
+
+class about(TemplateView):
+    template_name = 'about.html'

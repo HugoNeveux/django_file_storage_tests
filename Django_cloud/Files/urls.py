@@ -3,7 +3,8 @@ from django.conf.urls import url
 from . import views
 from django.contrib.auth import views as auth_views
 from django.shortcuts import redirect
-
+from django.views.generic import TemplateView
+from Files.views import about
 
 urlpatterns = [
     url(r'^$', views.FileUploadAndListView.as_view()),
@@ -15,5 +16,6 @@ urlpatterns = [
     url(r'^fav/(?P<path>.*)$', views.fav, name='fav'),
     url(r'^favorites/$', views.fav_list, name='fav_list'),
     url(r'^last_files/$', views.last_files, name='recent'),
-    url(r'^mv/', views.mv, name='move')
+    url(r'^mv/', views.mv, name='move'),
+    path('about/', about.as_view(), name="about"),
 ]

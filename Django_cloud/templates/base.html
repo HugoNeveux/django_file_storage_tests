@@ -34,6 +34,7 @@
                     <li><a href="{% url 'recent' %}" class="line_icon nav-item text-secondary"><span class="menu_text">Récents</span><span class="fa fa-history side_icon"></a></li>
                     <li><a href="{% url 'settings_main' %}" class="line_icon nav-item text-secondary"><span class="menu_text">Paramètres</span><span class="fa fa-cogs side_icon"></span></a></li>
                     <li id="new_folder"><a class="line_icon nav-item text-secondary" ><span class="menu_text">Nouveau dossier</span><span class="fa fa-folder-open side_icon"></span></a></li>
+                    <li><a href="{% url 'about' %}"  class="line_icon nav-item text-secondary"><span class="menu_text">A propos</span><span class="fab fa-linux"></span></a></li>
                     {% if user.is_staff %}
                     <li><a class="line_icon nav-item text-secondary" href="{% url 'admin:index' %}">
                             <div class="menu_text">Administration</div><span class="fas fa-tools side_icon"></span>
@@ -51,11 +52,12 @@
                         <li>
                             <div class="theme_button">
                                 <label class="switch">
-                                    {% if theme == "dark" %}
+                                    <!--{% if theme == "dark" %}
                                     <input type="checkbox" onclick="LoadCSS('{% static 'style/dark_style.css' %}')">
                                     {% else %}
                                     <input type="checkbox" onclick="LoadCSS('{% static 'style/blue_style.css' %}')">
-                                    {% endif %}
+                                    {% endif %} -->
+                                    <input type="checkbox" onclick="LoadCSS('{% static 'style/dark_style.css' %}')">
                                     <span class="slider round"></span>
                                 </label>
                             </div>

@@ -3,12 +3,12 @@ function LoadCSS( cssURL ) {
         let link = document.createElement( 'link' );
         link.rel  = 'stylesheet';
         link.href = cssURL;
-        theme = "light";
+        theme = "dark";
         document.head.appendChild( link );
-        if (theme == "light"){
-            theme = "dark";
-        } else {
+        if (cssURL == '{% static 'style/blue_style.css' %}'){
             theme = "light";
+        } else {
+            theme = "dark";
         }
         link.onload = function() {
             resolve();

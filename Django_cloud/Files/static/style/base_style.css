@@ -145,3 +145,7 @@ input:checked+.slider:before {
 main {
     height: 100%;
 }
+
+.file_location {
+    height: 100%;
+}
