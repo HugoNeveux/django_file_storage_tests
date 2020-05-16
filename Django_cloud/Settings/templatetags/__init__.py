@@ -1,1 +1,1 @@
-from dark import *
+from .dark import *
