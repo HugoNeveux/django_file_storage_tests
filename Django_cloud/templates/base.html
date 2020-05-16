@@ -10,6 +10,7 @@
     <link href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" rel="stylesheet">
     <link rel="stylesheet" media="all" href="{% static 'style/base_style.css' %}">
     <link rel="stylesheet" href="{% static 'style/blue_style.css' %}">
+    {% load dark %}
     {% block extra_css %}{% endblock extra_css %}
 
 </head>
@@ -48,21 +49,18 @@
                         </li>
                         {% endif %}
                     </div>
-                    <div class="menu_text">
+                    <!-- <div class="menu_text">
                         <li>
+                            {% if request.user|has_dark %}
                             <div class="theme_button">
                                 <label class="switch">
-                                    <!--{% if theme == "dark" %}
-                                    <input type="checkbox" onclick="LoadCSS('{% static 'style/dark_style.css' %}')">
-                                    {% else %}
-                                    <input type="checkbox" onclick="LoadCSS('{% static 'style/blue_style.css' %}')">
-                                    {% endif %} -->
-                                    <input type="checkbox" onclick="LoadCSS('{% static 'style/dark_style.css' %}')">
-                                    <span class="slider round"></span>
-                                </label>
+                                  <input type="checkbox" onclick="LoadCSS('{% static 'style/dark_style.css' %}')">
+                                <span class="slider round"></span>
+                              </label>
                             </div>
+                            {% endif %}
                         </li>
-                    </div>
+                    </div> -->
 
                 </ul>
             </nav>

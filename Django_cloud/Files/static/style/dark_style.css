@@ -6,77 +6,10 @@
     --dragover-color: rgba(35, 119, 209, 0.42);
 }
 
-h1 {
-    color: White;
+#sidebar, .page-content, nav, .dz, #bg-white, body, .px-0, .pr-4 {
+    background-color: var(--primary-color) !important;
 }
 
 header {
-    background-color: var(--primary-color);
-    color: var(text-2);
-}
-
-nav {
-    background-color: var(--primary-color);
-    color: var(--text-2);
-}
-
-#sidebar__pagecontent aside {
-    background-color: var(--primary-color);
-}
-
-#sidebar_content {
-    background-color: var(--secondary-color);
-}
-
-section {
-    background-color: var(--secondary-color);
-}
-
-#navbar a {
-      color: var(--secondary-color);
-}
-
-.dz-upload {
-    background: var(--primary-color);
-}
-
-#sidebar .line_icon {
-    color: var(--text-1);
-    transition: color 200ms;
-}
-
-#sidebar .line_icon:hover {
-    color: var(--text-2);
-}
-
-#storage_space {
-    color: var(--text-2);
-}
-
-.dropzone.is-dragover {
-    background-color: var(--dragover-color)
-}
-
-.button {
-    background-color: var(--primary-color);
-}
-
-.button-icon {
-    color: White;
-}
-
-.dropdown-menu {
-    background-color: White;
-}
-
-.slider {
-    background-color: var(--primary-color);
-}
-
-input:checked + .slider {
-  background-color: var(--primary-color);
-}
-
-input:focus + .slider {
- box-shadow: 0 0 1px var(--primary-color);
+    background-color: var(secondary-color) !important;
 }
