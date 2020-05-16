@@ -187,6 +187,12 @@ $('#multiFileUpload').dropzone({
     },
 });
 
+$(window).on('dragover', function (e) {
+    e.preventDefault();
+});
+$(window).on('drop', function (e) {
+    e.preventDefault();
+})
 </script>
 <script type="text/javascript" src="{% static 'js/move.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/share.js' %}"></script>

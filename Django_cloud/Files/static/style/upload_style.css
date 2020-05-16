@@ -10,7 +10,7 @@
 }
 
 .dropzone {
-    height: 100%;
+    min-height: 500px !important;
 }
 
 .dropzone.has-advanced-upload .dopzone__dragndrop {
