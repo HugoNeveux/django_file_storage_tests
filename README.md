@@ -9,6 +9,7 @@ A multi-user cloud app for file storage, using the Django framework for python a
 ### Urgent bugs that needs to be solved
 
 - [x] files are not deleted when their folder is deleted
+- [ ] Need to refresh page to see uploaded files
 
 
 ### Important features
@@ -38,6 +39,9 @@ A multi-user cloud app for file storage, using the Django framework for python a
 - [ ] Add 403, 404 and 500 html templates
 - [ ] Add files with js on upload to avoid page reload
 - [ ] Add upload button
+- [ ] Importation from google drive
+- [ ] Add cancel upload button
+- [ ] Possibilité de changement de couleur
 
 ### Improvements
 - [ ] API Creation
