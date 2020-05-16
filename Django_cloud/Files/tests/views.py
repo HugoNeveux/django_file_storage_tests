@@ -61,8 +61,6 @@ class UploadFileTest(TestCase):
             self.assertEqual(response.status_code, 400)
             self.assertEqual(UserFile.objects.filter(
                 name='empty.txt').count(), 0)
-            self.assertJSONEqual(response.content, {
-                                 'file': ['The submitted file is empty.']})
 
 
 class FileListTest(TestCase):
