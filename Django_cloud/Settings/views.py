@@ -17,7 +17,7 @@ def main(request):
             user.first_name = uform.cleaned_data['first_name']
             user.last_name = uform.cleaned_data['last_name']
             user.email = uform.cleaned_data['email']
-            profile.theme = pform.cleaned_data['theme']
+            profile.theme = 1 #pform.cleaned_data['theme']
 
             user.save()
             profile.save()

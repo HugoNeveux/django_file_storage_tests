@@ -41,7 +41,7 @@ A multi-user cloud app for file storage, using the Django framework for python a
 - [ ] Add upload button
 - [ ] Importation from google drive
 - [ ] Add cancel upload button
-- [ ] Possibilité de changement de couleur
+- [ ] Allow color changes
 
 ### Improvements
 - [ ] API Creation
