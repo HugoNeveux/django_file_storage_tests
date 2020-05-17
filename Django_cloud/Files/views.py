@@ -261,7 +261,6 @@ def mv(request):
                   os.path.join(settings.MEDIA_ROOT, full_dest, moved_file.name))
         moved_file.file = os.path.join(full_dest, moved_file.name)
         moved_file.directory = full_dest
-        print(moved_file.file)
         moved_file.save(upload_to=full_dest)
         return redirect(reverse('files', kwargs={'path': request.GET.get('redirect')}))
     return Http404

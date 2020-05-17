@@ -34,7 +34,7 @@
                     <li><a href="{% url 'fav_list' %}" class="nav-item text-secondary line_icon"><span class="menu_text">Favoris</span><span class="fa fa-star side_icon"></a></li>
                     <li><a href="{% url 'recent' %}" class="line_icon nav-item text-secondary"><span class="menu_text">Récents</span><span class="fa fa-history side_icon"></a></li>
                     <li><a href="{% url 'settings_main' %}" class="line_icon nav-item text-secondary"><span class="menu_text">Paramètres</span><span class="fa fa-cogs side_icon"></span></a></li>
-                    {% if request.path == '/Files/tree/' or request.path == '/Files/' %}
+                    {% if '/Files/tree/' in request.path or request.path == '/Files/' %}
                     <li id="new_folder"><a class="line_icon nav-item text-secondary"><span class="menu_text">Nouveau dossier</span><span class="fa fa-folder-open side_icon"></span></a></li>
                     {% endif %}
                     <li><a href="{% url 'about' %}" class="line_icon nav-item text-secondary"><span class="menu_text">A propos</span><span class="fab fa-linux"></span></a></li>

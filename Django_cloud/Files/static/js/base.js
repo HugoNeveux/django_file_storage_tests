@@ -1,9 +1,11 @@
-$(function() {    
+$(function() {
     $("#new_folder").on('click', function() {
         let name = prompt("Veuillez entrer le nom du dossier à créer");
         if (name != null) {
-            if (!(name.indexOf("/") > -1)) {
+            if ((name.indexOf("/") <= -1) && name.length <= 100) {
                 window.location = `/Files/create_dir/${current_dir}?dirname=${name}`;
+            } else if (name.length > 100) {
+                alert("Le nom de votre dossier est trop long. Il ne peut pas dépasser 100 caractères.");
             } else {
                 alert("Le nom de votre dossier est invalide ! Il ne peut pas contenir le caractère '\/'");
             }

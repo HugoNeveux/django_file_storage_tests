@@ -85,17 +85,24 @@ class FileListTest(TestCase):
         r = self.client.get('/Files/')
         self.assertTemplateUsed('files.html')
 
-# class FileMoveTest(TestCase):
-#     def setUp(self):
-#         user = User.objects.create_user(
-#             'temporary', 'temporary@abcd.com', 'temporary')
-#         f = File(open('./Files/tests/upload_f/text.txt'))
-#         uf = UserFile(file=f, name=os.path.basename(f.name), owner=user,
-#                       size=f.size)
-#         uf.save(os.path.join('temporary', 'files'))
-#         os.mkdir('./media/temporary/files/dir1')
-#         f.close()
-#
-#     def test_file_move_success(self):
-#         r = self.client.get('/Files/mv/?from=test.txt&to=dir1&redirect=""', follow=True)
-#         self.assertRedirects(r, '/Files/tree/')
+class FileMoveTest(TestCase):
+    def setUp(self):
+        """Upload file to move"""
+        user = User.objects.create_user(
+            'temporary', 'temporary@abcd.com', 'temporary')
+        f = File(open('./Files/tests/upload_f/text.txt'))
+        self.client.login(username='temporary', password='temporary')
+        self.client.post('/Files/tree/', {'file': f, 'path': ''})
+        self.client.logout()
+        os.mkdir('./media/temporary/files/dir1')
+        f.close()
+
+    def test_file_move_success(self):
+        """Move file"""
+        self.client.login(username='temporary', password='temporary')
+        r = self.client.get('/Files/mv/?from=text.txt&to=dir1&redirect=', follow=True)
+        self.assertEqual(UserFile.objects.filter(directory="temporary/files/dir1",
+                                                 file="temporary/files/dir1/text.txt").count(), 1)
+
+    def tearDown(self):
+        User.objects.filter(username='temporary').delete()

@@ -65,6 +65,10 @@
                                 </div>
                             </div>
                         </li>
+                        {% empty %}
+                        <div class="text-center my-5">
+                            <p class="text-grey">Déposez un fichier ici pour l'ajouter.</p>
+                        </div>
                         {% endfor %}
                     </ul>
                 </p>

@@ -1,20 +1,18 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django.conf import settings
-import os, shutil
 
-class UserSignalsTest(TestCase):
+class SettingsViewTest(TestCase):
     def setUp(self):
         User.objects.create_user('temporary', 'temp@abc.fr', 'temporary')
 
-    def test_user_rename(self):
-        u = User.objects.get(username='temporary')
-        u.username = 'temporary1'
-        u.save()
-        self.assertTrue(os.path.exists(os.path.join(settings.MEDIA_ROOT, 'temporary1')))
+    def test_access_no_password(self):
+        res = self.client.get('/Settings/', follow=True)
+        self.assertRedirects(res, '/?next=/Settings/')
+
+    def test_access_logged_in(self):
+        self.client.login(username='temporary', password='temporary')
+        res = self.client.get('/Settings/')
+        self.assertEqual(res.status_code, 200)
 
     def tearDown(self):
-        paths = ['temporary', 'temporary1']
-        for path in paths:
-            if os.path.exists(os.path.join(settings.MEDIA_ROOT, path)):
-                shutil.rmtree(os.path.join(settings.MEDIA_ROOT, path))
+        User.objects.get(username='temporary').delete()
