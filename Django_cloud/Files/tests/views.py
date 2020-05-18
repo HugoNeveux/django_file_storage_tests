@@ -33,7 +33,6 @@ class UploadFileTest(TestCase):
                 self.assertEqual(UserFile.objects.filter(
                     name=os.path.basename(f.name)).count(), 1)
                 self.assertEqual(response.status_code, 200)
-                self.assertJSONEqual(response.content, {'form': True})
 
     def test_file_too_big(self):
         user = User.objects.get(username='temporary')

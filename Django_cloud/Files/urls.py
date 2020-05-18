@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^$', views.FileUploadAndListView.as_view()),
     url(r'^tree/(?P<path>.*)$', views.FileUploadAndListView.as_view(), name='files'),
     url(r'^download_dir/(?P<path>.*)$', views.download_dir, name='download_dir'),
-    url(r'download_file/(?P<id>\d+)/', views.download_file, name='download_file'),
+    url(r'^download_file/(?P<id>\d+)/', views.download_file, name='download_file'),
     url(r'^create_dir/(?P<path>.*)$', views.folder_creation, name='create_dir'),
     url(r'^del_file/(?P<path>.*)$', views.del_file, name='del_file'),
     url(r'^fav/(?P<path>.*)$', views.fav, name='fav'),

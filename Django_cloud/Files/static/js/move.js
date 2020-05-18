@@ -29,4 +29,4 @@ $('.action_file_move').on('click', function (e) {
         );
     }
     $('#modalMove').modal('show');
-})
+});

@@ -7,196 +7,189 @@
 {% endblock extra_css %}
 
 {% block content %}
-    <div class="Breadcrumb">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'files' path='' %}"><span class="fa fa-home"></a></li>
-                    {% for parent in breadcrumb.path %}
-                    <li class="breadcrumb-item"><a href="{% url 'files' path=parent.1 %}">{{ parent.0 }}</a></li>
-                    {% endfor %}
-                    <li class="breadcrumb-item active" aria-current="page">{{ breadcrumb.active }}</li>
-                </ol>
-            </nav>
-        </div>
+<div class="Breadcrumb">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'files' path='' %}"><span class="fa fa-home"></a></li>
+            {% for parent in breadcrumb.path %}
+            <li class="breadcrumb-item"><a href="{% url 'files' path=parent.1 %}">{{ parent.0 }}</a></li>
+            {% endfor %}
+            <li class="breadcrumb-item active" aria-current="page">{{ breadcrumb.active }}</li>
+        </ol>
+    </nav>
+</div>
 
-        <div id="errorZone" class="alert alert-danger alert-dismissible" style="margin: 10px; display:none;">
-            <a href="#" class="close" onclick="$('#errorZone').hide();">&times;</a>
-        </div>
-        <div id="dropzone-previews" class="row">
-        </div>
-        <form class="dropzone" method="post" id="multiFileUpload" enctype="multipart/form-data" style="border: none; padding: 0;">
-            <input type="hidden" name="path" id="id_path" value="{{ current_dir }}">
-            {{ form.file }}
-                <p>
-                    <ul>
-                        {% for element in directory_directories %}
-                        <li class="folder draggable">
-                            <a href="{% url 'files' path=element.url %}" class="dir"><span class="fa fa-folder" id="icone_folder"></span>{{ element.name }}</a>
-                            <div class="dropdown">
-                                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {# <span class="fa fa-ellipsis-v" id="dropdown_icon"></span> #}
-                                    Actions
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="{% url 'download_dir' path=element.url %}">Télécharger</a>
-                                    <a class="dropdown-item action_dir_delete" href="{% url 'del_file' path=element.url %}?redirect={{ current_dir }}">Supprimer</a>
-                                </div>
-                            </div>
-                        </li>
-                        {% endfor %}
-                        {% for element in directory_files %}
-                        <li class="file draggable"><a class="name__icon" href="{% url 'download_file' id=element.id %}"><span class="fa fa-file" id="icone"></span><span class="fname">{{ element.name }}</span></a>
-                            <div class="dropdown">
-                                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {# <span class="fa fa-ellipsis-v" id="dropdown_icon"></span> #}
-                                    Actions
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item action_file_delete" href="{% url 'del_file' path=element.file %}?redirect={{ current_dir }}">Supprimer</a>
-                                    <a class="dropdown-item" href="{% url 'fav' path=current_dir %}?filename={{ element.name }}">
-                                        {% if element.favorite %}
-                                        Retirer des favoris
-                                        {% else %}
-                                        Ajouter aux favoris
-                                        {% endif %}
-                                    </a>
-                                    <a class="dropdown-item action_file_move" href="#">Déplacer</a>
-                                    <a class="dropdown-item action_file_share" href="#" fid="{{ element.id }}">Partager</a>
-                                </div>
-                            </div>
-                        </li>
-                        {% empty %}
-                        <div class="text-center my-5">
-                            <p class="text-grey">Déposez un fichier ici pour l'ajouter.</p>
-                        </div>
-                        {% endfor %}
-                    </ul>
+<div id="errorZone" class="alert alert-danger alert-dismissible" style="margin: 10px; display:none;">
+    <a href="#" class="close" onclick="$('#errorZone').hide();">&times;</a>
+</div>
+
+<div id="dropzone-previews" class="row">
+</div>
+<form class="{% if '/Files/tree/' in request.path or request.path == '/Files/' %}dropzone{% endif %}" method="post" action='.' id="multiFileUpload" enctype="multipart/form-data" style="border: none; padding: 0;">
+    <input type="hidden" name="path" id="id_path" value="{{ current_dir }}">
+    {{ form.file }}
+    <p>
+        <ul id="fileList">
+            {% for element in directory_directories %}
+            <li class="folder draggable">
+                <a href="{% url 'files' path=element.url %}" class="dir"><span class="fa fa-folder" id="icone_folder"></span>{{ element.name }}</a>
+                <div class="dropdown">
+                    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Actions
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'download_dir' path=element.url %}">Télécharger</a>
+                        <a class="dropdown-item action_dir_delete" href="{% url 'del_file' path=element.url %}?redirect={{ current_dir }}">Supprimer</a>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+            {% for file in directory_files %}
+                {% include "ul_file.html" %}
+            {% empty %}
+            {% if '/Files/tree/' not in request.path and request.path != '/Files/' %}
+            <div class="text-center my-5">
+                <p class="text-secondary">
+                    Vous n'avez déposé aucun fichier pour le moment.
                 </p>
-        </form>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </ul>
+        {% if '/Files/tree/' in request.path or request.path == '/Files/' %}
+        <div class="dz-message text-center text-secondary" data-dz-message><span>
+            Déposez un fichier ou cliquez ici pour ajouter un fichier.
+        </span></div>
+        {% endif %}
+    </p>
+</form>
 
 {% endblock content %}
 
 {% block extra_js %}
 <script type="text/javascript" src="{% static 'dropzone-5.7.0/dist/dropzone.js' %}"></script>
 <script type="text/javascript">
-// Variables initialization with django
-function unescapeHTML(unsafe) {
-    return unsafe
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, "\"")
-    .replace(/&#039;/g, "'");
-}
-let csrf_token = '{{ csrf_token }}';
-let files = '{{ files_json }}';
-if (files.length > 0) {
-    files = JSON.parse(unescapeHTML(files));
-}
-current_dir = "{{ current_dir }}";
-space_available = {{ space.available_b }} ;
-
-$('#id_path').data('value', current_dir);
-
-function fileExists(files, filename) {
-    for (i in files) {
-        if (files[i].fields.name == filename) {
-            return true;
-        }
+    // Variables initialization with django
+    function unescapeHTML(unsafe) {
+        return unsafe
+            .replace(/&amp;/g, "&")
+            .replace(/&lt;/g, "<")
+            .replace(/&gt;/g, ">")
+            .replace(/&quot;/g, "\"")
+            .replace(/&#039;/g, "'");
     }
-    return false;
-}
+    let csrf_token = '{{ csrf_token }}';
+    let files = '{{ files_json }}';
+    if (files.length > 0) {
+        files = JSON.parse(unescapeHTML(files));
+    }
+    current_dir = "{{ current_dir }}";
+    space_available = "{{ space.available_b }}";
 
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        let cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            let cookie = $.trim(cookies[i]);
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
+    $('#id_path').data('value', current_dir);
+
+    function fileExists(files, filename) {
+        for (i in files) {
+            if (files[i].fields.name == filename) {
+                return true;
             }
         }
+        return false;
     }
-    return cookieValue;
-}
-let csrftoken = getCookie('csrftoken');
-Dropzone.autoDiscover = false;
-$('#multiFileUpload').dropzone({
-    url: ".",
-    crossDomain: false,
-    paramName: "file",
-    parallelUploads: 5,
-    autoProcessQueue: true,
-    filesizeBase: 1024,
-    maxFilesize: 1073741824,
-    dictRemoveFileConfirmation: null,
-    clickable: false,
-    previewsContainer: '#dropzone-previews',
-    previewTemplate: '<div id="dztp" class="col text-center transition-width">\
-                    <div class="dz-filename">\
-                    <span data-dz-name=""></span>\
-                    </div>\
-                    <div class="dz-progress">\
-                    <span class="dz-upload text-white" data-dz-uploadprogress="">\
-                    <span class="progress-text"></span>\
-                    </span>\
-                    </div>\
-                </div>',
-    init: function() {
-        myDropzone = this;
-        this.on('uploadprogress', function(file, progress, bytesSent) {
-            progress = bytesSent / file.size * 100;
-            percent = Math.floor(progress);
-            if (file.previewElement) {
-                let progressElement = file.previewElement.querySelector('[data-dz-uploadprogress]');
-                if (percent <= 100) {
-                    progressElement.querySelector('.progress-text').textContent = percent + "%";
-                } else {
-                    progressElement.querySelector('.progress-text').textContent = '100%';
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            let cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = $.trim(cookies[i]);
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
                 }
             }
-        });
-        this.on('sending', function(file, xhr, formData) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            if ((fileExists(files, file.name))) {
-                if (!confirm("Voulez-vous vraiment envoyer ce fichier ?\nSi vous continuez, le fichier pré-existant sera écrasé.")) {
+        }
+        return cookieValue;
+    }
+    let csrftoken = getCookie('csrftoken');
+
+    let pathname = window.location.pathname;
+    if (pathname == '/Files/' || pathname.startsWith('/Files/tree/')) {
+        Dropzone.autoDiscover = false;
+        $('#multiFileUpload').dropzone({
+            crossDomain: false,
+            paramName: "file",
+            parallelUploads: 5,
+            autoProcessQueue: true,
+            filesizeBase: 1024,
+            maxFilesize: 1073741824,
+            dictRemoveFileConfirmation: null,
+            clickable: true,
+            previewsContainer: '#dropzone-previews',
+            previewTemplate: '<div id="dztp" class="col text-center transition-width">\
+            <div class="dz-filename">\
+            <span data-dz-name=""></span>\
+            </div>\
+            <div class="dz-progress">\
+            <span class="dz-upload text-white" data-dz-uploadprogress="">\
+            <span class="progress-text"></span>\
+            </span>\
+            </div>\
+            </div>',
+            init: function() {
+                myDropzone = this;
+                this.on('uploadprogress', function(file, progress, bytesSent) {
+                    progress = bytesSent / file.size * 100;
+                    percent = Math.floor(progress);
+                    if (file.previewElement) {
+                        let progressElement = file.previewElement.querySelector('[data-dz-uploadprogress]');
+                        if (percent <= 100) {
+                            progressElement.querySelector('.progress-text').textContent = percent + "%";
+                        } else {
+                            progressElement.querySelector('.progress-text').textContent = '100%';
+                        }
+                    }
+                });
+                this.on('sending', function(file, xhr, formData) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    if ((fileExists(files, file.name))) {
+                        if (!confirm("Voulez-vous vraiment envoyer ce fichier ?\nSi vous continuez, le fichier pré-existant sera écrasé.")) {
+                            this.removeFile(file);
+                        }
+                    }
+                });
+                this.on("maxfilesexceeded", function(data) {
+                    let res = eval('(' + data.xhr.responseText + ')');
+                });
+                this.on("error", function(file, message) {
+                    if ($('#errorMsg').length > 0) {
+                        $('#errorMsg').remove();
+                    }
+                    let msg = "";
+                    for (let key in message) {
+                        msg += message[key] + "<br/>";
+                    }
+                    $('#errorZone').append(`<span id="errorMsg">${msg}</span>`);
+                    $('#errorZone').show();
+                });
+                this.on('complete', function(file) {
                     this.removeFile(file);
-                }
-            }
+                });
+                this.on('success', function(file, response) {
+                    if (response.file_html) {
+                        $('ul#fileList').append(response.file_html);
+                    }
+                    $('span#usedSpace').text(response.space_used);
+                });
+            },
         });
-        this.on("maxfilesexceeded", function(data) {
-            let res = eval('(' + data.xhr.responseText + ')');
-        });
-        this.on("error", function(file, message) {
-            if ($('#errorMsg').length > 0) {
-                $('#errorMsg').remove();
-            }
-            let msg = "";
-            if (message.error) {
-                msg = message.error;
-            } else if (message.file) {
-                msg = message.file;
-            }
-            $('#errorZone').append(`<span id="errorMsg">${msg}</span>`);
-            $('#errorZone').show();
-        });
-        this.on('successmultiple', function(file) {
-            location.reload();
-        });
-        this.on('complete', function(file) {
-            this.removeFile(file);
-        });
-    },
-});
-
-$(window).on('dragover', function (e) {
-    e.preventDefault();
-});
-$(window).on('drop', function (e) {
-    e.preventDefault();
-})
+    }
+    $(window).on('dragover', function(e) {
+        e.preventDefault();
+    });
+    $(window).on('drop', function(e) {
+        e.preventDefault();
+    });
 </script>
 <script type="text/javascript" src="{% static 'js/move.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/share.js' %}"></script>

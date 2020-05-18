@@ -181,7 +181,7 @@
   .dropzone.dz-clickable {
     cursor: pointer; }
     .dropzone.dz-clickable * {
-      cursor: default; }
+      }
     .dropzone.dz-clickable .dz-message, .dropzone.dz-clickable .dz-message * {
       cursor: pointer; }
   .dropzone.dz-started .dz-message {

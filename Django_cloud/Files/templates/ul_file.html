@@ -1,0 +1,19 @@
+<li class="file draggable"><a class="name__icon" href="{% url 'download_file' id=file.id %}"><span class="fa fa-file" id="icone"></span><span class="fname">{{ file.name }}</span></a>
+    <div class="dropdown">
+        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Actions
+        </a>
+        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item action_file_delete" href="{% url 'del_file' path=file.file %}?redirect={{ current_dir }}">Supprimer</a>
+            <a class="dropdown-item" href="{% url 'fav' path=current_dir %}?filename={{ file.name }}">
+                {% if file.favorite %}
+                Retirer des favoris
+                {% else %}
+                Ajouter aux favoris
+                {% endif %}
+            </a>
+            <a class="dropdown-item action_file_move" href="#">Déplacer</a>
+            <a class="dropdown-item action_file_share" href="#" fid="{{ file.id }}">Partager</a>
+        </div>
+    </div>
+</li>

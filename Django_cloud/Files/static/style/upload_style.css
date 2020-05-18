@@ -9,11 +9,11 @@
     display: none;
 }
 
-.dropzone {
+#multiFileUpload {
     min-height: 500px !important;
 }
 
-.dropzone.has-advanced-upload .dopzone__dragndrop {
+#multiFileUpload.has-advanced-upload .dopzone__dragndrop {
     display: inline;
     height: 50%;
 }
@@ -33,6 +33,7 @@
     justify-content: space-between;
     flex-wrap: nowrap;
     flex-direction: row;
+    cursor: default;
 }
 
 a.name__icon {
@@ -74,11 +75,7 @@ a.name__icon {
     margin-bottom: 0.1%;
 }
 
-.dz-message {
-    display: none !important;
-}
-
-.dropzone.dz-drag-hover {
+#multiFileUpload.dz-drag-hover {
     background-color: aliceblue !important;
     border-radius: 5px;
 }

@@ -1,0 +1,39 @@
+{% load dark %}
+{% load static %}
+
+<ul class="navbar-nav bg-white px-3 py-0 my-0" style="font-size: 1.2em; width: 100%; ">
+    <li><a href="{% url 'files' path='' %}" class="line_icon nav-item text-secondary"><span class="menu_text">Fichiers</span><span class="fa fa-file side_icon"></a></li>
+    <li><a href="{% url 'fav_list' %}" class="nav-item text-secondary line_icon"><span class="menu_text">Favoris</span><span class="fa fa-star side_icon"></a></li>
+    <li><a href="{% url 'recent' %}" class="line_icon nav-item text-secondary"><span class="menu_text">Récents</span><span class="fa fa-history side_icon"></a></li>
+    <li><a href="{% url 'settings_main' %}" class="line_icon nav-item text-secondary"><span class="menu_text">Paramètres</span><span class="fa fa-cogs side_icon"></span></a></li>
+    {% if '/Files/tree/' in request.path or request.path == '/Files/' %}
+    <li id="new_folder"><a class="line_icon nav-item text-secondary"><span class="menu_text">Nouveau dossier</span><span class="fa fa-folder-open side_icon"></span></a></li>
+    {% endif %}
+    <li><a href="{% url 'about' %}" class="line_icon nav-item text-secondary"><span class="menu_text">À propos</span><span class="fab fa-linux"></span></a></li>
+    {% if user.is_staff %}
+    <li><a class="line_icon nav-item text-secondary" href="{% url 'admin:index' %}">
+            <div class="menu_text">Administration</div><span class="fas fa-tools side_icon"></span>
+        </a></li>
+    {% endif %}
+    <div class="menu_text">
+        {% if space %}
+        <li id="storage_space">
+            Espace de Stockage<br />
+            <span id='usedSpace'>{{ space.used }}</span> / {{ space.available }}
+        </li>
+        {% endif %}
+    </div>
+    <!-- <div class="menu_text">
+        <li>
+            {% if request.user|has_dark %}
+            <div class="theme_button">
+                <label class="switch">
+                    <input type="checkbox" onclick="LoadCSS('{% static 'style/dark_style.css' %}')">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            {% endif %}
+        </li>
+    </div> -->
+
+</ul>

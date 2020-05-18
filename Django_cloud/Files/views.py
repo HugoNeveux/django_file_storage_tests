@@ -16,22 +16,15 @@ from django.views.generic.edit import FormView
 from django.urls import reverse
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core import serializers
+from django.forms import model_to_dict
+from django.template.loader import render_to_string
 from .file_utils import format_bytes, recursive_file_list
 import shutil
 from io import BytesIO
 import zipfile
 
 
-class AjaxResponsibleMixin:
-    def form_invalid(self, form):
-        response = super().form_invalid(form)
-        if self.request.is_ajax():
-            return JsonResponse(form.errors, status=400)
-        else:
-            return response
-
-
-class FileUploadAndListView(AjaxResponsibleMixin, LoginRequiredMixin, FormView):
+class FileUploadAndListView(LoginRequiredMixin, FormView):
     """Read ans save sent file"""
     form_class = UploadFileForm
     template_name = 'files.html'
@@ -46,6 +39,7 @@ class FileUploadAndListView(AjaxResponsibleMixin, LoginRequiredMixin, FormView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         files = request.FILES.getlist('file')
+        f = False
         if form.is_valid():
             # Space available
             user_profile = Profile.objects.get(user=request.user.id)
@@ -69,7 +63,7 @@ class FileUploadAndListView(AjaxResponsibleMixin, LoginRequiredMixin, FormView):
                             user_profile.save()
                             existing_file[0].save(current_dir)
                     else:
-                        file = UserFile(file=form.cleaned_data["file"],
+                        f = UserFile(file=form.cleaned_data["file"],
                                         name=form.cleaned_data["file"].name,
                                         owner=request.user,
                                         directory=current_dir,
@@ -77,11 +71,15 @@ class FileUploadAndListView(AjaxResponsibleMixin, LoginRequiredMixin, FormView):
                         user_profile.total_used += form.cleaned_data["file"].size
                         if user_profile.total_used <= user_profile.upload_limit:
                             user_profile.save()
-                            file.save(os.path.join(current_dir))
-
-            return JsonResponse({'form': True})
+                            f.save(os.path.join(current_dir))
+            res = {'form': True, 'space_used': format_bytes(user_profile.total_used)}
+            if f:
+                res['file_html'] = render_to_string('ul_file.html', {
+                                                    'file': f,
+                                                    'current_dir': path,
+                                                    })
+            return JsonResponse(res)
         else:
-            # return JsonResponse({'form': False})
             return JsonResponse(form.errors, status=400)
 
     def get(self, request, path='', *args, **kwargs):
@@ -124,7 +122,7 @@ class FileUploadAndListView(AjaxResponsibleMixin, LoginRequiredMixin, FormView):
 
         # Preparing context
         return render(request, 'files.html', {
-            'form': self.get_form_class(),
+            'form': self.get_form(),
             'directory_files': files,
             'directory_directories': directories,
             'breadcrumb': breadcrumb,
@@ -191,7 +189,7 @@ def del_file(request, path):
         file = UserFile.objects.get(
             file=path, owner=request.user.id)
         profile = Profile.objects.get(user=request.user.id)
-        profile.total_used -= file.size
+        profile.total_used -= file.file.size
         profile.save()
         file.delete()
         os.remove(os.path.join(settings.MEDIA_ROOT, path))
