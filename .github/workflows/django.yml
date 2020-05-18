@@ -28,4 +28,5 @@ jobs:
     - name: Run Tests
       run: |
         cd Django_cloud
+        mkdir -p media
         python manage.py test
