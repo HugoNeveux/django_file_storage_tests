@@ -55,3 +55,10 @@ A multi-user cloud app for file storage, using the Django framework for python a
 - [x] Favorite files / folders
     - [x] File model creation (association with FileSystemStorage)
     - [x] Favorite files view
+
+### Rewrite
+
+- [x] File upload, share, settings, etc.
+- [ ] Folder share & folder favorite
+- [ ] Rewrite tests
+- [ ] Completely remove UserFile model  
