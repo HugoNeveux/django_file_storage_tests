@@ -6,7 +6,7 @@ import random, string
 class ShareLink(models.Model):
     link = models.CharField(max_length=255, unique=True)
     creator = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    to_file = models.ForeignKey(to=UserFile, on_delete=models.CASCADE)
+    file_path = models.CharField(max_length=2000)
 
     def link_generation():
         chars = string.ascii_letters + string.digits

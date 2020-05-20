@@ -1,15 +1,14 @@
-from django.shortcuts import render, get_object_or_404
-from Files.models import UserFile
+from django.shortcuts import render
 from .models import ShareLink
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, FileResponse
 
 @login_required
 def create_share_link(request, file_id):
-    file = get_object_or_404(UserFile, id=file_id)
+    fs = FileSystemStorage()
     if request.user == file.owner:
         link = ShareLink(link=ShareLink.link_generation(),
-                         to_file=file, creator=request.user)
+                         path=file, creator=request.user)
         link.save()
     return JsonResponse({'link': link.link})
 

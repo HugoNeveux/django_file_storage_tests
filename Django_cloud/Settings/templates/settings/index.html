@@ -1,6 +1,5 @@
-{% extends "base.html" %}
+{% extends "base/base.html" %}
 {% load static %}
-{% block hdml_head %}{% endblock hdml_head %}
 {% block content %}
 <form action="{% url 'settings_main' %}" method="post">
     {% csrf_token %}

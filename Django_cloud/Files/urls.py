@@ -11,9 +11,9 @@ urlpatterns = [
     url(r'^download/(?P<path>.*)$', views.DownloadView.as_view(), name='download'),
     url(r'^create_dir/(?P<path>.*)$', views.FolderCreationView.as_view(), name='create_dir'),
     url(r'^del_file/(?P<path>.*)$', views.DeleteFileView.as_view(), name='del_file'),
-    url(r'^fav/(?P<path>.*)$', views.fav, name='fav'),
-    url(r'^favorites/$', views.fav_list, name='fav_list'),
-    url(r'^last_files/$', views.last_files, name='recent'),
+    url(r'^fav/(?P<path>.*)$', views.FavFileView.as_view(), name='fav'),
+    url(r'^favorites/$', views.FavFileListView.as_view(), name='fav_list'),
+    url(r'^last_files/$', views.LastFilesView.as_view(), name='recent'),
     url(r'^mv/', views.MoveFileView.as_view(), name='move'),
     url(r'^about/', TemplateView.as_view(template_name='about.html'), name='about'),
 ]
