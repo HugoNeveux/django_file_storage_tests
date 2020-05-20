@@ -10,7 +10,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from urllib.parse import unquote
+from urllib.parse import unquote, quote
 from django.shortcuts import get_object_or_404
 import json
 from django.views import View
@@ -177,36 +177,30 @@ class DownloadView(LoginRequiredMixin, View, FileView):
 class FolderCreationView(LoginRequiredMixin, View, FileView):
     def get(self, request, path):
         """Folder creation"""
-        dir_path = p.join(self.fs.location, path)
+        next = request.GET.get('next')
+        dir_path = p.join(self.fs.location, request.user.username, 'files', path.strip())
         if not p.exists(dir_path):
             os.mkdir(dir_path)
-        return redirect(reverse("files", kwargs={"path": path}))
+        return redirect(reverse("files", kwargs={"path": next}))
 
+class DeleteFileView(LoginRequiredMixin, View, FileView):
+    def get(self, request, path):
+        """File or folder deletion"""
+        next = request.GET.get('next')
+        path_to = p.join(request.user.username, 'files', path)
+        if os.path.isfile(p.join(self.fs.location, path_to)):
+            profile = Profile.objects.get(user=request.user.id)
+            profile.total_used -= self.fs.size(path_to)
+            profile.save()
+            self.fs.delete(path_to)
+        elif p.isdir(p.join(self.fs.location, path_to)) and path != "":
+            to_dir = p.join(self.fs.location, path_to)
+            if len(self.fs.listdir(path_to)) == 0:
+                os.rmdir(to_dor)
+            else:
+                shutil.rmtree(to_dir)
+        return redirect(reverse("files", kwargs={'path': next if next is not None else ''}))
 
-@login_required
-def del_file(request, path):
-    """File or folder deletion"""
-    redirection = request.GET.get('redirect')
-    if os.path.isfile(os.path.join(settings.MEDIA_ROOT, path)):
-        file = UserFile.objects.get(
-            file=path, owner=request.user.id)
-        profile = Profile.objects.get(user=request.user.id)
-        profile.total_used -= file.file.size
-        profile.save()
-        file.delete()
-        os.remove(os.path.join(settings.MEDIA_ROOT, path))
-    elif path != '':
-        path = os.path.join(settings.MEDIA_ROOT,
-                            request.user.username, 'files', path)
-        dir_contents = os.listdir(path)
-        if len(dir_contents) == 0:
-            os.rmdir(path)
-        else:
-            to_delete = UserFile.objects.filter(
-                directory__startswith=path.replace(settings.MEDIA_ROOT, '')[1:]).delete()
-            shutil.rmtree(path)
-
-    return redirect(reverse("files", kwargs={'path': redirection if redirection is not None else ''}))
 
 
 @login_required
@@ -241,26 +235,20 @@ def last_files(request):
         'directory_directories': [],
     })
 
-
-@login_required
-def mv(request):
-    """Moves file from origin to dest"""
-    origin = request.GET.get('from')
-    dest = request.GET.get('to')
-    file_origin = os.path.join(request.user.username, 'files', origin)
-    if dest == 'previous':
-        full_dest = os.path.join(os.path.dirname(os.path.dirname(file_origin)))
-    else:
-        full_dest = os.path.join(request.user.username, 'files', dest)
-    if not full_dest.startswith(os.path.join(request.user.username, 'files')):
-        full_dest = os.path.join(request.user.username, 'files')
-    moved_file = get_object_or_404(
-        UserFile, owner=request.user, file=file_origin)
-    if os.path.isdir(os.path.join(settings.MEDIA_ROOT, full_dest)):
-        os.rename(os.path.join(settings.MEDIA_ROOT, file_origin),
-                  os.path.join(settings.MEDIA_ROOT, full_dest, moved_file.name))
-        moved_file.file = os.path.join(full_dest, moved_file.name)
-        moved_file.directory = full_dest
-        moved_file.save(upload_to=full_dest)
-        return redirect(reverse('files', kwargs={'path': request.GET.get('redirect')}))
-    return Http404
+class MoveFileView(LoginRequiredMixin, View, FileView):
+    def get(self, request):
+        """Moves file from origin to dest"""
+        origin = request.GET.get('from')
+        dest = request.GET.get('to')
+        file_origin = p.join(request.user.username, 'files', origin)
+        if dest == 'previous':
+            full_dest = p.join(p.dirname(p.dirname(file_origin)))
+        else:
+            full_dest = p.join(request.user.username, 'files', dest)
+        if not full_dest.startswith(p.join(request.user.username, 'files')):
+            full_dest = os.path.join(request.user.username, 'files')
+        if p.isdir(p.join(self.fs.location, full_dest)) and p.exists(p.join(self.fs.location, file_origin)):
+            os.rename(p.join(self.fs.location, file_origin),
+                      p.join(self.fs.location, full_dest, p.basename(file_origin)))
+            return redirect(reverse('files', kwargs={'path': request.GET.get('next')}))
+        return Http404

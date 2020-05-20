@@ -15,7 +15,7 @@ $('.action_file_move').on('click', function (e) {
     if (current_dir != "") {
         $('#modalMoveUl').append(
             `<li class="folder" style="width:100%;">\
-            <a href="/Files/mv/?from=${from}&to=previous&redirect=${current_dir}">\
+            <a href="/Files/mv/?from=${from}&to=previous&next=${current_dir}">\
             <span class="fa fa-folder" id="icone_folder"></span>Dossier précédent</a></li>`
         );
     }
@@ -24,7 +24,7 @@ $('.action_file_move').on('click', function (e) {
         to = to.replace(/(^\/+|\/+$)/mg, '');
         $('#modalMoveUl').append(
             `<li class="folder" style="width:100%;">\
-            <a href="/Files/mv/?from=${from}&to=${to}&redirect=${current_dir}">\
+            <a href="/Files/mv/?from=${from}&to=${to}&next=${current_dir}">\
             <span class="fa fa-folder" id="icone_folder"></span>${dir.text}</a></li>`
         );
     }
