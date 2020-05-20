@@ -1,5 +1,5 @@
 $('.action_file_share').on('click', function (e) {
-    let file_id = $(e.target).attr('fid');
+    let file_id = $(e.target).attr('fpath');
     $.getJSON(`/Share/create/${file_id}`, function (data) {
         $('#copy-input').attr('value', `${window.location.origin}/Share/s/${data.link}`);
         $('#shareModal').modal('show');
