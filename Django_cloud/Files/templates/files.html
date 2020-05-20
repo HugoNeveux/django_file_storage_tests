@@ -38,7 +38,7 @@
                         Actions
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="{% url 'download_dir' path=element.url %}">Télécharger</a>
+                        <a class="dropdown-item" href="{% url 'download' path=element.url %}">Télécharger</a>
                         <a class="dropdown-item action_dir_delete" href="{% url 'del_file' path=element.url %}?redirect={{ current_dir }}">Supprimer</a>
                     </div>
                 </div>
@@ -88,9 +88,10 @@
 
     $('#id_path').data('value', current_dir);
 
+
     function fileExists(files, filename) {
-        for (i in files) {
-            if (files[i].fields.name == filename) {
+        for (let i in files) {
+            if (files[i].name == filename) {
                 return true;
             }
         }
