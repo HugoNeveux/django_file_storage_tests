@@ -59,6 +59,6 @@ A multi-user cloud app for file storage, using the Django framework for python a
 ### Rewrite
 
 - [x] File upload, share, settings, etc.
-- [ ] Folder share & folder favorite
-- [ ] Rewrite tests
+- [x] Folder share & folder favorite
+- [x] Rewrite tests
 - [ ] Completely remove UserFile model  

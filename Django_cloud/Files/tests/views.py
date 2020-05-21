@@ -1,6 +1,5 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
-from Files.models import UserFile
 from Auth.models import Profile
 from django.core.files import File
 import os
@@ -30,9 +29,7 @@ class UploadFileTest(TestCase):
             with open(f'./Files/tests/upload_f/{file}') as f:
                 response = self.client.post(
                     '/Files/tree/', {'file': f, 'path': ''})
-                self.assertEqual(UserFile.objects.filter(
-                    name=os.path.basename(f.name)).count(), 1)
-                self.assertEqual(response.status_code, 200)
+                self.assertTrue(os.path.exists(os.path.join('./media/temporary/files/', os.path.basename(f.name))))
 
     def test_file_too_big(self):
         user = User.objects.get(username='temporary')
@@ -48,8 +45,7 @@ class UploadFileTest(TestCase):
             self.assertJSONEqual(response.content, {
                 'error': f'Limite de stockage dépassée: le fichier too_big.txt ne peut pas être enregistré.'
             })
-            self.assertEqual(UserFile.objects.filter(
-                name='too_big.txt').count(), 0)
+        self.assertFalse(os.path.exists('./media/temporary/files/too_big.txt'))
 
     def test_file_empty(self):
         self.client.login(username='temporary', password='temporary')
@@ -58,8 +54,7 @@ class UploadFileTest(TestCase):
                 '/Files/tree/', {'file': f, 'path': ''}
             )
             self.assertEqual(response.status_code, 400)
-            self.assertEqual(UserFile.objects.filter(
-                name='empty.txt').count(), 0)
+            self.assertFalse(os.path.exists('./media/temporary/files/empty.txt'))
 
 
 class FileListTest(TestCase):
@@ -100,8 +95,7 @@ class FileMoveTest(TestCase):
         """Move file"""
         self.client.login(username='temporary', password='temporary')
         r = self.client.get('/Files/mv/?from=text.txt&to=dir1&redirect=', follow=True)
-        self.assertEqual(UserFile.objects.filter(directory="temporary/files/dir1",
-                                                 file="temporary/files/dir1/text.txt").count(), 1)
+        self.assertTrue(os.path.exists('./media/temporary/files/dir1/text.txt'))
 
     def tearDown(self):
         User.objects.filter(username='temporary').delete()
