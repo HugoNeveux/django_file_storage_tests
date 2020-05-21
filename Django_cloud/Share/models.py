@@ -1,5 +1,4 @@
 from django.db import models
-from Files.models import UserFile
 from django.contrib.auth.models import User
 import random, string
 

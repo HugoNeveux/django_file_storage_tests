@@ -170,8 +170,8 @@ class DownloadView(LoginRequiredMixin, View, FileView):
                 for fpath in filenames:
                     fdir, fname = os.path.split(fpath)
 
-                    zf.write(fpath, fpath.replace(os.path.join(
-                        settings.MEDIA_ROOT, request.user.username, 'files'), ''))
+                    zf.write(fpath, fpath.replace(p.join(
+                        self.fs.location, request.user.username, 'files'), ''))
                 zf.close()
                 resp = HttpResponse(
                     s.getvalue(), content_type="application/x-zip-compressed")

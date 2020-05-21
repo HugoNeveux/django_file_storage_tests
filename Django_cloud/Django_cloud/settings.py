@@ -131,3 +131,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_REDIRECT_URL = "Files/"
 
 LOGIN_URL = "login"
+
+# Files settings
+
+MAX_RECENT_FILES = 50
