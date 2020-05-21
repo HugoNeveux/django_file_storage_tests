@@ -2,7 +2,7 @@ import os
 from os import path as p
 from django.shortcuts import render, redirect
 from .forms import UploadFileForm
-from .models import FavoriteFiles, RecentFiles
+from .models import FavoriteFile, RecentFile
 from Auth.models import Profile
 from django.conf import settings
 from django.http import Http404, FileResponse, HttpResponse, JsonResponse
@@ -77,15 +77,15 @@ class TreeView(LoginRequiredMixin, FormView, FileView):
                         user_profile.total_used += file.size
                         user_profile.save()
                         MAX_RECENT_FILES = 50
-                        if RecentFiles.objects.filter(owner=request.user).count() >= MAX_RECENT_FILES - 1:
+                        if RecentFile.objects.filter(owner=request.user).count() >= MAX_RECENT_FILES - 1:
                             # Deleting some entries if there are too much
-                            delta = RecentFiles.objects.filter(owner=request.user).count() - (MAX_RECENT_FILES - 1)
-                            for entry in RecentFiles.objects.filter(owner=request.user).order_by('last_modification')[:delta]:
+                            delta = RecentFile.objects.filter(owner=request.user).count() - (MAX_RECENT_FILES - 1)
+                            for entry in RecentFile.objects.filter(owner=request.user).order_by('last_modification')[:delta]:
                                 entry.delete()
-                        RecentFiles(owner=request.user, path=p.join(path, file.name)).save()
-                        # Adding the new file to recentfiles
+                        RecentFile(owner=request.user, path=p.join(path, file.name)).save()
+                        # Adding the new file to RecentFile
                     else:
-                        RecentFiles.objects.get(owner=request.user, path=p.join(path, file.name)).save()
+                        RecentFile.objects.get(owner=request.user, path=p.join(path, file.name)).save()
                     with open(p.join(self.fs.location, current_dir, file.name), 'wb+') as dest_file:
                         # Saving file
                         for chunk in file.chunks():
@@ -208,8 +208,8 @@ class DeleteView(LoginRequiredMixin, View, FileView):
             profile = Profile.objects.get(user=request.user.id)
             profile.total_used -= self.fs.size(path_to)
             # Delete potential database entries
-            if RecentFiles.objects.filter(owner=request.user, path=path).count() > 0:
-                RecentFiles.objects.get(owner=request.user, path=path).delete()
+            if RecentFile.objects.filter(owner=request.user, path=path).count() > 0:
+                RecentFile.objects.get(owner=request.user, path=path).delete()
             profile.save()
             self.fs.delete(path_to)
         elif p.isdir(p.join(self.fs.location, path_to)) and path != "":
@@ -219,25 +219,25 @@ class DeleteView(LoginRequiredMixin, View, FileView):
             else:
                 shutil.rmtree(to_dir)
         # Delete db entries which could be common to files & folders
-        if FavoriteFiles.objects.filter(owner=request.user, path=path).count() > 0:
-            FavoriteFiles.objects.get(owner=request.user, path=path).delete()
+        if FavoriteFile.objects.filter(owner=request.user, path=path).count() > 0:
+            FavoriteFile.objects.get(owner=request.user, path=path).delete()
         return redirect(reverse("files", kwargs={'path': next if next is not None else ''}))
 
 
 class FavFileView(LoginRequiredMixin, View):
     def get(self, request, path):
         next = request.GET.get('next')
-        existing = FavoriteFiles.objects.filter(path=path, owner=request.user)
+        existing = FavoriteFile.objects.filter(path=path, owner=request.user)
         if existing.count() > 0:
             existing.delete()
         else:
-            FavoriteFiles(path=p.join(path), owner=request.user).save()
+            FavoriteFile(path=p.join(path), owner=request.user).save()
         return redirect(reverse('files', kwargs={'path': next if next is not None else ''}))
 
 
 class FavFileListView(LoginRequiredMixin, View, FileView):
     def get(self, request):
-        favs = FavoriteFiles.objects.filter(owner=request.user)
+        favs = FavoriteFile.objects.filter(owner=request.user)
         abspath = p.join(self.fs.location, request.user.username, 'files')
         files, dirs = [], []
 
@@ -251,7 +251,7 @@ class FavFileListView(LoginRequiredMixin, View, FileView):
                 dirs.append({'name': p.basename(element.path), 'url': element.path,
                              'favorite': True})
             else:
-                FavoriteFiles.objects.get(owner=request.user, path=element.path).delete()
+                FavoriteFile.objects.get(owner=request.user, path=element.path).delete()
         return render(request, 'files_templates/files.html', {
             'directory_files': files,
             'directory_directories': dirs,
@@ -261,14 +261,14 @@ class FavFileListView(LoginRequiredMixin, View, FileView):
 class LastFilesView(LoginRequiredMixin, View, FileView):
     def get(self, request):
         f_objects = []
-        for file in RecentFiles.objects.filter(owner=request.user).order_by("-last_modification"):
+        for file in RecentFile.objects.filter(owner=request.user).order_by("-last_modification"):
             if p.isfile(p.join(self.fs.location, request.user.username, 'files', file.path)):
-                fav = FavoriteFiles.objects.filter(
+                fav = FavoriteFile.objects.filter(
                     owner=request.user, path=file.path).count() > 0
                 f_objects.append({'name': p.basename(file.path),
                              'url': file.path, 'favorite': fav})
             else:
-                RecentFiles.objects.get(owner=request.user, path=file.path).delete()
+                RecentFile.objects.get(owner=request.user, path=file.path).delete()
         return render(request, 'files_templates/files.html', {
             'directory_files': f_objects,
             'directory_directories': [],

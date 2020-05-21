@@ -6,14 +6,14 @@ from django.core.files.storage import FileSystemStorage
 
 fs = FileSystemStorage()
 
-class FavoriteFiles(models.Model):
+class FavoriteFile(models.Model):
     path = models.CharField(max_length=2000)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
 
-class RecentFiles(models.Model):
+class RecentFile(models.Model):
     path = models.CharField(max_length=2000)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     last_modification = models.DateTimeField(default=timezone.now,

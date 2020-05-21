@@ -8,7 +8,7 @@ import django.utils.timezone
 
 class Migration(migrations.Migration):
 
-    # replaces = [('Files', '0001_initial'), ('Files', '0002_auto_20200307_1102'), ('Files', '0003_auto_20200308_1959'), ('Files', '0004_auto_20200308_2020'), ('Files', '0005_userfile_directory'), ('Files', '0006_userfile_name'), ('Files', '0007_userdirectory_name'), ('Files', '0008_auto_20200311_1333'), ('Files', '0009_auto_20200326_1449'), ('Files', '0010_userfile_size'), ('Files', '0011_favoritefiles'), ('Files', '0012_auto_20200520_1700'), ('Files', '0013_auto_20200520_1701'), ('Files', '0014_recentfiles'), ('Files', '0015_delete_userfile')]
+    # replaces = [('Files', '0001_initial'), ('Files', '0002_auto_20200307_1102'), ('Files', '0003_auto_20200308_1959'), ('Files', '0004_auto_20200308_2020'), ('Files', '0005_userfile_directory'), ('Files', '0006_userfile_name'), ('Files', '0007_userdirectory_name'), ('Files', '0008_auto_20200311_1333'), ('Files', '0009_auto_20200326_1449'), ('Files', '0010_userfile_size'), ('Files', '0011_FavoriteFile'), ('Files', '0012_auto_20200520_1700'), ('Files', '0013_auto_20200520_1701'), ('Files', '0014_RecentFile'), ('Files', '0015_delete_userfile')]
 
     initial = True
 
@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='FavoriteFiles',
+            name='FavoriteFile',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='RecentFiles',
+            name='RecentFile',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('path', models.CharField(max_length=2000)),
