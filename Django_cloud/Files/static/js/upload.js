@@ -1,96 +1,6 @@
-{% extends "base.html" %}
-{% load static %}
-{% load dark %}
-{% block extra_css %}
-<link rel="stylesheet" href="{% static "style/upload_style.css" %}" type="text/css" />
-<link rel="stylesheet" href="{% static 'dropzone-5.7.0/dist/dropzone.css' %}">
-{% endblock extra_css %}
-
-{% block content %}
-<div class="Breadcrumb">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'files' path='' %}"><span class="fa fa-home"></a></li>
-            {% for parent in breadcrumb.path %}
-            <li class="breadcrumb-item"><a href="{% url 'files' path=parent.1 %}">{{ parent.0 }}</a></li>
-            {% endfor %}
-            <li class="breadcrumb-item active" aria-current="page">{{ breadcrumb.active }}</li>
-        </ol>
-    </nav>
-</div>
-
-<div id="errorZone" class="alert alert-danger alert-dismissible" style="margin: 10px; display:none;">
-    <a href="#" class="close" onclick="$('#errorZone').hide();">&times;</a>
-</div>
-
-<div id="dropzone-previews" class="row">
-</div>
-<form class="{% if '/Files/tree/' in request.path or request.path == '/Files/' %}dropzone{% endif %}" method="post" action='.' id="multiFileUpload" enctype="multipart/form-data" style="border: none; padding: 0;">
-    <input type="hidden" name="path" id="id_path" value="{{ current_dir }}">
-    {{ form.file }}
-    <p>
-        <ul id="fileList">
-            {% for element in directory_directories %}
-            <li class="folder draggable">
-                <a href="{% url 'files' path=element.url %}" class="dir"><span class="fa fa-folder" id="icone_folder"></span>{{ element.name }}</a>
-                <div class="dropdown">
-                    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Actions
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="{% url 'download_dir' path=element.url %}">Télécharger</a>
-                        <a class="dropdown-item action_dir_delete" href="{% url 'del_file' path=element.url %}?redirect={{ current_dir }}">Supprimer</a>
-                    </div>
-                </div>
-            </li>
-            {% endfor %}
-            {% for file in directory_files %}
-                {% include "ul_file.html" %}
-            {% empty %}
-            {% if '/Files/tree/' not in request.path and request.path != '/Files/' %}
-            <div class="text-center my-5">
-                <p class="text-secondary">
-                    Vous n'avez déposé aucun fichier pour le moment.
-                </p>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </ul>
-        {% if '/Files/tree/' in request.path or request.path == '/Files/' %}
-        <div class="dz-message text-center text-secondary" data-dz-message><span>
-            Déposez un fichier ou cliquez ici pour ajouter un fichier.
-        </span></div>
-        {% endif %}
-    </p>
-</form>
-
-{% endblock content %}
-
-{% block extra_js %}
-<script type="text/javascript" src="{% static 'dropzone-5.7.0/dist/dropzone.js' %}"></script>
-<script type="text/javascript">
-    // Variables initialization with django
-    function unescapeHTML(unsafe) {
-        return unsafe
-            .replace(/&amp;/g, "&")
-            .replace(/&lt;/g, "<")
-            .replace(/&gt;/g, ">")
-            .replace(/&quot;/g, "\"")
-            .replace(/&#039;/g, "'");
-    }
-    let csrf_token = '{{ csrf_token }}';
-    let files = '{{ files_json }}';
-    if (files.length > 0) {
-        files = JSON.parse(unescapeHTML(files));
-    }
-    current_dir = "{{ current_dir }}";
-    space_available = "{{ space.available_b }}";
-
-    $('#id_path').data('value', current_dir);
-
     function fileExists(files, filename) {
-        for (i in files) {
-            if (files[i].fields.name == filename) {
+        for (let i in files) {
+            if (files[i].name == filename) {
                 return true;
             }
         }
@@ -194,7 +104,3 @@
     $(window).on('drop', function(e) {
         e.preventDefault();
     });
-</script>
-<script type="text/javascript" src="{% static 'js/move.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/share.js' %}"></script>
-{% endblock extra_js %}

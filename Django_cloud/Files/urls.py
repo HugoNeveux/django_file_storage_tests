@@ -6,15 +6,14 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    url(r'^$', views.FileUploadAndListView.as_view()),
-    url(r'^tree/(?P<path>.*)$', views.FileUploadAndListView.as_view(), name='files'),
-    url(r'^download_dir/(?P<path>.*)$', views.download_dir, name='download_dir'),
-    url(r'^download_file/(?P<id>\d+)/', views.download_file, name='download_file'),
-    url(r'^create_dir/(?P<path>.*)$', views.folder_creation, name='create_dir'),
-    url(r'^del_file/(?P<path>.*)$', views.del_file, name='del_file'),
-    url(r'^fav/(?P<path>.*)$', views.fav, name='fav'),
-    url(r'^favorites/$', views.fav_list, name='fav_list'),
-    url(r'^last_files/$', views.last_files, name='recent'),
-    url(r'^mv/', views.mv, name='move'),
+    url(r'^$', views.TreeView.as_view()),
+    url(r'^tree/(?P<path>.*)$', views.TreeView.as_view(), name='files'),
+    url(r'^download/(?P<path>.*)$', views.DownloadView.as_view(), name='download'),
+    url(r'^create_dir/(?P<path>.*)$', views.FolderCreationView.as_view(), name='create_dir'),
+    url(r'^del_file/(?P<path>.*)$', views.DeleteView.as_view(), name='del_file'),
+    url(r'^fav/(?P<path>.*)$', views.FavFileView.as_view(), name='fav'),
+    url(r'^favorites/$', views.FavFileListView.as_view(), name='fav_list'),
+    url(r'^last_files/$', views.LastFilesView.as_view(), name='recent'),
+    url(r'^mv/', views.MoveFileView.as_view(), name='move'),
     url(r'^about/', TemplateView.as_view(template_name='about.html'), name='about'),
 ]

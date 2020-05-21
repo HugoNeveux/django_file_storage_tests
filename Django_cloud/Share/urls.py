@@ -17,6 +17,6 @@ from django.urls import path, include
 from Share import views
 
 urlpatterns = [
-    path('create/<int:file_id>/', views.create_share_link, name='share_create'),
+    path('create/<path:path>/', views.create_share_link, name='share_create'),
     path('s/<str:file_link>/', views.s, name='get_shared_file')
 ]

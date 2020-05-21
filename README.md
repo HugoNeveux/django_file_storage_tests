@@ -37,8 +37,8 @@ A multi-user cloud app for file storage, using the Django framework for python a
   - [x] File deletion
 - [x] Add files / folders icons
 - [ ] Add 403, 404 and 500 html templates
-- [ ] Add files with js on upload to avoid page reload
-- [ ] Add upload button
+- [xx Add files with js on upload to avoid page reload
+- [x] Add upload button
 - [ ] Add cancel upload button
 - [ ] Allow color changes
 - [ ] Importation from google drive
@@ -55,3 +55,10 @@ A multi-user cloud app for file storage, using the Django framework for python a
 - [x] Favorite files / folders
     - [x] File model creation (association with FileSystemStorage)
     - [x] Favorite files view
+
+### Rewrite
+
+- [x] File upload, share, settings, etc.
+- [x] Folder share & folder favorite
+- [x] Rewrite tests
+- [x] Completely remove UserFile model  
