@@ -25,32 +25,30 @@
 
 <div id="dropzone-previews" class="row">
 </div>
-<form class="{% if '/Files/tree/' in request.path or request.path == '/Files/' %}dropzone{% endif %}" method="post" action='.' id="multiFileUpload" enctype="multipart/form-data" style="border: none; padding: 0;">
+<form class="{% if '/Files/tree/' in request.path or request.path == '/Files/' %}dropzone{% endif %} my-3" method="post" action='.' id="multiFileUpload" enctype="multipart/form-data" style="border: none; padding: 0;">
     <input type="hidden" name="path" id="id_path" value="{{ current_dir }}">
     {{ form.file }}
-    <p>
-        <ul id="fileList">
-            {% for element in directory_directories %}
-                {% include "files_templates/ul_dir.html" %}
-            {% endfor %}
-            {% for file in directory_files %}
-                {% include "files_templates/ul_file.html" %}
-            {% empty %}
-            {% if '/Files/tree/' not in request.path and request.path != '/Files/' %}
-            <div class="text-center my-5">
-                <p class="text-secondary">
-                    Vous n'avez déposé aucun fichier pour le moment.
-                </p>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </ul>
-        {% if '/Files/tree/' in request.path or request.path == '/Files/' %}
-        <div class="dz-message text-center text-secondary" data-dz-message><span>
-            Déposez un fichier ou cliquez ici pour ajouter un fichier.
-        </span></div>
+    <ul id="fileList">
+        {% for dir in directory_directories %}
+        {% include "files_templates/ul_dir.html" %}
+        {% endfor %}
+        {% for file in directory_files %}
+        {% include "files_templates/ul_file.html" %}
+        {% empty %}
+        {% if '/Files/tree/' not in request.path and request.path != '/Files/' %}
+        <div class="text-center my-5">
+            <p class="text-secondary">
+                Vous n'avez déposé aucun fichier pour le moment.
+            </p>
+        </div>
         {% endif %}
-    </p>
+        {% endfor %}
+    </ul>
+    {% if '/Files/tree/' in request.path or request.path == '/Files/' %}
+    <div class="dz-message text-center text-secondary" data-dz-message>
+        <span>Déposez un fichier ou cliquez ici pour ajouter un fichier.</span>
+    </div>
+    {% endif %}
 </form>
 
 {% endblock content %}

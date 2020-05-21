@@ -4,7 +4,6 @@
             Actions
         </a>
         <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item action_file_delete" href="{% url 'del_file' path=file.url %}?next={{ current_dir }}">Supprimer</a>
             <a class="dropdown-item" href="{% url 'fav' path=file.url %}?next={{ current_dir }}">
                 {% if file.favorite %}
                 Retirer des favoris
@@ -14,6 +13,7 @@
             </a>
             <a class="dropdown-item action_file_move" href="#">Déplacer</a>
             <a class="dropdown-item action_file_share" href="#" fpath="{{ file.url }}">Partager</a>
+            <a class="dropdown-item action_file_delete" href="{% url 'del_file' path=file.url %}?next={{ current_dir }}">Supprimer</a>
         </div>
     </div>
 </li>

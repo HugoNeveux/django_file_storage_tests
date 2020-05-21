@@ -1,12 +1,20 @@
 <li class="folder draggable">
-    <a href="{% url 'files' path=element.url %}" class="dir"><span class="fa fa-folder" id="icone_folder"></span>{{ element.name }}</a>
+    <a href="{% url 'files' path=dir.url %}" class="dir"><span class="fa fa-folder" id="icone_folder"></span>{{ dir.name }}</a>
     <div class="dropdown">
         <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Actions
         </a>
         <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="dropdownMenuLink">
             <a class="dropdown-item" href="{% url 'download' path=element.url %}">Télécharger</a>
-            <a class="dropdown-item action_dir_delete" href="{% url 'del_file' path=element.url %}?redirect={{ current_dir }}">Supprimer</a>
+            <a class="dropdown-item" href="{% url 'fav' path=dir.url %}?next={{ current_dir }}">
+                {% if dir.favorite %}
+                Retirer des favoris
+                {% else %}
+                Ajouter aux favoris
+                {% endif %}
+            </a>
+            <a class="dropdown-item action_file_share" href="#" fpath="{{ dir.url }}">Partager</a>
+            <a class="dropdown-item action_file_delete" href="{% url 'del_file' path=dir.url %}?next={{ current_dir }}">Supprimer</a>
         </div>
     </div>
 </li>

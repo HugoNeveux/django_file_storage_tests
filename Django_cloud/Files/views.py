@@ -237,14 +237,21 @@ class FavFileView(LoginRequiredMixin, View):
 class FavFileListView(LoginRequiredMixin, View, FileView):
     def get(self, request):
         favs = FavoriteFiles.objects.filter(owner=request.user)
-        files = []
+        abspath = p.join(self.fs.location, request.user.username, 'files')
+        files, dirs = [], []
+
         for element in favs:
-            if p.isfile(p.join(self.fs.location, request.user.username, 'files', element.path)):
+            element_abspath = p.join(abspath, element.path)
+            print(element_abspath)
+            if p.isfile(element_abspath):
                 files.append({'name': p.basename(element.path), 'url': element.path,
                               'favorite': True})
+            elif p.isdir(element_abspath):
+                dirs.append({'name': p.basename(element.path), 'url': element.path,
+                             'favorite': True})
         return render(request, 'files_templates/files.html', {
             'directory_files': files,
-            'directory_directories': [],
+            'directory_directories': dirs,
         })
 
 
