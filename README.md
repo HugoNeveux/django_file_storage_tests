@@ -37,7 +37,7 @@ A multi-user cloud app for file storage, using the Django framework for python a
   - [x] File deletion
 - [x] Add files / folders icons
 - [ ] Add 403, 404 and 500 html templates
-- [xx Add files with js on upload to avoid page reload
+- [x] Add files with js on upload to avoid page reload
 - [x] Add upload button
 - [ ] Add cancel upload button
 - [ ] Allow color changes
