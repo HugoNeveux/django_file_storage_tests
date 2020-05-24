@@ -10,6 +10,12 @@
     <link href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" rel="stylesheet">
     <link rel="stylesheet" media="all" href="{% static 'style/base_style.css' %}">
     <link rel="stylesheet" href="{% static 'style/blue_style.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'icon/favicon.ico' %}"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'icon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'icon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'icon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#007bff">
     {% load dark %}
     {% block extra_css %}{% endblock extra_css %}
 
@@ -18,8 +24,9 @@
 <body style="padding-top: 5.4rem;">
     <nav class="navbar navbar-expand-md navbar-primart fixed-top bg-primary">
         <a href="{% url 'files' path='' %}" class="navbar-brand display-1 text-white" style="font-size: 2.5rem;">
-            Dupless'Cloud <span class="fa fa-cloud">
-        </a>
+            <img src="{% static 'icon/min-invert.png' %}" alt="Dpcloud main icon" style="height:40px;">
+             Dupless'Cloud
+         </a>
         <ul class="navbar-nav nav ml-auto">
             <li>
                 <a href="{% url 'logout' %}" class="logout text-white nav-link" style="font-size: 1.3rem;"><span id="logout-txt">Déconnexion </span><span class="fa fa-power-off"></span></a>
