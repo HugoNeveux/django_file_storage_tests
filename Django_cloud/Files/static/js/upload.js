@@ -38,7 +38,10 @@
             dataType: "HTML",
             timeout: 180000,
             clickable: true,
-            chuncking: true,
+            chunking: false,
+            chunkSize: 1048576, // 1Ko
+            parallelChunkUploads: true,
+            retryChunks: true,
             previewsContainer: '#dropzone-previews',
             previewTemplate: '<div id="dztp" class="col text-center transition-width">\
             <div class="dz-filename">\

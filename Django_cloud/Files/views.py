@@ -164,11 +164,11 @@ class DownloadView(LoginRequiredMixin, View, FileView):
             if p.isdir(p.join(self.fs.location, to_send)):
                 filenames = recursive_file_list(
                     p.join(self.fs.location, to_send))
-                zip_filename = f"{to_send.split('/')[-1]}.zip"
+                zip_filename = f"{p.basename(to_send)}.zip"
                 s = BytesIO()
                 zf = zipfile.ZipFile(s, "w")
                 for fpath in filenames:
-                    fdir, fname = os.path.split(fpath)
+                    fdir, fname = p.split(fpath)
 
                     zf.write(fpath, fpath.replace(p.join(
                         self.fs.location, request.user.username, 'files'), ''))

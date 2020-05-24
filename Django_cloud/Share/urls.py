@@ -18,5 +18,5 @@ from Share import views
 
 urlpatterns = [
     path('create/<path:path>/', views.create_share_link, name='share_create'),
-    path('s/<str:file_link>/', views.s, name='get_shared_file')
+    path('s/<str:file_link>/', views.ShareDownloadView.as_view(), name='get_shared_file')
 ]
