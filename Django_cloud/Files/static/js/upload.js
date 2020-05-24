@@ -36,7 +36,7 @@
             dictRemoveFileConfirmation: null,
             assRemoveLinks: true,
             dataType: "HTML",
-            timeout: 180000,
+            timeout: 300000,
             clickable: true,
             chunking: false,
             chunkSize: 1048576, // 1Ko
