@@ -9,7 +9,7 @@ A multi-user cloud app for file storage, using the Django framework for python a
 ### Urgent bugs that needs to be solved
 
 - [x] files are not deleted when their folder is deleted
-- [ ] Need to refresh page to see uploaded files
+- [x] Need to refresh page to see uploaded files
 
 
 ### Important features
