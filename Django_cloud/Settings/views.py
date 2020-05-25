@@ -6,6 +6,10 @@ from django.contrib.auth.models import User
 
 @login_required
 def main(request):
+    """
+    Main settings view : saves form is request method is post, else shows
+    a settings form
+    """
     user = User.objects.get(id=request.user.id)
     if request.method == "POST":
         uform = UserForm(request.POST, instance=user)

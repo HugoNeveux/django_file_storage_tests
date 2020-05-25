@@ -13,6 +13,11 @@ from django.views import View
 
 @login_required
 def create_share_link(request, path):
+    """
+    Creates a share link for a file : uses the file path & request user to identify
+    the shared file, generates a 16-char string to use it as link, then sends this
+    link back to client.
+    """
     fs = FileSystemStorage()
     full_path = p.join(request.user.username, 'files', path)
     if p.exists(p.join(fs.location, full_path)):
@@ -24,6 +29,9 @@ def create_share_link(request, path):
         raise Http404
 
 class ShareDownloadView(View, FileView):
+    """
+    Allows users (even unregistered) to download a shared file from its link
+    """
     def get(self, request, file_link):
         link = get_object_or_404(ShareLink, link=file_link)
         to_send = p.join(link.creator.username, "files", link.file_path)

@@ -5,6 +5,9 @@ from Auth.choices import THEME_CHOICES
 from django.contrib.auth.forms import UserChangeForm
 
 class UserForm(ModelForm):
+    """
+    Main settings form for user object
+    """
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email']
@@ -39,6 +42,9 @@ class UserForm(ModelForm):
         }
 
 class ProfileForm(ModelForm):
+    """
+    Secondary settings form, for user profile
+    """
     class Meta:
         model = Profile
         fields = ['theme']

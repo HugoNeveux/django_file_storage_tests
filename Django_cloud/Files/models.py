@@ -7,6 +7,9 @@ from django.core.files.storage import FileSystemStorage
 fs = FileSystemStorage()
 
 class FavoriteFile(models.Model):
+    """
+    Saves all favorite files
+    """
     path = models.CharField(max_length=2000)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -14,6 +17,10 @@ class FavoriteFile(models.Model):
         return self.name
 
 class RecentFile(models.Model):
+    """
+    Saves n recent files on upload, where n is MAX_RECENT_FILES, defined in
+    settings.py
+    """
     path = models.CharField(max_length=2000)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     last_modification = models.DateTimeField(default=timezone.now,

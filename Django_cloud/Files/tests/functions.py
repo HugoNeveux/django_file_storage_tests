@@ -6,7 +6,9 @@ import tempfile
 
 
 class FormatBytesTest(TestCase):
-    """Testing format_bytes function"""
+    """
+    Testing format_bytes function
+    """
 
     def test_b(self):
         self.assertEqual(format_bytes(0), '0B')
@@ -30,7 +32,9 @@ class FormatBytesTest(TestCase):
 
 
 class RecursiveFileListTest(TestCase):
-    """Testing recursive_file_list function"""
+    """
+    Testing recursive_file_list function
+    """
 
     def setUp(self):
         try:

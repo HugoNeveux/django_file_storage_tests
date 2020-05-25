@@ -28,6 +28,10 @@ import zipfile
 
 
 class FileView():
+    """
+    Generic parent view for all views which deal with files, avoiding
+    multiple instance of FileSystemStorage
+    """
     fs = FileSystemStorage()
 
 
@@ -187,6 +191,9 @@ class DownloadView(LoginRequiredMixin, View, FileView):
 
 
 class FolderCreationView(LoginRequiredMixin, View, FileView):
+    """
+    View to create folder - never called by user, only by script
+    """
     def get(self, request, path):
         """Folder creation"""
         next = request.GET.get('next')
@@ -198,10 +205,10 @@ class FolderCreationView(LoginRequiredMixin, View, FileView):
 
 
 class DeleteView(LoginRequiredMixin, View, FileView):
+    """
+    Delete a file or a folder using one argument : the element path
+    """
     def get(self, request, path):
-        """
-        Delete a file or a folder using one argument : the element path
-        """
         next = request.GET.get('next')  # Redirection URL
         path_to = p.join(request.user.username, 'files', path)
         if os.path.isfile(p.join(self.fs.location, path_to)):
@@ -225,6 +232,9 @@ class DeleteView(LoginRequiredMixin, View, FileView):
 
 
 class FavFileView(LoginRequiredMixin, View):
+    """
+    Add a file or folder to favorites
+    """
     def get(self, request, path):
         next = request.GET.get('next')
         existing = FavoriteFile.objects.filter(path=path, owner=request.user)
@@ -236,6 +246,9 @@ class FavFileView(LoginRequiredMixin, View):
 
 
 class FavFileListView(LoginRequiredMixin, View, FileView):
+    """
+    List all user's file or folders marked as favorite
+    """
     def get(self, request):
         favs = FavoriteFile.objects.filter(owner=request.user)
         abspath = p.join(self.fs.location, request.user.username, 'files')
@@ -259,6 +272,9 @@ class FavFileListView(LoginRequiredMixin, View, FileView):
 
 
 class LastFilesView(LoginRequiredMixin, View, FileView):
+    """
+    Lists all user's last files listed in RecentFile model
+    """
     def get(self, request):
         f_objects = []
         for file in RecentFile.objects.filter(owner=request.user).order_by("-last_modification"):
@@ -276,6 +292,9 @@ class LastFilesView(LoginRequiredMixin, View, FileView):
 
 
 class MoveFileView(LoginRequiredMixin, View, FileView):
+    """
+    Moves a file (called by javascript)
+    """
     def get(self, request):
         """Moves file from origin to dest"""
         origin = request.GET.get('from')

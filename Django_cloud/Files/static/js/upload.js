@@ -25,8 +25,9 @@
 
     let pathname = window.location.pathname;
     if (pathname == '/Files/' || pathname.startsWith('/Files/tree/')) {
-        Dropzone.autoDiscover = false;
+        Dropzone.autoDiscover = false;     // Create dropzone
         $('#multiFileUpload').dropzone({
+            // Dropzone settings
             crossDomain: false,
             paramName: "file",
             parallelUploads: 5,
@@ -53,9 +54,10 @@
             </span>\
             </div>\
             </div>',
+            // Dropzone functions
             init: function() {
                 myDropzone = this;
-                this.on('uploadprogress', function(file, progress, bytesSent) {
+                this.on('uploadprogress', function(file, progress, bytesSent) { // Progressbar on upload progress
                     progress = bytesSent / file.size * 100;
                     percent = Math.floor(progress);
                     if (file.previewElement) {
@@ -67,7 +69,7 @@
                         }
                     }
                 });
-                this.on('sending', function(file, xhr, formData) {
+                this.on('sending', function(file, xhr, formData) {  // Confirm if file already exists
                     xhr.setRequestHeader("X-CSRFToken", csrftoken);
                     if ((fileExists(files, file.name))) {
                         if (!confirm("Voulez-vous vraiment envoyer ce fichier ?\nSi vous continuez, le fichier pré-existant sera écrasé.")) {
@@ -78,7 +80,7 @@
                 this.on("maxfilesexceeded", function(data) {
                     let res = eval('(' + data.xhr.responseText + ')');
                 });
-                this.on("error", function(file, message) {
+                this.on("error", function(file, message) {  // Show error if server returned an error
                     if ($('#errorMsg').length > 0) {
                         $('#errorMsg').remove();
                     }
@@ -89,10 +91,10 @@
                     $('#errorZone').append(`<span id="errorMsg">${msg}</span>`);
                     $('#errorZone').show();
                 });
-                this.on('complete', function(file) {
+                this.on('complete', function(file) {    // Remove file from queue when upload succeeded
                     this.removeFile(file);
                 });
-                this.on('success', function(file, response) {
+                this.on('success', function(file, response) {   // Add new file to files list
                     if (response.file_html) {
                         $('ul#fileList').append(response.file_html);
                     }
