@@ -42,7 +42,7 @@ A multi-user cloud app for file storage, using the Django framework for python a
 - [ ] Add cancel upload button
 - [ ] Allow color changes
 - [ ] Importation from google drive
-
+- [ ] Add responsive for phone
 ### Improvements
 - [ ] API Creation
 - [x] Use dropzone.js
